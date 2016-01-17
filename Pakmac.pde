@@ -1,6 +1,6 @@
 class Pakmac extends GameObject {
   //Fields
-  float start1, start2, close1, close2, startAngle, closeAngle;
+  private float start1, start2, close1, close2, startAngle, closeAngle;
   
   Pakmac(float x, float y, float objectWidth, float objectHeight, color colour) {
     super(x, y, objectWidth, objectHeight, colour);
@@ -48,8 +48,8 @@ class Pakmac extends GameObject {
   }
   
   void openMouth(){
-    startAngle = start2;
-    closeAngle = close2;
+    startAngle = start2 + theta;
+    closeAngle = close2 + theta;
   }
   
   void closeMouth(){
