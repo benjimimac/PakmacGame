@@ -16,10 +16,13 @@ float margin;
 float tableH;
 float tile;
 
+int menuOption;
 
+boolean loaded;
 
 void setup() {
   size(800, 800);
+  surface.setResizable(true);  //I want to be able to resize the window for game play
 
   pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
   spriteObject.add(pakmac);
@@ -32,9 +35,14 @@ void setup() {
   margin= width * 0.1f;
   tableH = height - margin * 2.0f;
   tile = tableH * 0.03571428f;
+
+  menuOption = 0;  //Default is 0 for main menu
+
+  loaded = false; //If false load the new map data - true play game
 }
 
 void draw() {
+
   background(0);
   stroke(255);
 
@@ -45,8 +53,39 @@ void draw() {
     line(margin + tile * i, margin, margin + tile * i, margin + tableH);
   }
 
-  gamePlay();
+  option();
+
+  //gamePlay();
 }
+
+void option() {
+  //Use a switch case to drive menu
+  switch (menuOption) {
+  case 0:
+    mainMenu();
+    break;
+
+  case 1:
+    if (loaded) {
+      gamePlay();
+    } else {
+      loadData();
+    }//end if/else()
+    break;
+  }//end switch()
+}//end menu()
+
+void mainMenu() {
+  //Resize the window for main menu - 800 * 800
+  surface.setSize(800, 800);
+
+  text("You are in the main menu", 100, 100);
+}//end mainMenu()
+
+void loadData() {
+  //Resize the window for game play - 840 * 930
+  surface.setSize(840, 930);
+}//end loadData()
 
 void gamePlay() {
   //pakmac.render();
