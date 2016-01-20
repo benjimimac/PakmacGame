@@ -36,7 +36,7 @@ void setup() {
   tableH = height - margin * 2.0f;
   tile = tableH * 0.03571428f;
 
-  menuOption = 0;  //Default is 0 for main menu
+  menuOption = 1;  //Default is 0 for main menu
 
   loaded = false; //If false load the new map data - true play game
 }
@@ -83,8 +83,21 @@ void mainMenu() {
 }//end mainMenu()
 
 void loadData() {
+  println("You are in the loadData methd");            //Remove later
   //Resize the window for game play - 840 * 930
   surface.setSize(840, 930);
+  
+  //Create an ArrayList to store temp PVector references - these row and column references will be passed 
+  //to the map object to create the map
+  ArrayList<PVector> tiles = new ArrayList<PVector>();
+  
+  //Load the map file
+  String[] mapLines = loadStrings("stageTest.csv");
+  
+  //Cycle through the mapLines array and create the map
+  for(int i = 0; i < mapLines.length; i++){
+    
+  }
 }//end loadData()
 
 void gamePlay() {
