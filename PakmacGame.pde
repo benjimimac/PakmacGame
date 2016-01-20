@@ -4,6 +4,8 @@ ArrayList<GameObject> spriteObject = new ArrayList<GameObject>();
 ArrayList<GameObject> foodObject = new ArrayList<GameObject>();
 Pakmac pakmac;
 Dot food;
+Map maze;
+int tileSize;
 
 boolean[] keys = new boolean[512];
 
@@ -35,6 +37,8 @@ void setup() {
   margin= width * 0.1f;
   tableH = height - margin * 2.0f;
   tile = tableH * 0.03571428f;
+  
+  tileSize = 30;
 
   menuOption = 1;  //Default is 0 for main menu
 
@@ -67,6 +71,7 @@ void option() {
 
   case 1:
     if (loaded) {
+      maze.render();
       gamePlay();
     } else {
       loadData();
@@ -96,8 +101,23 @@ void loadData() {
   
   //Cycle through the mapLines array and create the map
   for(int i = 0; i < mapLines.length; i++){
+    //Split the arrays based on ',' - commas
+    String[] mapValues = mapLines[i].split(",");
     
-  }
+    //Loop through each element of the mapValues array to retreive data
+    for(int j = 0; j < mapValues.length; j++){
+      //If an element equals "0" it's part of the wall
+      if(mapValues[j].equals("0")){
+        tiles.add(new PVector(j, i));
+      }//enf if()
+    }//end for(j)
+  }//end for(i)
+  
+  
+  
+  maze = new Map(tiles);
+  
+  loaded = true;
 }//end loadData()
 
 void gamePlay() {
@@ -113,7 +133,7 @@ void gamePlay() {
     foodObject.get(i).render();
   }//end for()
 
-  println("Pac man radius = " + pakmac.getObjectRadius(), ", food radius = " + food.getObjectRadius() + ", combined is " + (pakmac.getObjectRadius() + food.getObjectRadius()));
+  //println("Pac man radius = " + pakmac.getObjectRadius(), ", food radius = " + food.getObjectRadius() + ", combined is " + (pakmac.getObjectRadius() + food.getObjectRadius()));
 
   if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
     pakmac.openMouth();
@@ -124,7 +144,7 @@ void gamePlay() {
     println("Eaten");
   } else {
     pakmac.closeMouth();
-    println("Not eaten");
+    //println("Not eaten");
   }
 }
 
