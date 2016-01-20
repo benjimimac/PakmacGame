@@ -6,6 +6,8 @@ Pakmac pakmac;
 Dot food;
 Map maze;
 int tileSize;
+int infoBar;
+int details;
 
 boolean[] keys = new boolean[512];
 
@@ -23,13 +25,13 @@ int menuOption;
 boolean loaded;
 
 void setup() {
-  size(800, 800);
+  size(500, 500);
   surface.setResizable(true);  //I want to be able to resize the window for game play
 
-  pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
-  spriteObject.add(pakmac);
-  food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
-  foodObject.add(food);
+  //pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
+  //spriteObject.add(pakmac);
+  //food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
+  //foodObject.add(food);
 
   minim = new Minim(this);
   eat = minim.loadSnippet("pacman_chomp.wav");
@@ -38,7 +40,9 @@ void setup() {
   tableH = height - margin * 2.0f;
   tile = tableH * 0.03571428f;
   
-  tileSize = 30;
+  tileSize = 25;
+  infoBar = 15;
+  details = 50;
 
   menuOption = 1;  //Default is 0 for main menu
 
@@ -90,14 +94,19 @@ void mainMenu() {
 void loadData() {
   println("You are in the loadData methd");            //Remove later
   //Resize the window for game play - 840 * 930
-  surface.setSize(840, 930);
+  surface.setSize(700, 750 + tileSize + details);
+  
+  pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
+  spriteObject.add(pakmac);
+  food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
+  foodObject.add(food);
   
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> tiles = new ArrayList<PVector>();
   
   //Load the map file
-  String[] mapLines = loadStrings("stageTest.csv");
+  String[] mapLines = loadStrings("stageTest2.csv");
   
   //Cycle through the mapLines array and create the map
   for(int i = 0; i < mapLines.length; i++){
