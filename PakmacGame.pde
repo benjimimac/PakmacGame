@@ -42,7 +42,7 @@ void setup() {
   
   tileSize = 25;
   infoBar = 15;
-  details = 50;
+  details = 100;
 
   menuOption = 1;  //Default is 0 for main menu
 
@@ -103,10 +103,10 @@ void loadData() {
   
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
-  ArrayList<PVector> tiles = new ArrayList<PVector>();
+  ArrayList<PVector> wallReference = new ArrayList<PVector>();
   
   //Load the map file
-  String[] mapLines = loadStrings("stageTest2.csv");
+  String[] mapLines = loadStrings("stageTest3.csv");
   
   //Cycle through the mapLines array and create the map
   for(int i = 0; i < mapLines.length; i++){
@@ -117,14 +117,14 @@ void loadData() {
     for(int j = 0; j < mapValues.length; j++){
       //If an element equals "0" it's part of the wall
       if(mapValues[j].equals("0")){
-        tiles.add(new PVector(j, i));
+        wallReference.add(new PVector(j, i));
       }//enf if()
     }//end for(j)
   }//end for(i)
   
   
   
-  maze = new Map(tiles);
+  maze = new Map(wallReference);
   
   loaded = true;
 }//end loadData()
