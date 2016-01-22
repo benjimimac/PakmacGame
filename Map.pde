@@ -3,7 +3,7 @@ class Map {
   PShape walls;
 
   //Constructor method
-  Map(ArrayList<PVector> wallReference) {
+  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall) {
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
@@ -15,9 +15,16 @@ class Map {
     
     //Create the maze current level
     for (int i = 0; i < wallReference.size(); i++) {
-      PShape tile = createShape(RECT, wallReference.get(i).x * tileSize, (tileSize) + wallReference.get(i).y * tileSize, tileSize, tileSize);
+      PShape tile = createShape(RECT, wallReference.get(i).x * tileSize, tileSize + (wallReference.get(i).y * tileSize), tileSize, tileSize);
       
 
+      //Add the new shape to the walls PShape
+      walls.addChild(tile);
+    }//end for(i)
+    
+    for(int i = 0; i < ghostWall.size(); i++){
+      PShape tile = createShape(RECT, ghostWall.get(i).x * tileSize, tileSize + (ghostWall.get(i).y * tileSize), tileSize, tileSize * 0.2f);
+      
       //Add the new shape to the walls PShape
       walls.addChild(tile);
     }//end for(i)

@@ -54,14 +54,24 @@ void draw() {
   background(0);
   stroke(255);
 
-  for (int i = 0; i <= 28; i++) {
-    line(margin, margin + tile * i, margin + tableH, margin + tile * i);
-  }
-  for (int i = 0; i <= 28; i++) {
-    line(margin + tile * i, margin, margin + tile * i, margin + tableH);
-  }
+  //for (int i = 0; i <= 28; i++) {
+  //  line(margin, margin + tile * i, margin + tableH, margin + tile * i);
+  //}
+  //for (int i = 0; i <= 28; i++) {
+  //  line(margin + tile * i, margin, margin + tile * i, margin + tableH);
+  //}
+  
+  
 
   option();
+  
+  stroke(255, 0, 0);
+  for (int i = 0; i <= 31; i++) {
+    line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  }
+  for (int i = 0; i <= 28; i++) {
+    line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  }
 
   //gamePlay();
 }
@@ -96,7 +106,7 @@ void loadData() {
   //Resize the window for game play - 840 * 930
   surface.setSize(700, 750 + tileSize + details);
   
-  pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
+  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), width * 0.05f, height * 0.05f, color(255, 255, 0));
   spriteObject.add(pakmac);
   food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
   foodObject.add(food);
@@ -104,7 +114,8 @@ void loadData() {
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
-  
+  ArrayList<PVector> ghostWall = new ArrayList<PVector>();
+    
   //Load the map file
   String[] mapLines = loadStrings("stageTest3.csv");
   
@@ -119,12 +130,16 @@ void loadData() {
       if(mapValues[j].equals("0")){
         wallReference.add(new PVector(j, i));
       }//enf if()
+      
+      if(mapValues[j].equals("2")){
+        ghostWall.add(new PVector(j, i));
+      }//end if()
     }//end for(j)
   }//end for(i)
   
   
   
-  maze = new Map(wallReference);
+  maze = new Map(wallReference, ghostWall);
   
   loaded = true;
 }//end loadData()

@@ -2,7 +2,7 @@ class GameObject{
  //Fields
   protected PVector pos;
   protected PVector forward;
-  protected float theta = 0.0f;
+  protected float theta = radians(180.0f);
   protected float objectHeight, objectWidth, objectRadius;
   protected color colour;
   protected float speed = 2.0f;
