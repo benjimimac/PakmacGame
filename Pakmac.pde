@@ -16,6 +16,11 @@ class Pakmac extends GameObject {
   void update(char up, char down, char left, char right){
     forward.x =  cos(theta);
     forward.y = sin(theta);
+    int xReference = (int) map(pos.x, 0, width, 0, 28);
+    int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
+    println(xReference + ", " + yReference);
+    //
+    
     forward.mult(speed);
     pos.add(forward);
     

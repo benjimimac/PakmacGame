@@ -15,4 +15,8 @@ class MapPath {
     path[(int) pathTile.x][(int) pathTile.y] = 1;
   }//end setPath method()
   
+  public int getPathInfo(int x, int y){
+    return path[x][y];
+  }//end getPathInfo()
+  
 }//end MapPath class

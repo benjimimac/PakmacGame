@@ -1,9 +1,11 @@
 class Map {
   //Fields
   PShape walls;
+  MapPath path;
 
   //Constructor method
-  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall/*, ArrayList<PVector> blankReference*/) {
+  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall, MapPath path) {
+    this.path = path;
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 

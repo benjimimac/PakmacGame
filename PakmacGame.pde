@@ -97,7 +97,7 @@ void loadData() {
   //Resize the window for game play - 840 * 930
   surface.setSize(700, 750 + tileSize + details);
 
-  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), width * 0.05f, height * 0.05f, color(255, 255, 0));
+  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0));
   spriteObject.add(pakmac);
   food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
   foodObject.add(food);
@@ -159,7 +159,7 @@ void loadData() {
     println();
   }//end for(i)
 
-  maze = new Map(wallReference, ghostWall/*, blankReference*/);
+  maze = new Map(wallReference, ghostWall, path);
 
   loaded = true;
 }//end loadData()
