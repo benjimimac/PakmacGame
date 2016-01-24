@@ -16,8 +16,8 @@ class Pakmac extends GameObject {
   void update(char up, char down, char left, char right) {
     forward.x =  cos(theta);
     forward.y = sin(theta);
-    int xReference = (int) map(pos.x, 0, width, 1, 28);
-    int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 1, 31);
+    int xReference = (int) map(pos.x, 0, width, 0, 28);
+    int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
     //println(xReference + ", " + yReference);
     //
 
@@ -27,7 +27,7 @@ class Pakmac extends GameObject {
         pos.add(forward);
       }//end if()
       else if(maze.path.getPathNext(xReference + 1, yReference) == 0){
-        pos.x = map(xReference + 0.5f, 1, 28, 0, width);//width - (tileSize + (tileSize * 0.5f));
+        pos.x = map(xReference - 0.5f, 0, 27, 0, width);//width - (tileSize + (tileSize * 0.5f));
       }
       //pos.add(0.5f, 0, 0);
     }//enf if()
@@ -37,10 +37,10 @@ class Pakmac extends GameObject {
         forward.mult(speed);
         pos.add(forward);
         
-        println(pos);
+        
       }//end if()
       else if(maze.path.getPathNext(xReference - 1, yReference) == 0){
-        pos.x = map(xReference - 0.5f, 1, 28, 0, width);//width - (tileSize + (tileSize * 0.5f));
+       pos.x = map(xReference, 1, 28, tileSize +(tileSize * 0.5f), width);//width - (tileSize + (tileSize * 0.5f));
       }
     }//enf if()
     
@@ -49,9 +49,9 @@ class Pakmac extends GameObject {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
-      else if(maze.path.getPathNext(xReference, yReference + 1) == 0){
-        pos.y = map(yReference + 0.5f, 1, 31, 0, tileSize + (tileSize * 31));//width - (tileSize + (tileSize * 0.5f));
-      }
+      //else if(maze.path.getPathNext(xReference, yReference + 1) == 0){
+      //  pos.y = map(yReference - 0.5f, 0, 30, 0, height - details);//width - (tileSize + (tileSize * 0.5f));
+      //}
     }//enf if()
     
     if (theta == radians(270.0f)) {
@@ -59,10 +59,15 @@ class Pakmac extends GameObject {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
+      else if(maze.path.getPathNext(xReference, yReference - 1) == 0){
+       pos.y = map(yReference, 1, 31, (tileSize * 2) +(tileSize * 0.5f), width);//width - (tileSize + (tileSize * 0.5f));
+      }
     }//enf if()
 
     //forward.mult(speed);
     //pos.add(forward);
+
+    println(pos);
 
     if (keys[right]) {
       theta = radians(0.0f);
