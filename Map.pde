@@ -3,13 +3,13 @@ class Map {
   PShape walls;
 
   //Constructor method
-  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall) {
+  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall, ArrayList<PVector> blankReference) {
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
-    for (int i = 0; i < wallReference.size(); i++) {
-      println(wallReference.get(i) + "Constructor method");
-    }
+    //for (int i = 0; i < wallReference.size(); i++) {
+    //  println(wallReference.get(i) + "Constructor method");
+    //}
 
     rectMode(CENTER);
     

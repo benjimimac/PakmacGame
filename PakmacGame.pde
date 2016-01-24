@@ -39,7 +39,7 @@ void setup() {
   margin= width * 0.1f;
   tableH = height - margin * 2.0f;
   tile = tableH * 0.03571428f;
-  
+
   tileSize = 25;
   infoBar = 15;
   details = 100;
@@ -54,24 +54,15 @@ void draw() {
   background(0);
   stroke(255);
 
-  //for (int i = 0; i <= 28; i++) {
-  //  line(margin, margin + tile * i, margin + tableH, margin + tile * i);
-  //}
-  //for (int i = 0; i <= 28; i++) {
-  //  line(margin + tile * i, margin, margin + tile * i, margin + tableH);
-  //}
-  
-  
-
   option();
-  
-  stroke(255, 0, 0);
-  for (int i = 0; i <= 31; i++) {
-    line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  }
-  for (int i = 0; i <= 28; i++) {
-    line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  }
+
+  //stroke(255, 0, 0);
+  //for (int i = 0; i <= 31; i++) {
+  //  line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  //}
+  //for (int i = 0; i <= 28; i++) {
+  //  line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  //}
 
   //gamePlay();
 }
@@ -105,42 +96,59 @@ void loadData() {
   println("You are in the loadData methd");            //Remove later
   //Resize the window for game play - 840 * 930
   surface.setSize(700, 750 + tileSize + details);
-  
+
   pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), width * 0.05f, height * 0.05f, color(255, 255, 0));
   spriteObject.add(pakmac);
   food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
   foodObject.add(food);
-  
+
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
   ArrayList<PVector> ghostWall = new ArrayList<PVector>();
-    
+  ArrayList<PVector> blankReference = new ArrayList<PVector>();
+
   //Load the map file
   String[] mapLines = loadStrings("stageTest3.csv");
-  
+
   //Cycle through the mapLines array and create the map
-  for(int i = 0; i < mapLines.length; i++){
+  for (int i = 0; i < mapLines.length; i++) {
     //Split the arrays based on ',' - commas
     String[] mapValues = mapLines[i].split(",");
-    
-    //Loop through each element of the mapValues array to retreive data
-    for(int j = 0; j < mapValues.length; j++){
+
+    //Loop through each element of the mapValues array to retrieve data
+    for (int j = 0; j < mapValues.length; j++) {
       //If an element equals "0" it's part of the wall
-      if(mapValues[j].equals("0")){
+      if (mapValues[j].equals("0")) {
         wallReference.add(new PVector(j, i));
       }//enf if()
-      
-      if(mapValues[j].equals("2")){
+
+      if (mapValues[j].equals("2")) {
         ghostWall.add(new PVector(j, i));
       }//end if()
     }//end for(j)
   }//end for(i)
-  
-  
-  
-  maze = new Map(wallReference, ghostWall);
-  
+
+  //Load the path file
+  String[] pathLines = loadStrings("testPath.csv");
+
+  //Cycle through each element of the pathLines array and retrieve data
+  for (int i = 0; i < pathLines.length; i++) {
+    //Split each element on "," - comma
+    String[] pathValues = pathLines[i].split(",");
+
+    //Loop through each element of pathValues
+    for (int j = 0; j < pathValues.length; j++) {
+
+      //If an element equals "0" it's a blank tile
+      if (pathValues[j].equals("0")) {
+        blankReference.add(new PVector(j, i));
+      }//end if()
+    }//end for(j)
+  }//end for(i)
+
+  maze = new Map(wallReference, ghostWall, blankReference);
+
   loaded = true;
 }//end loadData()
 
