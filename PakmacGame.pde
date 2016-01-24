@@ -106,7 +106,8 @@ void loadData() {
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
   ArrayList<PVector> ghostWall = new ArrayList<PVector>();
-  ArrayList<PVector> blankReference = new ArrayList<PVector>();
+  //ArrayList<PVector> blankReference = new ArrayList<PVector>();
+  MapPath path = new MapPath();
 
   //Load the map file
   String[] mapLines = loadStrings("stageTest3.csv");
@@ -142,12 +143,23 @@ void loadData() {
 
       //If an element equals "0" it's a blank tile
       if (pathValues[j].equals("0")) {
-        blankReference.add(new PVector(j, i));
+        PVector tempPath = new PVector(j, i);
+        path.setPathBlank(tempPath);
+        //blankReference.add(new PVector(j, i));
       }//end if()
+      
+      //If an element equals "1" it's a path tile
+      if (pathValues[j].equals("2")) {
+        PVector tempPath = new PVector(j, i);
+        path.setPath(tempPath);
+        //blankReference.add(new PVector(j, i));
+      }//end if()
+      print(path.path[j][i] + ", ");
     }//end for(j)
+    println();
   }//end for(i)
 
-  maze = new Map(wallReference, ghostWall, blankReference);
+  maze = new Map(wallReference, ghostWall/*, blankReference*/);
 
   loaded = true;
 }//end loadData()

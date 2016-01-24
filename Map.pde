@@ -3,7 +3,7 @@ class Map {
   PShape walls;
 
   //Constructor method
-  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall, ArrayList<PVector> blankReference) {
+  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall/*, ArrayList<PVector> blankReference*/) {
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
