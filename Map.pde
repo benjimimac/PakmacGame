@@ -2,10 +2,14 @@ class Map {
   //Fields
   PShape walls;
   MapPath path;
+  color colour;
 
   //Constructor method
   Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall, MapPath path) {
     this.path = path;
+    colour = color(0, 0, 255);
+    fill(colour);
+    stroke(colour);
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
@@ -46,4 +50,8 @@ class Map {
   public void render() {
     shape(walls);
   }//end render()
+  
+  public color getWallColour(){
+   return colour; 
+  }
 }//end Map class
