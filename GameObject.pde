@@ -20,6 +20,7 @@ class GameObject{
   }
   
   void render(){
+    //noStroke();
     fill(colour);
   }  
   

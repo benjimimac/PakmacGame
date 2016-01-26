@@ -5,7 +5,7 @@ class Map {
   color colour;
 
   //Constructor method
-  Map(ArrayList<PVector> wallReference, ArrayList<PVector> ghostWall, MapPath path) {
+  Map(ArrayList<PVector> wallReference, MapPath path) {
     this.path = path;
     colour = color(0, 0, 255);
     fill(colour);
@@ -18,40 +18,44 @@ class Map {
     //}
 
     rectMode(CENTER);
-    
+
     //Create the maze current level
     for (int i = 0; i < wallReference.size(); i++) {
       PShape tile = createShape(RECT, wallReference.get(i).x * tileSize, tileSize + (wallReference.get(i).y * tileSize), tileSize, tileSize);
-      
+
 
       //Add the new shape to the walls PShape
       walls.addChild(tile);
-    }//end for(i)
+    }//end for(i)    
     
-    for(int i = 0; i < ghostWall.size(); i++){
-      PShape tile = createShape(RECT, ghostWall.get(i).x * tileSize, tileSize + (ghostWall.get(i).y * tileSize), tileSize, tileSize * 0.2f);
-      
-      //Add the new shape to the walls PShape
-      walls.addChild(tile);
-    }//end for(i)
     
+    PShape tile = createShape(RECT, tileSize * 12.5, tileSize * 14, tileSize, tileSize);
+    walls.addChild(tile);
+    tile = createShape(RECT, tileSize * 15.5, tileSize * 14, tileSize, tileSize);
+    walls.addChild(tile);
+    fill(BROWN);
+    stroke(BROWN);
+    tile = createShape(RECT, width * 0.5f, tileSize * 14, tileSize * 2, tileSize);
+    walls.addChild(tile);
+
+
     rectMode(CORNERS);
-    
+
     stroke(0);
     fill(0);
-    PShape top = createShape(RECT, 0,tileSize, width, 0);
+    PShape top = createShape(RECT, 0, tileSize, width, 0);
     PShape bottom = createShape(RECT, 0, (wallReference.get(wallReference.size() - 1).y * tileSize) + tileSize, width, height);
     walls.addChild(top);
     walls.addChild(bottom);
-    
+
     rectMode(CORNER);
   }//end Map constructor
 
   public void render() {
     shape(walls);
   }//end render()
-  
-  public color getWallColour(){
-   return colour; 
+
+  public color getWallColour() {
+    return colour;
   }
 }//end Map class

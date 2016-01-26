@@ -9,6 +9,8 @@ int tileSize;
 int infoBar;
 int details;
 
+final color BROWN  = color(139 ,69 ,19);
+
 boolean[] keys = new boolean[512];
 
 AudioSnippet eat;
@@ -25,7 +27,7 @@ int menuOption;
 boolean loaded;
 
 void setup() {
-  size(500, 500);
+  size(600, 600);
   surface.setResizable(true);  //I want to be able to resize the window for game play
 
   //pakmac = new Pakmac(100, 100, width * 0.05f, height * 0.05f, color(255, 255, 0));
@@ -45,6 +47,8 @@ void setup() {
   details = 100;
 
   menuOption = 1;  //Default is 0 for main menu
+  
+  
 
   loaded = false; //If false load the new map data - true play game
 }
@@ -56,13 +60,13 @@ void draw() {
 
   option();
 
-  stroke(255, 0, 0);
-  for (int i = 0; i <= 31; i++) {
-   line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  }
-  for (int i = 0; i <= 28; i++) {
-   line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  }
+  //stroke(255, 0, 0);
+  //for (int i = 0; i <= 31; i++) {
+  // line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  //}
+  //for (int i = 0; i <= 28; i++) {
+  // line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  //}
 
   //gamePlay();
 }
@@ -87,7 +91,7 @@ void option() {
 
 void mainMenu() {
   //Resize the window for main menu - 800 * 800
-  surface.setSize(800, 800);
+  surface.setSize(600, 600);
 
   text("You are in the main menu", 100, 100);
 }//end mainMenu()
@@ -95,7 +99,8 @@ void mainMenu() {
 void loadData() {
   println("You are in the loadData methd");            //Remove later
   //Resize the window for game play - 840 * 930
-  surface.setSize(700, 750 + tileSize + details);
+  surface.setSize(700, 906);
+  tileSize = width / 28;
 
   pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0));
   spriteObject.add(pakmac);
@@ -105,7 +110,8 @@ void loadData() {
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
-  ArrayList<PVector> ghostWall = new ArrayList<PVector>();
+  //ArrayList<PVector> ghostWall = new ArrayList<PVector>();
+  //ArrayList<PVector> ghostDoor = new ArrayList<PVector>();
   //ArrayList<PVector> blankReference = new ArrayList<PVector>();
   MapPath path = new MapPath();
 
@@ -124,9 +130,14 @@ void loadData() {
         wallReference.add(new PVector(j, i));
       }//enf if()
 
-      if (mapValues[j].equals("2")) {
-        ghostWall.add(new PVector(j, i));
-      }//end if()
+      //if (mapValues[j].equals("2")) {
+      //  ghostWall.add(new PVector(j, i));
+      //}//end if()
+      
+      
+      //if(mapValues[j].equals("6")){
+      //  ghostDoor.add(new PVector(j, i));
+      //}//end if()
     }//end for(j)
   }//end for(i)
 
@@ -154,12 +165,13 @@ void loadData() {
         path.setPath(tempPath);
         //blankReference.add(new PVector(j, i));
       }//end if()
+      
       print(path.path[i][j] + ", ");
     }//end for(j)
     println();
   }//end for(i)
 
-  maze = new Map(wallReference, ghostWall, path);
+  maze = new Map(wallReference, path);
 
   loaded = true;
 }//end loadData()
