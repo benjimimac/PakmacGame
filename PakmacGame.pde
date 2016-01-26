@@ -56,13 +56,13 @@ void draw() {
 
   option();
 
-  //stroke(255, 0, 0);
-  //for (int i = 0; i <= 31; i++) {
-  //  line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  //}
-  //for (int i = 0; i <= 28; i++) {
-  //  line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  //}
+  stroke(255, 0, 0);
+  for (int i = 0; i <= 31; i++) {
+   line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  }
+  for (int i = 0; i <= 28; i++) {
+   line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  }
 
   //gamePlay();
 }
@@ -154,7 +154,7 @@ void loadData() {
         path.setPath(tempPath);
         //blankReference.add(new PVector(j, i));
       }//end if()
-      print(path.path[j][i] + ", ");
+      print(path.path[i][j] + ", ");
     }//end for(j)
     println();
   }//end for(i)

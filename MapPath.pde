@@ -4,19 +4,19 @@ class MapPath {
 
   //Constructor method
   MapPath() {
-    path = new int[28][31];
+    path = new int[31][28];
   }//end MapPath constructor
   
   public void setPathBlank(PVector blankTile){
-    path[(int) blankTile.x][(int) blankTile.y] = 0;
+    path[(int) blankTile.y][(int) blankTile.x] = 0;
   }//end setPathBlank method()
   
   public void setPath(PVector pathTile){
-    path[(int) pathTile.x][(int) pathTile.y] = 1;
+    path[(int) pathTile.y][(int) pathTile.x] = 1;
   }//end setPath method()
   
   public int getPathNext(int x, int y){
-    return path[x][y];
+    return path[y][x];
   }//end getPathInfo()
   
 }//end MapPath class
