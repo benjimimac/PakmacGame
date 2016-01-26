@@ -23,7 +23,7 @@ class Pakmac extends GameObject {
 
     if (theta == 0.0f) {
 
-      if (maze.path.getPathNext(xReference + 1, yReference) == 1 && get((int) pos.x + tileSize, (int) pos.y) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+      if (get((int) pos.x + (tileSize + 2), (int) pos.y) != maze.getWallColour()){// && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
@@ -34,7 +34,7 @@ class Pakmac extends GameObject {
     }//enf if()
 
     if (theta == radians(180.0f)) {
-      if (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+      if (get((int) pos.x - (tileSize + 2), (int) pos.y) != maze.getWallColour()){// && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
@@ -44,14 +44,14 @@ class Pakmac extends GameObject {
     }//enf if()
 
     if (theta == radians(90.0f)) {
-      if (get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour()) { //(get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+      if (get((int) pos.x, (int) pos.y + (tileSize + 2)) != maze.getWallColour()){// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour()) { //(get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
     }//enf if()
 
     if (theta == radians(270.0f)) {
-      if (get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour()) {//(get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+      if (get((int) pos.x, (int) pos.y - (tileSize + 2)) != maze.getWallColour()){// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour()) {//(get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
@@ -63,7 +63,7 @@ class Pakmac extends GameObject {
     //println(pos);
 
     if (keys[right]) {
-      if (maze.path.getPathNext(xReference + 1, yReference) == 1) {
+      if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 5)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 5)) != maze.getWallColour()) {
         theta = radians(0.0f);
         setStart1();
         setClose1();
@@ -72,21 +72,21 @@ class Pakmac extends GameObject {
    // println(maze.path.getPathNext(xReference, yReference + 1));
     if (keys[down]) {
       
-      if (maze.path.getPathNext(xReference, yReference + 1) == 1 && get((int) pos.x + tileSize, (int) pos.y) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {
+      if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 5), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 5), (int) pos.y + (tileSize + 5)) != maze.getWallColour()) {
         theta = radians(90.0f);
         setStart1();
         setClose1();
       }
     }
     if (keys[left]) {
-      if (maze.path.getPathNext(xReference - 1, yReference) == 1) {
+      if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 5)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 5)) != maze.getWallColour()) {
         theta = radians(180.0f);
         setStart1();
         setClose1();
       }
     }
     if (keys[up]) {
-      if (maze.path.getPathNext(xReference, yReference - 1) == 1) {
+      if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 5), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 5), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
         theta = radians(270.0f);
         setStart1();
         setClose1();
