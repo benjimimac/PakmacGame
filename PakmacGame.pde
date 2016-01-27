@@ -105,8 +105,10 @@ void loadData() {
 
   pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0));
   spriteObject.add(pakmac);
+  for(int i = 0; i < 20; i ++){
   food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
   foodObject.add(food);
+  }
   
   //Add ghost sprites
   blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), tileSize * 2, tileSize, color(255, 0, 0));
