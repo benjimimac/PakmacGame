@@ -38,4 +38,13 @@ class Ghost extends GameObject {
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
   }
+  
+  void update(){
+    for(int i = 0; i < sprite.getVertexCount(); i++){
+      pos = sprite.getVertex(i);
+      super.update();
+      sprite.setVertex(i, pos.x, pos.y);
+      
+    }//end for(i)
+  }//end update()
 }//end Ghost class()

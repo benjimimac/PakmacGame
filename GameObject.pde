@@ -3,7 +3,7 @@ class GameObject{
   protected PVector pos;
   protected PVector forward;
   protected PShape sprite;
-  protected float theta = radians(0.0f);
+  protected float theta = radians(180.0f);
   protected float objectHeight, objectWidth, objectRadius;
   protected color colour;
   protected float speed = 3.0f;
@@ -20,6 +20,8 @@ class GameObject{
     this.objectHeight = objectHeight;
     objectRadius = objectWidth * 0.5f;
     this.colour = colour;
+    stroke(colour);
+    fill(colour);
   }
   
   void render(){
@@ -95,37 +97,37 @@ class GameObject{
     //println(pos);
   }//end update()
   
-  void turnRight(){
-    if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
-        theta = radians(0.0f);
-        setStart1();
-        setClose1();
-      }
-  }//end turnRight()
+  //void turnRight(){
+  //  if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
+  //      theta = radians(0.0f);
+  //      setStart1();
+  //      setClose1();
+  //    }
+  //}//end turnRight()
   
-  void turnLeft(){
-    if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
-        theta = radians(180.0f);
-        setStart1();
-        setClose1();
-      }
-  }//end turnLeft()
+  //void turnLeft(){
+  //  if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
+  //      theta = radians(180.0f);
+  //      setStart1();
+  //      setClose1();
+  //    }
+  //}//end turnLeft()
   
-  void turnUp(){
-    if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
-        theta = radians(270.0f);
-        setStart1();
-        setClose1();
-      }
-  }//end turnUp()
+  //void turnUp(){
+  //  if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
+  //      theta = radians(270.0f);
+  //      setStart1();
+  //      setClose1();
+  //    }
+  //}//end turnUp()
   
-  void turnDown(){
-    if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
-        theta = radians(90.0f);
-        setStart1();
-        setClose1();
-      }
-  }//end turnDown()
+  //void turnDown(){
+  //  if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
+  //      theta = radians(90.0f);
+  //      setStart1();
+  //      setClose1();
+  //    }
+  //}//end turnDown()
   
   void openMouth() {
     startAngle = start2 + theta;

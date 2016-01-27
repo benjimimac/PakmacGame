@@ -11,6 +11,8 @@ class Pakmac extends GameObject {
     close2 = TWO_PI - start2;
     startAngle = start1;
     closeAngle = close1;
+
+    sprite = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
   }
 
   void update(char up, char down, char left, char right) {
@@ -25,7 +27,7 @@ class Pakmac extends GameObject {
     //  if(pos.x >= width){
     //    pos.x = 0;
     //  }//end if()
-      
+
     //  if (get((int) pos.x + (tileSize), (int) pos.y) != maze.getWallColour()){// && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
     //    forward.mult(speed);
     //    pos.add(forward);
@@ -40,7 +42,7 @@ class Pakmac extends GameObject {
     //  if(pos.x <= 0){
     //    pos.x = width;
     //  }//end if()
-      
+
     //  if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()){// && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
     //    forward.mult(speed);
     //    pos.add(forward);
@@ -54,7 +56,7 @@ class Pakmac extends GameObject {
     //  if(pos.y >= height){
     //    pos.y = 0;
     //  }//end if()
-      
+
     //  if (get((int) pos.x, (int) pos.y + (tileSize + 1)) != maze.getWallColour()){// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour()) { //(get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
     //    forward.mult(speed);
     //    pos.add(forward);
@@ -65,7 +67,7 @@ class Pakmac extends GameObject {
     //  if(pos.y <= 0){
     //    pos.y = height;
     //  }//end if()
-      
+
     //  if (get((int) pos.x, (int) pos.y - (tileSize + 1)) != maze.getWallColour()){// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour()) {//(get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
     //    forward.mult(speed);
     //    pos.add(forward);
@@ -78,43 +80,88 @@ class Pakmac extends GameObject {
     ////println(pos);
 
     if (keys[right]) {
-      //if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
-      //  theta = radians(0.0f);
-      //  setStart1();
-      //  setClose1();
-      //}
-      super.turnRight();
+      if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
+        if (theta == HALF_PI) {
+          sprite.rotate(-HALF_PI);
+        }//end if()
+        if (theta == PI) {
+          sprite.rotate(-PI);
+        }//end if
+        if (theta == PI + HALF_PI) {
+          sprite.rotate(-(PI + HALF_PI));
+        }//end if()
+        println(degrees(theta));
+        theta = radians(0.0f);
+        setStart1();
+        setClose1();
+      }
+      //super.turnRight();
     }
     if (keys[left]) {
-      //if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
-      //  theta = radians(180.0f);
-      //  setStart1();
-      //  setClose1();
-      //}
-      super.turnLeft();
+      if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
+        if (theta == radians(0.0f)) {
+          sprite.rotate(PI);
+        }//end if()
+        if (theta == HALF_PI) {
+          sprite.rotate(HALF_PI);
+        }//end if
+        if (theta == PI + HALF_PI) {
+          sprite.rotate(-HALF_PI);
+        }//end if()
+        theta = PI;
+        println(degrees(theta));
+        setStart1();
+        setClose1();
+      }
+      //super.turnLeft();
     }
     if (keys[down]) {
-      
-      //if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
-      //  theta = radians(90.0f);
-      //  setStart1();
-      //  setClose1();
-      //}
-      super.turnDown();
+
+      if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
+        if (theta == radians(0.0f)) {
+          sprite.rotate(HALF_PI);
+        }//end if()
+        if (theta == PI) {
+          sprite.rotate(-HALF_PI);
+        }//end if
+        if (theta == PI + HALF_PI) {
+          sprite.rotate(-PI);
+        }//end if()
+        theta = HALF_PI;
+        println(degrees(theta));
+        setStart1();
+        setClose1();
+      }
+      //super.turnDown();
     }
     if (keys[up]) {
-      //if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
-      //  theta = radians(270.0f);
-      //  setStart1();
-      //  setClose1();
-      //}
-      super.turnUp();
+      if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
+        if (theta == radians(0.0f)) {
+          sprite.rotate(PI + HALF_PI);
+        }//end if()
+        if (theta == PI) {
+          sprite.rotate(HALF_PI);
+        }//end if
+        if (theta == HALF_PI) {
+          sprite.rotate(PI);
+        }//end if()
+        theta = HALF_PI;
+        println(degrees(theta));
+        theta = PI + HALF_PI;
+        setStart1();
+        setClose1();
+      }
+      //super.turnUp();
     }
   }
 
   void render() {
     super.render();
-    arc(pos.x, pos.y, objectWidth, objectHeight, startAngle, closeAngle, PIE);
+    //arc(pos.x, pos.y, objectWidth, objectHeight, startAngle, closeAngle, PIE);
+    pushMatrix();
+    translate(pos.x, pos.y);
+    shape(sprite);
+    popMatrix();
   }
 
   //void openMouth() {

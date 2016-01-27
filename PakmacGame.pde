@@ -185,7 +185,7 @@ void gamePlay() {
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
   for (int i = 0; i < spriteObject.size(); i++) {
     spriteObject.get(i).render();
-    println(i);
+    //println(i);
   }//end for()
 
   for (int i = 0; i < foodObject.size(); i++) {
