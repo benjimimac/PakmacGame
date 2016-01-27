@@ -13,9 +13,7 @@ class Map {
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
-    //for (int i = 0; i < wallReference.size(); i++) {
-    //  println(wallReference.get(i) + "Constructor method");
-    //}
+    
 
     rectMode(CENTER);
 

@@ -3,6 +3,7 @@ import ddf.minim.*;
 ArrayList<GameObject> spriteObject = new ArrayList<GameObject>();
 ArrayList<GameObject> foodObject = new ArrayList<GameObject>();
 Pakmac pakmac;
+Ghost blinky;
 Dot food;
 Map maze;
 int tileSize;
@@ -97,7 +98,7 @@ void mainMenu() {
 }//end mainMenu()
 
 void loadData() {
-  println("You are in the loadData methd");            //Remove later
+  println("You are in the loadData method");            //Remove later
   //Resize the window for game play - 840 * 930
   surface.setSize(700, 906);
   tileSize = width / 28;
@@ -106,6 +107,10 @@ void loadData() {
   spriteObject.add(pakmac);
   food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
   foodObject.add(food);
+  
+  //Add ghost sprites
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), tileSize * 2, tileSize, color(255, 0, 0));
+  spriteObject.add(blinky);
 
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
@@ -164,11 +169,8 @@ void loadData() {
         PVector tempPath = new PVector(j, i);
         path.setPath(tempPath);
         //blankReference.add(new PVector(j, i));
-      }//end if()
-      
-      print(path.path[i][j] + ", ");
+      }//end if()      
     }//end for(j)
-    println();
   }//end for(i)
 
   maze = new Map(wallReference, path);
@@ -183,13 +185,12 @@ void gamePlay() {
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
   for (int i = 0; i < spriteObject.size(); i++) {
     spriteObject.get(i).render();
+    println(i);
   }//end for()
 
   for (int i = 0; i < foodObject.size(); i++) {
     foodObject.get(i).render();
   }//end for()
-
-  //println("Pac man radius = " + pakmac.getObjectRadius(), ", food radius = " + food.getObjectRadius() + ", combined is " + (pakmac.getObjectRadius() + food.getObjectRadius()));
 
   if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
     pakmac.openMouth();
@@ -200,7 +201,6 @@ void gamePlay() {
     println("Eaten");
   } else {
     pakmac.closeMouth();
-    //println("Not eaten");
   }
 }
 

@@ -2,6 +2,7 @@ class GameObject{
  //Fields
   protected PVector pos;
   protected PVector forward;
+  protected PShape sprite;
   protected float theta = radians(0.0f);
   protected float objectHeight, objectWidth, objectRadius;
   protected color colour;

@@ -18,7 +18,6 @@ class Pakmac extends GameObject {
     forward.y = sin(theta);
     int xReference = (int) map(pos.x, 0, width, 0, 28);
     int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
-    println(yReference + ", " + xReference);
 
 
     if (theta == 0.0f) {
@@ -41,7 +40,6 @@ class Pakmac extends GameObject {
         pos.x = width;
       }//end if()
       
-      println(pos.x);
       if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()){// && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
         forward.mult(speed);
         pos.add(forward);
@@ -92,7 +90,6 @@ class Pakmac extends GameObject {
         setClose1();
       }
     }
-   // println(maze.path.getPathNext(xReference, yReference + 1));
     if (keys[down]) {
       
       if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
