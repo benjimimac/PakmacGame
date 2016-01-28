@@ -34,7 +34,10 @@ class Ghost extends GameObject {
   
   void render() {
     super.render();
+     pushMatrix();
+    translate(pos.x, pos.y);
     shape(sprite);
+    popMatrix();
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
   }

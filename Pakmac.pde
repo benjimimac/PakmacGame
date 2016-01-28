@@ -9,8 +9,8 @@ class Pakmac extends GameObject {
     setStart1();
     setClose1();
 
-    start2 = radians(250);//PI + (TWO_PI * 0.2f);
-    close2 = radians(470);//PI - (TWO_PI * 0.2f);
+    start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
+    close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);
     startAngle = start1;
     closeAngle = close1;
 
@@ -185,7 +185,7 @@ class Pakmac extends GameObject {
   }
 
   void render() {
-    super.render();
+    //super.render();
     //arc(pos.x, pos.y, objectWidth, objectHeight, startAngle, closeAngle, PIE);
     pushMatrix();
     translate(pos.x, pos.y);
