@@ -140,11 +140,11 @@ class GameObject{
   }
 
   void setStart1() {
-    start1 = theta + radians(20.0f);
+   start1 = theta + radians(20.0f);
   }
 
   void setClose1() {
-    close1 = theta + TWO_PI - radians(20.0f);
+   close1 = theta + TWO_PI - radians(20.0f);
   }
   
   //Getters

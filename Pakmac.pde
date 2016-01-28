@@ -9,8 +9,8 @@ class Pakmac extends GameObject {
     setStart1();
     setClose1();
 
-    start2 = TWO_PI * 0.2f;
-    close2 = TWO_PI - start2;
+    start2 = radians(250);//PI + (TWO_PI * 0.2f);
+    close2 = radians(470);//PI - (TWO_PI * 0.2f);
     startAngle = start1;
     closeAngle = close1;
 
@@ -20,6 +20,7 @@ class Pakmac extends GameObject {
   }
 
   void update(char up, char down, char left, char right) {
+    //println("20 radians is " + );
     super.update();
     //forward.x =  cos(theta);
     //forward.y = sin(theta);
@@ -86,19 +87,19 @@ class Pakmac extends GameObject {
     if (keys[right]) {
       if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
         if (theta == HALF_PI) {
-          sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
+          //sprite.rotate(-HALF_PI);
+          openedMouth.rotate(-HALF_PI);
+          closedMouth.rotate(-HALF_PI);
         }//end if()
         if (theta == PI) {
-          sprite.rotate(-PI);
-          //openedMouth.rotate(-PI);
-          //closedMouth.rotate(-PI);
+          //sprite.rotate(-PI);
+          openedMouth.rotate(-PI);
+          closedMouth.rotate(-PI);
         }//end if
         if (theta == PI + HALF_PI) {
-          sprite.rotate(-(PI + HALF_PI));
-          //openedMouth.rotate(-(PI + HALF_PI));
-          //closedMouth.rotate(-(PI + HALF_PI));
+          //sprite.rotate(-(PI + HALF_PI));
+          openedMouth.rotate(-(PI + HALF_PI));
+          closedMouth.rotate(-(PI + HALF_PI));
         }//end if()
         println(degrees(theta));
         theta = radians(0.0f);
@@ -110,19 +111,19 @@ class Pakmac extends GameObject {
     if (keys[left]) {
       if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
         if (theta == radians(0.0f)) {
-          sprite.rotate(PI);
-          //openedMouth.rotate(PI);
-          //closedMouth.rotate(PI);
+          //sprite.rotate(PI);
+          openedMouth.rotate(PI);
+          closedMouth.rotate(PI);
         }//end if()
         if (theta == HALF_PI) {
-          sprite.rotate(HALF_PI);
-          //openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
+          //sprite.rotate(HALF_PI);
+          openedMouth.rotate(HALF_PI);
+          closedMouth.rotate(HALF_PI);
         }//end if
         if (theta == PI + HALF_PI) {
-          sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
+          //sprite.rotate(-HALF_PI);
+          openedMouth.rotate(-HALF_PI);
+          closedMouth.rotate(-HALF_PI);
         }//end if()
         theta = PI;
         println(degrees(theta));
@@ -135,19 +136,19 @@ class Pakmac extends GameObject {
 
       if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
         if (theta == radians(0.0f)) {
-          sprite.rotate(HALF_PI);
-          //openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
+          //sprite.rotate(HALF_PI);
+          openedMouth.rotate(HALF_PI);
+          closedMouth.rotate(HALF_PI);
         }//end if()
         if (theta == PI) {
-          sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
+          //sprite.rotate(-HALF_PI);
+          openedMouth.rotate(-HALF_PI);
+          closedMouth.rotate(-HALF_PI);
         }//end if
         if (theta == PI + HALF_PI) {
-          sprite.rotate(-PI);
-          //openedMouth.rotate(-PI);
-          //closedMouth.rotate(-PI);
+          //sprite.rotate(-PI);
+          openedMouth.rotate(-PI);
+          closedMouth.rotate(-PI);
         }//end if()
         theta = HALF_PI;
         println(degrees(theta));
@@ -159,19 +160,19 @@ class Pakmac extends GameObject {
     if (keys[up]) {
       if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
         if (theta == radians(0.0f)) {
-          sprite.rotate(PI + HALF_PI);
+          //sprite.rotate(PI + HALF_PI);
           openedMouth.rotate(PI + HALF_PI);
-          //closedMouth.rotate(PI + HALF_PI);
+          closedMouth.rotate(PI + HALF_PI);
         }//end if()
         if (theta == PI) {
-          sprite.rotate(HALF_PI);
+          //sprite.rotate(HALF_PI);
           openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
+          closedMouth.rotate(HALF_PI);
         }//end if
         if (theta == HALF_PI) {
-          sprite.rotate(PI);
+          //sprite.rotate(PI);
           openedMouth.rotate(PI);
-          //closedMouth.rotate(PI);
+          closedMouth.rotate(PI);
         }//end if()
         //theta = HALF_PI;
         println(degrees(theta));
