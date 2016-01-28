@@ -10,7 +10,7 @@ int tileSize;
 int infoBar;
 int details;
 
-final color BROWN  = color(139 ,69 ,19);
+final color BROWN  = color(139, 69, 19);
 
 boolean[] keys = new boolean[512];
 
@@ -48,8 +48,8 @@ void setup() {
   details = 100;
 
   menuOption = 1;  //Default is 0 for main menu
-  
-  
+
+
 
   loaded = false; //If false load the new map data - true play game
 }
@@ -61,13 +61,21 @@ void draw() {
 
   option();
 
-  //stroke(255, 0, 0);
-  //for (int i = 0; i <= 31; i++) {
-  // line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  //}
-  //for (int i = 0; i <= 28; i++) {
-  // line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  //}
+  stroke(255, 0, 0);
+  for (int i = 0; i <= 31; i++) {
+    line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  }
+  for (int i = 0; i <= 28; i++) {
+    line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  }
+
+  //println("Pakmac: " + pakmac.getLocation() + ", Blinky: " + blinky.getLocation());
+  
+  if(dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0){//pakmac.getLocation() == blinky.getLocation()){
+    println("The same tile");
+  }else{
+    //println("Not the same tile - distance is " + (int) dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y));
+  }
 
   //gamePlay();
 }
@@ -105,11 +113,11 @@ void loadData() {
 
   pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0));
   spriteObject.add(pakmac);
-  for(int i = 0; i < 20; i ++){
-  food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
-  foodObject.add(food);
+  for (int i = 0; i < 20; i ++) {
+    food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
+    foodObject.add(food);
   }
-  
+
   //Add ghost sprites
   blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0));
   spriteObject.add(blinky);
@@ -140,8 +148,8 @@ void loadData() {
       //if (mapValues[j].equals("2")) {
       //  ghostWall.add(new PVector(j, i));
       //}//end if()
-      
-      
+
+
       //if(mapValues[j].equals("6")){
       //  ghostDoor.add(new PVector(j, i));
       //}//end if()
@@ -165,13 +173,13 @@ void loadData() {
         path.setPathBlank(tempPath);
         //blankReference.add(new PVector(j, i));
       }//end if()
-      
+
       //If an element equals "1" it's a path tile
-      if (pathValues[j].equals("2")) {
+      if (pathValues[j].equals("2") || pathValues[j].equals("1")) {
         PVector tempPath = new PVector(j, i);
         path.setPath(tempPath);
         //blankReference.add(new PVector(j, i));
-      }//end if()      
+      }//end if()
     }//end for(j)
   }//end for(i)
 

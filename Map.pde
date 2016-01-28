@@ -13,7 +13,7 @@ class Map {
     walls = createShape(GROUP);
     //PShape[] tile = new PShape[wallReference.size()];
 
-    
+
 
     rectMode(CENTER);
 
@@ -25,8 +25,8 @@ class Map {
       //Add the new shape to the walls PShape
       walls.addChild(tile);
     }//end for(i)    
-    
-    
+
+
     PShape tile = createShape(RECT, tileSize * 12.5, tileSize * 14, tileSize, tileSize);
     walls.addChild(tile);
     tile = createShape(RECT, tileSize * 15.5, tileSize * 14, tileSize, tileSize);
@@ -47,6 +47,10 @@ class Map {
     walls.addChild(bottom);
 
     rectMode(CORNER);
+
+    //Maybe I'll remove this - not sure yet
+    PShape ghostHouse = createShape(RECT, 11 * tileSize, tileSize + (13 * tileSize), 6 * tileSize, 3 * tileSize);
+    walls.addChild(ghostHouse);
   }//end Map constructor
 
   public void render() {

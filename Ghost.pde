@@ -2,6 +2,7 @@ class Ghost extends GameObject {
   //Fields
   PShape pupil1;
   PShape pupil2;
+  PVector target;
 
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour) {
     super(x, y, objectWidth, objectHeight, colour);
@@ -34,7 +35,6 @@ class Ghost extends GameObject {
   }//end Ghost construuctor method
 
   void render() {
-    println(degrees(theta));
     super.render();
     pushMatrix();
     translate(pos.x, pos.y);
@@ -50,6 +50,9 @@ class Ghost extends GameObject {
 
     super.update();
     
+    boolean testTarget = target();
+    println(testTarget);
+    
     if (keys[right]) {
       if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
         if (theta == HALF_PI) {
@@ -57,29 +60,19 @@ class Ghost extends GameObject {
           pupil1.translate(5, -5);
           pupil2.translate(5, -5);
           popMatrix();
-          //sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
         }//end if()
         if (theta == PI) {
           pushMatrix();
           pupil1.translate(10, 0);
           pupil2.translate(10, 0);
           popMatrix();
-          //sprite.rotate(-PI);
-          //openedMouth.rotate(-PI);
-          //closedMouth.rotate(-PI);
         }//end if
         if (theta == PI + HALF_PI) {
           pushMatrix();
           pupil1.translate(5, 5);
           pupil2.translate(5, 5);
           popMatrix();
-          //sprite.rotate(-(PI + HALF_PI));
-          //openedMouth.rotate(-(PI + HALF_PI));
-          //closedMouth.rotate(-(PI + HALF_PI));
         }//end if()
-        println(degrees(theta));
         theta = radians(0.0f);
         //setStart1();
         //setClose1();
@@ -93,30 +86,20 @@ class Ghost extends GameObject {
           pupil1.translate(-10, 0);
           pupil2.translate(-10, 0);
           popMatrix();
-          //sprite.rotate(PI);
-          //openedMouth.rotate(PI);
-          //closedMouth.rotate(PI);
         }//end if()
         if (theta == HALF_PI) {
           pushMatrix();
           pupil1.translate(-5, -5);
           pupil2.translate(-5, -5);
           popMatrix();
-          //sprite.rotate(HALF_PI);
-          //openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
         }//end if
         if (theta == PI + HALF_PI) {
           pushMatrix();
           pupil1.translate(-5, 5);
           pupil2.translate(-5, 5);
           popMatrix();
-          //sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
         }//end if()
         theta = PI;
-        println(degrees(theta));
         //setStart1();
         //setClose1();
       }
@@ -130,30 +113,20 @@ class Ghost extends GameObject {
           pupil1.translate(-5, 5);
           pupil2.translate(-5, 5);
           popMatrix();
-          //sprite.rotate(HALF_PI);
-          //openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
         }//end if()
         if (theta == PI) {
           pushMatrix();
           pupil1.translate(5, 5);
           pupil2.translate(5, 5);
           popMatrix();
-          //sprite.rotate(-HALF_PI);
-          //openedMouth.rotate(-HALF_PI);
-          //closedMouth.rotate(-HALF_PI);
         }//end if
         if (theta == PI + HALF_PI) {
           pushMatrix();
           pupil1.translate(0, 10);
           pupil2.translate(0, 10);
           popMatrix();
-          //sprite.rotate(-PI);
-          //openedMouth.rotate(-PI);
-          //closedMouth.rotate(-PI);
         }//end if()
         theta = HALF_PI;
-        println(degrees(theta));
         //setStart1();
         //setClose1();
       }
@@ -166,30 +139,20 @@ class Ghost extends GameObject {
           pupil1.translate(-5, -5);
           pupil2.translate(-5, -5);
           popMatrix();
-          //sprite.rotate(PI + HALF_PI);
-          //openedMouth.rotate(PI + HALF_PI);
-          //closedMouth.rotate(PI + HALF_PI);
         }//end if()
         if (theta == PI) {
           pushMatrix();
           pupil1.translate(5, -5);
           pupil2.translate(5, -5);
           popMatrix();
-          //sprite.rotate(HALF_PI);
-          //openedMouth.rotate(HALF_PI);
-          //closedMouth.rotate(HALF_PI);
         }//end if
         if (theta == HALF_PI) {
           pushMatrix();
           pupil1.translate(0, -10);
           pupil2.translate(0, -10);
           popMatrix();
-          //sprite.rotate(PI);
-          //openedMouth.rotate(PI);
-          //closedMouth.rotate(PI);
         }//end if()
         //theta = HALF_PI;
-        println(degrees(theta));
         theta = PI + HALF_PI;
         //setStart1();
         //setClose1();
@@ -198,4 +161,16 @@ class Ghost extends GameObject {
     }
     
   }//end update()
+  
+  public boolean target(){
+    target = pakmac.getLocation();
+    //println("target is " + target);
+    
+    PVector tempRef = getLocation();
+    if(dist(target.x, target.y, tempRef.x, tempRef.y - 1) <= dist(target.x, target.y, tempRef.x - 1, tempRef.y) && maze.path.getPathNext((int) tempRef.y - 1, (int) tempRef.x) == 1){
+      println(/*maze.path.getPathNext((int) tempRef.x, (int) tempRef.y - 1) +*/ tempRef.x + ", " + (tempRef.y - 1));
+      return true;
+    }
+    return false;
+  }
 }//end Ghost class()
