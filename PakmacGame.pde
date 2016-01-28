@@ -111,7 +111,7 @@ void loadData() {
   }
   
   //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), tileSize * 2, tileSize, color(255, 0, 0));
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0));
   spriteObject.add(blinky);
 
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
@@ -184,6 +184,7 @@ void gamePlay() {
   //pakmac.render();
   //food.render();
   pakmac.update('W', 'S', 'A', 'D');
+  blinky.update('I', 'K', 'J', 'L');
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
   for (int i = 0; i < spriteObject.size(); i++) {
     spriteObject.get(i).render();
