@@ -28,7 +28,7 @@ int menuOption;
 boolean loaded;
 
 void setup() {
-  //frameRate(1);
+  //frameRate(5);
   size(600, 600);
   surface.setResizable(true);  //I want to be able to resize the window for game play
 
