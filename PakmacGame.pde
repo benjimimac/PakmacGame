@@ -28,6 +28,7 @@ int menuOption;
 boolean loaded;
 
 void setup() {
+  //frameRate(1);
   size(600, 600);
   surface.setResizable(true);  //I want to be able to resize the window for game play
 
@@ -143,7 +144,7 @@ void loadData() {
       //If an element equals "0" it's part of the wall
       if (mapValues[j].equals("0")) {
         wallReference.add(new PVector(j, i));
-      }//enf if()
+      }//end if()
 
       //if (mapValues[j].equals("2")) {
       //  ghostWall.add(new PVector(j, i));
@@ -186,14 +187,21 @@ void loadData() {
   maze = new Map(wallReference, path);
 
   loaded = true;
+  
+  
+  //testing
+  for(int i = 0; i < 31; i++){
+    for(int j = 0; j < 28; j++){
+      print(maze.path.path[i][j] + ", ");
+    }
+    println();
+  }
 }//end loadData()
 
 void gamePlay() {
   //pakmac.render();
   //food.render();
-  pakmac.update('W', 'S', 'A', 'D');
-  blinky.update('I', 'K', 'J', 'L');
-  //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
+  
   for (int i = 0; i < spriteObject.size(); i++) {
     spriteObject.get(i).render();
     //println(i);
@@ -202,6 +210,11 @@ void gamePlay() {
   for (int i = 0; i < foodObject.size(); i++) {
     foodObject.get(i).render();
   }//end for()
+  
+  pakmac.update('W', 'S', 'A', 'D');
+  blinky.update('I', 'K', 'J', 'L');
+  //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
+  
 
   if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
     pakmac.openMouth();

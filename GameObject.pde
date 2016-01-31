@@ -1,6 +1,7 @@
 class GameObject {
   //Fields
   protected PVector pos;
+  protected PVector startPos;
   protected PVector forward;
   protected PShape sprite;
   protected float theta = radians(180.0f);
@@ -17,6 +18,7 @@ class GameObject {
     //this.x = x;
     //this.y = y;
     pos = new PVector(x, y);
+    startPos = pos;
     forward = new PVector(0, 0);
     this.objectWidth = objectWidth;
     this.objectHeight = objectHeight;
@@ -163,9 +165,10 @@ class GameObject {
   }
 
   public PVector getLocation() {
-
+    //Return yReference then xReference
     int xReference = (int) map(pos.x, 0, width, 0, 28);
     int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
-    return new PVector(xReference, yReference);
+   // println(yReference + ", " + xReference);
+    return new PVector(yReference, xReference);
   }
 }

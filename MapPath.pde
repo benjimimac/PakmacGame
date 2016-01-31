@@ -16,7 +16,13 @@ class MapPath {
   }//end setPath method()
   
   public int getPathNext(int x, int y){
-    return path[y][x];
+    if(y < 0){
+      y = 27;
+    }
+    if(y > 27){
+      y = 0;
+    }
+    return path[x][y];
   }//end getPathInfo()
   
 }//end MapPath class
