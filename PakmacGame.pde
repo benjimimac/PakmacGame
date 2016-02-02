@@ -133,9 +133,16 @@ void loadData() {
   blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false);
   spriteObject.add(blinky);
   enemyObject.add(blinky);
-  pinky = new Ghost(width * 0.5f, (tileSize * 15) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 3), HALF_PI, true);
+  pinky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI/*HALF_PI*/, false);
+  //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
   spriteObject.add(pinky);
   enemyObject.add(pinky);
+  inky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI/*HALF_PI*/, false);
+  spriteObject.add(inky);
+  enemyObject.add(inky);
+  clyde = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI/*HALF_PI*/, false);
+  spriteObject.add(clyde);
+  enemyObject.add(clyde);
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
@@ -227,12 +234,41 @@ void gamePlay() {
   }//end for()
 
   if (mode[0]) {
+    //Set Blinky's target
     target = blinky.homeTile;
-    targetTheta = pakmac.getTheta();
     blinky.setTarget(target);
+    println("Blinky target: " + target);
+    
+    //set Pinkys target
+    target = pinky.homeTile;
+    pinky.setTarget(target);
+    println("Pinky target: " + target);
+    
+    //Set Inkys target
+    target = inky.homeTile;
+    inky.setTarget(target);
+    
+    //Set Clydes target
+    target = clyde.homeTile;
+    clyde.setTarget(target);
   } else if (mode[1]) {
     target = pakmac.getLocation();
     blinky.setTarget(target);
+    println(target);
+    
+    targetTheta = pakmac.getTheta();    
+    target = pakmac.getLocation();
+    if(targetTheta == 0){
+      target.y += 4;
+    }else if(targetTheta == HALF_PI){
+      target.x += 4;
+    }else if(targetTheta == PI){
+      target.y -= 4;
+    }else{
+     target.x -= 4; 
+    }
+    pinky.setTarget(target);
+    println(target);
   }
 
   pakmac.update('W', 'S', 'A', 'D');
