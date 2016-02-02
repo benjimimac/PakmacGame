@@ -28,7 +28,7 @@ int menuOption;
 boolean loaded;
 
 void setup() {
-  //frameRate(5);
+  //frameRate(2);
   size(600, 600);
   surface.setResizable(true);  //I want to be able to resize the window for game play
 
@@ -120,7 +120,7 @@ void loadData() {
   }
 
   //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0));
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 27));
   spriteObject.add(blinky);
 
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
@@ -175,8 +175,8 @@ void loadData() {
         //blankReference.add(new PVector(j, i));
       }//end if()
 
-      //If an element equals "1" it's a path tile
-      if (pathValues[j].equals("2") || pathValues[j].equals("1")) {
+      //If an element equals "1", "2", or "3" it's a path tile - "1" is food - "3" is powerup
+      if (pathValues[j].equals("2") || pathValues[j].equals("1") || pathValues[j].equals("3")) {
         PVector tempPath = new PVector(j, i);
         path.setPath(tempPath);
         //blankReference.add(new PVector(j, i));
