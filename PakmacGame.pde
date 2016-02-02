@@ -58,8 +58,8 @@ void setup() {
   menuOption = 1;  //Default is 0 for main menu
 
   mode = new boolean[3];
-  mode[0] = true;  //Scatter mode
-  mode[1] = false;  //Chase mode
+  mode[0] = false;  //Scatter mode
+  mode[1] = true;  //Chase mode
   mode[2] = false;  //Frightened mode
 
   loaded = false; //If false load the new map data - true play game
@@ -137,9 +137,9 @@ void loadData() {
   //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
   spriteObject.add(pinky);
   enemyObject.add(pinky);
-  inky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI/*HALF_PI*/, false);
-  spriteObject.add(inky);
-  enemyObject.add(inky);
+  //inky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI/*HALF_PI*/, false);
+  //spriteObject.add(inky);
+  //enemyObject.add(inky);
   clyde = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI/*HALF_PI*/, false);
   spriteObject.add(clyde);
   enemyObject.add(clyde);
@@ -269,6 +269,15 @@ void gamePlay() {
     }
     pinky.setTarget(target);
     println(target);
+    
+    target = pakmac.getLocation();
+    if(dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) <= 8){
+      target = clyde.homeTile;
+      clyde.setTarget(target);
+    }
+    else{
+     clyde.setTarget(target); 
+    }
   }
 
   pakmac.update('W', 'S', 'A', 'D');
