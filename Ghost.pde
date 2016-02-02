@@ -4,12 +4,13 @@ class Ghost extends GameObject {
   PShape pupil2;
   PVector target;
   boolean[] direction = new boolean[4];
-  boolean[] mode = new boolean[3];
   PVector currentTile;
   PVector nextTile;
   PVector homeTile;
+  int time;
+  boolean ghostArea;
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile) {
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea) {
     super(x, y, objectWidth, objectHeight, colour);
     //Group shapes together to make the ghost
     fill(colour);
@@ -33,9 +34,18 @@ class Ghost extends GameObject {
     sprite.addChild(eye2);
     fill(0);
     stroke(0);
-    pupil1 = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
+    if (theta == PI) {
+      pupil1 = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
+      pupil2 = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
+    } else if (theta == HALF_PI) {
+      pupil1 = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
+      pupil2 = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
+    } else {
+      pupil1 = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) - 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
+      pupil2 = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) - 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
+    }
+
     sprite.addChild(pupil1);
-    pupil2 = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     sprite.addChild(pupil2);
 
     //Set direction array to false by default
@@ -47,6 +57,9 @@ class Ghost extends GameObject {
     currentTile = new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
     nextTile = new PVector(currentTile.x, currentTile.y - 2);
     this.homeTile = homeTile;
+    time = 0;
+    this.theta = theta;
+    this.ghostArea =  ghostArea;
     //nextTile.y -= 1;
   }//end Ghost construuctor method
 
@@ -62,7 +75,7 @@ class Ghost extends GameObject {
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
   }
 
-  void update(char up, char down, char left, char right) {
+  void update() {//char up, char down, char left, char right) {
 
     super.update();
 
@@ -190,18 +203,18 @@ class Ghost extends GameObject {
     }
   }//end update()
 
-  public void getDirections(){//PVector target) {
+  public void getDirections() {//PVector target) {
     //boolean[] tempDir = new boolean[4];  //to be copied to the direction array later
     //println("Before - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
     currentTile = getLocation();
     if (currentTile.x == nextTile.x && currentTile.y == nextTile.y) {
-      println("nextTile == currentTile");
+      //println("nextTile == currentTile");
       //Set direction array all to false
       for (int i = 0; i < direction.length; i++) {
         direction[i] = false;
       }//end for(i)
 
-      target = pakmac.getLocation();
+      //target = pakmac.getLocation();
       //target = homeTile;
       //this.target = target;
       //println("target is " + target);
@@ -245,37 +258,36 @@ class Ghost extends GameObject {
         }
       }
       //nextTile = currentTile;
-      println("Before pickOneDirection() - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
+      //println("Before pickOneDirection() - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
 
       pickOneDirection();
       //println("After pickoneDirection - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
 
       if (direction[0]) {        
-         nextTile.x -= 1;
+        nextTile.x -= 1;
       }//end if()
       if (direction[1]) {
         if (nextTile.y > 0) {
-        nextTile.y -= 1;
-        }
-        else{
-         nextTile.y = 27; 
+          nextTile.y -= 1;
+        } else {
+          nextTile.y = 27;
         }
       }//end if()
       if (direction[2]) {        
-        nextTile.x += 1;        
+        nextTile.x += 1;
       }//end if()
       if (direction[3]) {
-        if(nextTile.y < 27){
-        nextTile.y += 1;
-        }else{
-         nextTile.y = 0; 
+        if (nextTile.y < 27) {
+          nextTile.y += 1;
+        } else {
+          nextTile.y = 0;
         }
       }//end if()
       //println("- up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
     } else {
-      println("Not equal");
+      //println("Not equal");
     }
-    println("current is: " + currentTile + ", next is: " + nextTile);
+    //println("current is: " + currentTile + ", next is: " + nextTile);
     //direction = tempDir;
 
 
@@ -381,7 +393,10 @@ class Ghost extends GameObject {
     //}//end else
 
 
-
+    if (checkCurrentTile(new PVector(11, 12)) || checkCurrentTile(new PVector(11, 15)) || checkCurrentTile(new PVector(23, 12)) || checkCurrentTile(new PVector(23, 15)))
+    {
+      direction[0] = false;
+    }
 
 
 
@@ -585,4 +600,15 @@ class Ghost extends GameObject {
 
     return false;
   }//end distanceToTarget()
+
+  public boolean checkCurrentTile(PVector restricted) {
+    if (restricted.x == currentTile.x && restricted.y == currentTile.y) {
+      return true;
+    }//end if()
+    return false;
+  }
+
+  public void setTarget(PVector target) {
+    this.target = target;
+  }
 }//end Ghost class()

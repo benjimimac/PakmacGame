@@ -204,6 +204,10 @@ class Pakmac extends GameObject {
    //startAngle = start1;
    //closeAngle = close1;
   }
+  
+  public float getTheta() {
+    return theta;
+  }
 
   //void setStart1() {
   //  start1 = theta + radians(20.0f);

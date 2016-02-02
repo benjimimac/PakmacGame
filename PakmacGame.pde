@@ -2,8 +2,12 @@ import ddf.minim.*;
 
 ArrayList<GameObject> spriteObject = new ArrayList<GameObject>();
 ArrayList<GameObject> foodObject = new ArrayList<GameObject>();
+ArrayList<Ghost> enemyObject = new ArrayList<Ghost>();
 Pakmac pakmac;
 Ghost blinky;
+Ghost pinky;
+Ghost inky;
+Ghost clyde;
 Dot food;
 Map maze;
 int tileSize;
@@ -26,6 +30,9 @@ float tile;
 int menuOption;
 
 boolean loaded;
+
+
+boolean[] mode;
 
 void setup() {
   //frameRate(2);
@@ -50,7 +57,10 @@ void setup() {
 
   menuOption = 1;  //Default is 0 for main menu
 
-
+  mode = new boolean[3];
+  mode[0] = true;  //Scatter mode
+  mode[1] = false;  //Chase mode
+  mode[2] = false;  //Frightened mode
 
   loaded = false; //If false load the new map data - true play game
 }
@@ -71,10 +81,10 @@ void draw() {
   }
 
   //println("Pakmac: " + pakmac.getLocation() + ", Blinky: " + blinky.getLocation());
-  
-  if(dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0){//pakmac.getLocation() == blinky.getLocation()){
+
+  if (dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0) {//pakmac.getLocation() == blinky.getLocation()){
     println("The same tile");
-  }else{
+  } else {
     //println("Not the same tile - distance is " + (int) dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y));
   }
 
@@ -120,9 +130,12 @@ void loadData() {
   }
 
   //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 27));
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false);
   spriteObject.add(blinky);
-
+  enemyObject.add(blinky);
+  pinky = new Ghost(width * 0.5f, (tileSize * 15) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 3), HALF_PI, true);
+  spriteObject.add(pinky);
+  enemyObject.add(pinky);
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
@@ -187,11 +200,11 @@ void loadData() {
   maze = new Map(wallReference, path);
 
   loaded = true;
-  
-  
+
+
   //testing
-  for(int i = 0; i < 31; i++){
-    for(int j = 0; j < 28; j++){
+  for (int i = 0; i < 31; i++) {
+    for (int j = 0; j < 28; j++) {
       print(maze.path.path[i][j] + ", ");
     }
     println();
@@ -201,7 +214,9 @@ void loadData() {
 void gamePlay() {
   //pakmac.render();
   //food.render();
-  
+  PVector target;
+  float targetTheta;
+
   for (int i = 0; i < spriteObject.size(); i++) {
     spriteObject.get(i).render();
     //println(i);
@@ -210,11 +225,22 @@ void gamePlay() {
   for (int i = 0; i < foodObject.size(); i++) {
     foodObject.get(i).render();
   }//end for()
-  
+
+  if (mode[0]) {
+    //target = pakmac.getLocation();
+    target = blinky.homeTile;
+    targetTheta = pakmac.getTheta();
+    blinky.setTarget(target);
+  } //else if () {
+  //}
+
   pakmac.update('W', 'S', 'A', 'D');
-  blinky.update('I', 'K', 'J', 'L');
+  //blinky.update();//'I', 'K', 'J', 'L');
+  for(int i = 0; i < enemyObject.size(); i++){
+    enemyObject.get(i).update();
+  }
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
-  
+
 
   if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
     pakmac.openMouth();
