@@ -399,7 +399,208 @@ class Ghost extends GameObject {
     }
 
 
+float distUp = getDistance(0, 0);
+    float distLeft = getDistance(0, -1);
+    float distDown = getDistance(1, 0);
+    float distRight = getDistance(0, 1);
+    
+    //float distUp = 0;
+    //float distLeft = 0;
+    //float distDown = 0;
+    //float distRight =  0;
 
+    if (direction[0])//if up
+    {
+      if (direction[1])//if left
+      {
+        if (distUp <= distLeft)//if up closer than left
+        {
+          //left = false
+          direction[1] = false;
+          if (direction[2])//if down
+          {
+            if (distUp <= distDown)//up closer than down
+            {
+              //down = false
+              direction[2] = false;
+              if (direction[3])//if right
+              {
+                if (distUp <= distRight)//if up closer than right
+                {
+                  //right = false
+                  direction[3] = false;
+                } else {
+                  direction[0] = false;
+                }
+              }
+            } else {
+              //up = false
+              direction[0] = false;
+              if (direction[3])//if right
+              {
+                if (distDown <= distRight)//if down closer than right
+                {
+                  //right = false
+                  direction[3] = false;
+                } else
+                {
+                  //down = false
+                  direction[2] = false;
+                }
+              }
+            }
+          } else if (direction[3]) {//if right
+            if (distUp <= distRight)//if up closer than right
+            {
+              //right = false
+              direction[3] = false;
+            } else
+            {
+              //up = false
+              direction[0] = false;
+            }
+          }
+        } else {//if down
+          //up = false
+          direction[0] = false;
+          if (direction[2])//if down
+          {
+            if (distLeft <= distDown)//if left closer than down
+            {
+              direction[2] = false;
+              if (direction[3])//if right
+              {
+                if (distLeft <= distRight) //if left closer than right
+                {
+                  direction[3] = false;
+                } else
+                {
+                  direction[1] = false;
+                }
+              }
+            } else
+            {
+              direction[1] = false;
+              if (direction[3])//if right
+              {
+                if (distDown <= distRight)//if down closer than right
+                {
+                  direction[3] = false;
+                } else
+                {
+                  direction[2] = false;
+                }
+              }
+            }
+          }
+        }
+      } else if (direction[2]) //if down
+      {
+        if (distUp <= distDown)//up closer than down
+        {
+          //down = false
+          direction[2] = false;
+          if (direction[3])//if right
+          {
+            if (distUp <= distRight)//if up closer than right
+            {
+              //right = false
+              direction[3] = false;
+            } else
+            {
+              //up = false
+              direction[0] = false;
+            }
+          }
+        } else
+        {
+          //up = false 
+          direction[0] = false;
+          if (direction[3])//if right
+          {
+            if (distDown <= distRight) { //if down closer than right
+              direction[3] = false;
+            } else
+            {
+              direction[2] = false;
+            }
+          }
+        }
+      } else if (direction[3]) //if right
+      {
+        if (distUp <= distRight)//if up closer than right
+        {
+          //right = false;
+          direction[3] = false;
+        } else
+        {
+          //up = false
+          direction[0] = false;
+        }
+      }
+    } else if (direction[1]) 
+    {
+      if (direction[2]) 
+      {
+        if (distLeft <= distDown)//if left closer than down
+        {
+          //down = false
+          direction[2] = false;
+          if (direction[3])//if right
+          {
+            if (distLeft <= distRight)//if left closer than right
+            {
+              //right = false
+              direction[3] = false;
+            } else
+            {
+              //left = false 
+              direction[1] = false;
+            }
+          }
+        } else {
+          //left = false
+          direction[1] = false;
+          if (direction[3])//if right
+          {
+            if (distDown <= distRight)//if down closer than right
+            {
+              //right is false
+              direction[3] = false;
+            } else
+            {
+              //down is false
+              direction[2] = false;
+            }
+          }
+        }
+      } else if (direction[3])//if right 
+      {
+        if (distLeft <= distRight)//if left closer than right
+        {
+          //right = false;
+          direction[3] = false;
+        } else
+        {
+          //left = false
+          direction[1] = false;
+        }
+      }
+    } else if (direction[2]) 
+    {
+      if (direction[3]) 
+      {
+        if (distDown <= distRight)//if down closer than right
+        {
+          direction[3] = false;
+        } else {
+          direction[2] = false;
+        }
+      }
+    }
+
+
+/*
     if (direction[0])//if up
     {
       if (direction[1])//if left
@@ -591,6 +792,8 @@ class Ghost extends GameObject {
     }// else if (direction[3]) 
     //{
     //}
+    
+    */
   }//end pickOneDirection
 
   public boolean distanceToTarget(PVector tile1, PVector tile2) {
@@ -610,5 +813,16 @@ class Ghost extends GameObject {
 
   public void setTarget(PVector target) {
     this.target = target;
+  }
+  
+  public float getDistance(int xAdd, int yAdd) {
+    return dist(target.x, target.y, currentTile.x + xAdd, currentTile.y + yAdd);
+  }
+
+  public boolean allowedToTurn(int xAdd, int yAdd) {
+    if (maze.path.getPathNext((int) currentTile.x + xAdd, (int) currentTile.y + yAdd) == 1) {
+      return true;
+    }
+    return false;
   }
 }//end Ghost class()

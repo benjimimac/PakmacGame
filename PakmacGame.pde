@@ -227,12 +227,13 @@ void gamePlay() {
   }//end for()
 
   if (mode[0]) {
-    //target = pakmac.getLocation();
     target = blinky.homeTile;
     targetTheta = pakmac.getTheta();
     blinky.setTarget(target);
-  } //else if () {
-  //}
+  } else if (mode[1]) {
+    target = pakmac.getLocation();
+    blinky.setTarget(target);
+  }
 
   pakmac.update('W', 'S', 'A', 'D');
   //blinky.update();//'I', 'K', 'J', 'L');
