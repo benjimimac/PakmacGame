@@ -1,4 +1,4 @@
-class Map {
+class Map extends GameObject{
   //Fields
   PShape walls;
   MapPath path;
@@ -6,6 +6,7 @@ class Map {
 
   //Constructor method
   Map(ArrayList<PVector> wallReference, MapPath path) {
+    super(0,0,0,0,0,0);
     this.path = path;
     colour = color(0, 0, 255);
     fill(colour);

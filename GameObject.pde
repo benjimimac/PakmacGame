@@ -10,6 +10,8 @@ class GameObject {
   protected float speed = 3.0f;
 
   protected float start1, start2, close1, close2, startAngle, closeAngle;
+  protected char up, left, down, right;
+  float halfWidth;
 
 
 
@@ -27,6 +29,7 @@ class GameObject {
     this.speed = speed;
     stroke(colour);
     fill(colour);
+    halfWidth = objectWidth * 0.5f;
   }
 
   void render() {
@@ -86,8 +89,8 @@ class GameObject {
   //      setClose1();
   //    }
   //}//end turnDown()
-  
-  void upDirection(){
+
+  void upDirection() {
     if (theta == radians(270.0f)) {
       if (pos.y <= 0) {
         pos.y = height;
@@ -99,8 +102,8 @@ class GameObject {
       }//end if()
     }//enf if()
   }
-  
-  void leftDirection(){
+
+  void leftDirection() {
     if (theta == radians(180.0f)) {
       if (pos.x <= 0) {
         pos.x = width;
@@ -115,8 +118,8 @@ class GameObject {
       //}
     }//enf if()
   }
-  
-  void downDirection(){
+
+  void downDirection() {
     if (theta == radians(90.0f)) {
       if (pos.y >= height) {
         pos.y = 0;
@@ -128,8 +131,8 @@ class GameObject {
       }//end if()
     }//enf if()
   }
-  
-  void rightDirection(){
+
+  void rightDirection() {
     if (theta == 0.0f) {
       if (pos.x >= width) {
         pos.x = 0;
@@ -185,7 +188,7 @@ class GameObject {
     //Return yReference then xReference
     int xReference = (int) map(pos.x, 0, width, 0, 28);
     int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
-   // println(yReference + ", " + xReference);
+    // println(yReference + ", " + xReference);
     return new PVector(yReference, xReference);
   }
 }

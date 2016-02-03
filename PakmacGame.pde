@@ -1,6 +1,6 @@
 import ddf.minim.*;
 
-ArrayList<GameObject> spriteObject = new ArrayList<GameObject>();
+ArrayList<GameObject> gameObject = new ArrayList<GameObject>();
 ArrayList<GameObject> foodObject = new ArrayList<GameObject>();
 ArrayList<Ghost> enemyObject = new ArrayList<Ghost>();
 Pakmac pakmac;
@@ -10,6 +10,7 @@ Ghost inky;
 Ghost clyde;
 Dot food;
 Map maze;
+Timer timer;
 int tileSize;
 int infoBar;
 int details;
@@ -100,7 +101,7 @@ void option() {
 
   case 1:
     if (loaded) {
-      maze.render();
+      //maze.render();
       gamePlay();
     } else {
       loadData();
@@ -122,26 +123,23 @@ void loadData() {
   surface.setSize(700, 906);
   tileSize = width / 28;
 
-  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0));
-  spriteObject.add(pakmac);
-  for (int i = 0; i < 20; i ++) {
-    food = new Dot(width * 0.5f, height * 0.5f, width * 0.01f, height * 0.01f, color(255));
-    foodObject.add(food);
-  }
+  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
+  gameObject.add(pakmac);
+
 
   //Add ghost sprites
   blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f);
-  spriteObject.add(blinky);
+  gameObject.add(blinky);
   enemyObject.add(blinky);
   pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 2.5f);
   //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
-  spriteObject.add(pinky);
+  gameObject.add(pinky);
   enemyObject.add(pinky);
   inky = new Ghost((tileSize * 12)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 2.5f);
-  spriteObject.add(inky);
+  gameObject.add(inky);
   enemyObject.add(inky);
   clyde = new Ghost((tileSize * 15)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 2.5f);
-  spriteObject.add(clyde);
+  gameObject.add(clyde);
   enemyObject.add(clyde);
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
@@ -199,12 +197,25 @@ void loadData() {
       if (pathValues[j].equals("2") || pathValues[j].equals("1") || pathValues[j].equals("3")) {
         PVector tempPath = new PVector(j, i);
         path.setPath(tempPath);
+
+        if (pathValues[j].equals("2")) {
+          //for (int i = 0; i < 20; i ++) {
+          food = new Dot((j * tileSize) + (tileSize * 0.5f), tileSize + (i * tileSize) + ( tileSize * 0.5f), tileSize * 0.2f, tileSize * 0.2f, color(255));
+          gameObject.add(food);
+          // }
+        }
+
+        //if(pathValues[j].equals("3")){
+
+        //}
         //blankReference.add(new PVector(j, i));
       }//end if()
     }//end for(j)
   }//end for(i)
 
   maze = new Map(wallReference, path);
+
+  gameObject.add(maze);
 
   loaded = true;
 
@@ -216,6 +227,8 @@ void loadData() {
     }
     println();
   }
+  timer = new Timer();
+  gameObject.add(timer);
 }//end loadData()
 
 void gamePlay() {
@@ -224,30 +237,28 @@ void gamePlay() {
   PVector target;
   float targetTheta;
 
-  for (int i = 0; i < spriteObject.size(); i++) {
-    spriteObject.get(i).render();
+  for (int i = 0; i < gameObject.size(); i++) {
+    gameObject.get(i).render();
     //println(i);
   }//end for()
 
-  for (int i = 0; i < foodObject.size(); i++) {
-    foodObject.get(i).render();
-  }//end for()
+  //for (int i = 0; i < foodObject.size(); i++) {
+  //  foodObject.get(i).render();
+  //}//end for()
 
   if (mode[0]) {
     //Set Blinky's home tile target
     target = blinky.homeTile;
     blinky.setTarget(target);
-    println("Blinky target: " + target);
-    
+
     //set Pinkys home tile target
     target = pinky.homeTile;
     pinky.setTarget(target);
-    println("Pinky target: " + target);
-    
+
     //Set Inkys hometile target
     target = inky.homeTile;
     inky.setTarget(target);
-    
+
     //Set Clydes home tile target
     target = clyde.homeTile;
     clyde.setTarget(target);
@@ -255,33 +266,31 @@ void gamePlay() {
     //Set Blinkys chase target
     target = pakmac.getLocation();
     blinky.setTarget(target);
-    println(target);
-    
+
     //Set Pinkys chase target
     targetTheta = pakmac.getTheta();    
     target = pakmac.getLocation();
-    if(targetTheta == 0){
+    if (targetTheta == 0) {
       target.y += 4;
-    }else if(targetTheta == HALF_PI){
+    } else if (targetTheta == HALF_PI) {
       target.x += 4;
-    }else if(targetTheta == PI){
+    } else if (targetTheta == PI) {
       target.y -= 4;
-    }else{
-     target.x -= 4; 
+    } else {
+      target.x -= 4;
     }
     pinky.setTarget(target);
-    println(target);
-    
+
     //Set Inkys chase target
     target = pakmac.getLocation();
-    if(targetTheta == 0){
+    if (targetTheta == 0) {
       target.y += 2;
-    }else if(targetTheta == HALF_PI){
+    } else if (targetTheta == HALF_PI) {
       target.x += 2;
-    }else if(targetTheta == PI){
+    } else if (targetTheta == PI) {
       target.y -= 2;
-    }else{
-     target.x -= 2; 
+    } else {
+      target.x -= 2;
     }
     PVector blinkyLoc = blinky.getLocation();
     float xAdd = target.x - blinkyLoc.x;
@@ -289,37 +298,68 @@ void gamePlay() {
     target.x += xAdd;
     target.y += yAdd;
     inky.setTarget(target);
-    
+
     //Set Clydes chase target
     target = pakmac.getLocation();
-    if(dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) <= 8){
+    if (dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) <= 8) {
       target = clyde.homeTile;
       clyde.setTarget(target);
+    } else {
+      clyde.setTarget(target);
     }
-    else{
-     clyde.setTarget(target); 
-    }
-    println("Clydes location: " + clyde.pos.x + ", " + clyde.pos.y);
-    println("Pinkys location: " + pinky.pos.x + ", " + pinky.pos.y);
+
+
+    checkCollisions();
   }
 
-  pakmac.update('W', 'S', 'A', 'D');
+  //pakmac.update();//'W', 'S', 'A', 'D');
   //blinky.update();//'I', 'K', 'J', 'L');
-  for(int i = 0; i < enemyObject.size(); i++){
-    enemyObject.get(i).update();
+  for (int i = 0; i < gameObject.size(); i++) {
+    gameObject.get(i).update();
   }
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
 
 
-  if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
-    pakmac.openMouth();
-    if (!eat.isPlaying()) {
-      eat.rewind();
-      eat.play();
+  //if (dist(pakmac.getPosX(), pakmac.getPosY(), food.getPosX(), food.getPosY()) <= (pakmac.getObjectRadius() + food.getObjectRadius())) {
+  // pakmac.openMouth();
+  // //if (!eat.isPlaying()) {
+  // //  eat.rewind();
+  // //  eat.play();
+  // //}
+  // println("Eaten");
+  //} else {
+  // pakmac.closeMouth();
+  //}
+}
+
+void checkCollisions() {
+  for (int i = 0; i < gameObject.size(); i++) {
+    GameObject player = gameObject.get(i);
+
+    if (player instanceof Pakmac) {
+      for (int j = gameObject.size() - 1; j >= 0; j--) {
+        GameObject dot = gameObject.get(j);
+        if (dot instanceof Dot) {
+          if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
+            pakmac.openMouth();
+            if (!eat.isPlaying()) {
+              eat.rewind();
+              eat.play();
+            }
+            
+            if(player.pos.dist(dot.pos) <= 2){
+              gameObject.remove(dot);
+              pakmac.closeMouth();
+              println("remove");
+            }
+            
+            
+          } /*else {
+           pakmac.closeMouth();
+          }*/
+        }
+      }
     }
-    println("Eaten");
-  } else {
-    pakmac.closeMouth();
   }
 }
 

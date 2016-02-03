@@ -4,7 +4,7 @@ class Pakmac extends GameObject {
   PShape closedMouth;
   PShape openedMouth;
 
-  Pakmac(float x, float y, float objectWidth, float objectHeight, color colour) {
+  Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right) {
     super(x, y, objectWidth, objectHeight, colour, 3.0f);
     setStart1();
     setClose1();
@@ -14,12 +14,18 @@ class Pakmac extends GameObject {
     startAngle = start1;
     closeAngle = close1;
 
-    closedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
+    //closedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
+    closedMouth = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
+    
     openedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, start2, close2, PIE);
     sprite = closedMouth;
+    this.up = up;
+    this.left = left;
+    this.down = down;
+    this.right = right;
   }
 
-  void update(char up, char down, char left, char right) {
+  void update(){//char up, char down, char left, char right) {
     //println("20 radians is " + );
     super.update();
     //forward.x =  cos(theta);
@@ -194,17 +200,17 @@ class Pakmac extends GameObject {
   }
 
   void openMouth() {
-   //startAngle = start2 + theta;
-   //closeAngle = close2 + theta;
-   sprite = openedMouth;
+    //startAngle = start2 + theta;
+    //closeAngle = close2 + theta;
+    sprite = openedMouth;
   }
 
   void closeMouth() {
     sprite = closedMouth;
-   //startAngle = start1;
-   //closeAngle = close1;
+    //startAngle = start1;
+    //closeAngle = close1;
   }
-  
+
   public float getTheta() {
     return theta;
   }
