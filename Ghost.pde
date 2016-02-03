@@ -10,8 +10,8 @@ class Ghost extends GameObject {
   int time;
   boolean ghostArea;
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea) {
-    super(x, y, objectWidth, objectHeight, colour);
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed) {
+    super(x, y, objectWidth, objectHeight, colour, speed);
     //Group shapes together to make the ghost
     fill(colour);
     stroke(colour);
@@ -64,7 +64,7 @@ class Ghost extends GameObject {
   }//end Ghost construuctor method
 
   void render() {
-    super.render();
+    //super.render();
     pushMatrix();
     translate(pos.x, pos.y);
     //pupil1.rotate(PI);
@@ -76,131 +76,142 @@ class Ghost extends GameObject {
   }
 
   void update() {//char up, char down, char left, char right) {
+    if (!ghostArea) {
+      super.update();
+      getDirections();
+      if (direction[0]) {//keys[up] || testTarget) {
+        //println("In up direction");
+        if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
+          if (theta == radians(0.0f)) {
+            pushMatrix();
+            pupil1.translate(-5, -5);
+            pupil2.translate(-5, -5);
+            popMatrix();
+          }//end if()
+          if (theta == PI) {
+            pushMatrix();
+            pupil1.translate(5, -5);
+            pupil2.translate(5, -5);
+            popMatrix();
+          }//end if
+          if (theta == HALF_PI) {
+            pushMatrix();
+            pupil1.translate(0, -10);
+            pupil2.translate(0, -10);
+            popMatrix();
+          }//end if()
+          //theta = HALF_PI;
 
-    super.update();
+          //nextTile = currentTile;
+          //nextTile.x -= 1;
 
+          theta = PI + HALF_PI;
+          //setStart1();
+          //setClose1();
+        }
+        //super.turnUp();
+      } else if (direction[1]) {//keys[left]) {
+        if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
+          if (theta == radians(0.0f)) {
+            pushMatrix();
+            pupil1.translate(-10, 0);
+            pupil2.translate(-10, 0);
+            popMatrix();
+          }//end if()
+          if (theta == HALF_PI) {
+            pushMatrix();
+            pupil1.translate(-5, -5);
+            pupil2.translate(-5, -5);
+            popMatrix();
+          }//end if
+          if (theta == PI + HALF_PI) {
+            pushMatrix();
+            pupil1.translate(-5, 5);
+            pupil2.translate(-5, 5);
+            popMatrix();
+          }//end if()
+          //nextTile = currentTile;
+          //nextTile.y -= 1;
+
+          theta = PI;
+          //setStart1();
+          //setClose1();
+        }
+        //super.turnLeft();
+      } else if (direction[2]) {//keys[down]) {
+
+        if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
+          if (theta == radians(0.0f)) {
+            pushMatrix();
+            pupil1.translate(-5, 5);
+            pupil2.translate(-5, 5);
+            popMatrix();
+          }//end if()
+          if (theta == PI) {
+            pushMatrix();
+            pupil1.translate(5, 5);
+            pupil2.translate(5, 5);
+            popMatrix();
+          }//end if
+          if (theta == PI + HALF_PI) {
+            pushMatrix();
+            pupil1.translate(0, 10);
+            pupil2.translate(0, 10);
+            popMatrix();
+          }//end if()
+          //nextTile = currentTile;
+          //nextTile.x += 1;
+
+          theta = HALF_PI;
+          //setStart1();
+          //setClose1();
+        }
+        //super.turnDown();
+      } else if (direction[3]) {//keys[right]) {
+        if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
+          if (theta == HALF_PI) {
+            pushMatrix();
+            pupil1.translate(5, -5);
+            pupil2.translate(5, -5);
+            popMatrix();
+          }//end if()
+          if (theta == PI) {
+            pushMatrix();
+            pupil1.translate(10, 0);
+            pupil2.translate(10, 0);
+            popMatrix();
+          }//end if
+          if (theta == PI + HALF_PI) {
+            pushMatrix();
+            pupil1.translate(5, 5);
+            pupil2.translate(5, 5);
+            popMatrix();
+          }//end if()
+          //nextTile = currentTile;
+          //nextTile.y += 1;
+
+          theta = radians(0.0f);
+          //setStart1();
+          //setClose1();
+        }
+        //super.turnRight();
+      }
+    } else {
+      forward.x =  cos(theta);
+      forward.y = sin(theta);
+      if(pos.y <= 376){
+       theta = HALF_PI;
+      }
+      if(pos.y >= 400){
+       theta = PI + HALF_PI;
+      }
+      super.upDirection();
+      super.downDirection();
+    }
     //boolean testTarget = getDirection();
     //println(testTarget);
-    getDirections();
+
     //pickOneDirection();
-
-    if (direction[0]) {//keys[up] || testTarget) {
-      //println("In up direction");
-      if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
-        if (theta == radians(0.0f)) {
-          pushMatrix();
-          pupil1.translate(-5, -5);
-          pupil2.translate(-5, -5);
-          popMatrix();
-        }//end if()
-        if (theta == PI) {
-          pushMatrix();
-          pupil1.translate(5, -5);
-          pupil2.translate(5, -5);
-          popMatrix();
-        }//end if
-        if (theta == HALF_PI) {
-          pushMatrix();
-          pupil1.translate(0, -10);
-          pupil2.translate(0, -10);
-          popMatrix();
-        }//end if()
-        //theta = HALF_PI;
-
-        //nextTile = currentTile;
-        //nextTile.x -= 1;
-
-        theta = PI + HALF_PI;
-        //setStart1();
-        //setClose1();
-      }
-      //super.turnUp();
-    } else if (direction[1]) {//keys[left]) {
-      if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
-        if (theta == radians(0.0f)) {
-          pushMatrix();
-          pupil1.translate(-10, 0);
-          pupil2.translate(-10, 0);
-          popMatrix();
-        }//end if()
-        if (theta == HALF_PI) {
-          pushMatrix();
-          pupil1.translate(-5, -5);
-          pupil2.translate(-5, -5);
-          popMatrix();
-        }//end if
-        if (theta == PI + HALF_PI) {
-          pushMatrix();
-          pupil1.translate(-5, 5);
-          pupil2.translate(-5, 5);
-          popMatrix();
-        }//end if()
-        //nextTile = currentTile;
-        //nextTile.y -= 1;
-
-        theta = PI;
-        //setStart1();
-        //setClose1();
-      }
-      //super.turnLeft();
-    } else if (direction[2]) {//keys[down]) {
-
-      if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
-        if (theta == radians(0.0f)) {
-          pushMatrix();
-          pupil1.translate(-5, 5);
-          pupil2.translate(-5, 5);
-          popMatrix();
-        }//end if()
-        if (theta == PI) {
-          pushMatrix();
-          pupil1.translate(5, 5);
-          pupil2.translate(5, 5);
-          popMatrix();
-        }//end if
-        if (theta == PI + HALF_PI) {
-          pushMatrix();
-          pupil1.translate(0, 10);
-          pupil2.translate(0, 10);
-          popMatrix();
-        }//end if()
-        //nextTile = currentTile;
-        //nextTile.x += 1;
-
-        theta = HALF_PI;
-        //setStart1();
-        //setClose1();
-      }
-      //super.turnDown();
-    } else if (direction[3]) {//keys[right]) {
-      if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
-        if (theta == HALF_PI) {
-          pushMatrix();
-          pupil1.translate(5, -5);
-          pupil2.translate(5, -5);
-          popMatrix();
-        }//end if()
-        if (theta == PI) {
-          pushMatrix();
-          pupil1.translate(10, 0);
-          pupil2.translate(10, 0);
-          popMatrix();
-        }//end if
-        if (theta == PI + HALF_PI) {
-          pushMatrix();
-          pupil1.translate(5, 5);
-          pupil2.translate(5, 5);
-          popMatrix();
-        }//end if()
-        //nextTile = currentTile;
-        //nextTile.y += 1;
-
-        theta = radians(0.0f);
-        //setStart1();
-        //setClose1();
-      }
-      //super.turnRight();
-    }
   }//end update()
 
   public void getDirections() {//PVector target) {
@@ -399,11 +410,11 @@ class Ghost extends GameObject {
     }
 
 
-float distUp = getDistance(0, 0);
+    float distUp = getDistance(0, 0);
     float distLeft = getDistance(0, -1);
     float distDown = getDistance(1, 0);
     float distRight = getDistance(0, 1);
-    
+
     //float distUp = 0;
     //float distLeft = 0;
     //float distDown = 0;
@@ -600,200 +611,200 @@ float distUp = getDistance(0, 0);
     }
 
 
-/*
+    /*
     if (direction[0])//if up
-    {
-      if (direction[1])//if left
-      {
-        if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y - 1)))//if up closer than left
-        {
-          //left = false
-          direction[1] = false;
-          if (direction[2])//if down
-          {
-            if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x + 1, currentTile.y)))//up closer than down
-            {
-              //down = false
-              direction[2] = false;
-              if (direction[3])//if right
-              {
-                if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
-                {
-                  //right = false
-                  direction[3] = false;
-                } else {
-                  direction[0] = false;
-                }
-              }
-            } else {
-              //up = false
-              direction[0] = false;
-              if (direction[3])//if right
-              {
-                if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
-                {
-                  //right = false
-                  direction[3] = false;
-                } else
-                {
-                  //down = false
-                  direction[2] = false;
-                }
-              }
-            }
-          } else if (direction[3]) {//if right
-            if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
-            {
-              //right = false
-              direction[3] = false;
-            } else
-            {
-              //up = false
-              direction[0] = false;
-            }
-          }
-        } else {//if down
-          //up = false
-          direction[0] = false;
-          if (direction[2])//if down
-          {
-            if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x + 1, currentTile.y)))//if left closer than down
-            {
-              direction[2] = false;
-              if (direction[3])//if right
-              {
-                if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))
-                {
-                  direction[3] = false;
-                } else
-                {
-                  direction[1] = false;
-                }
-              }
-            } else
-            {
-              direction[1] = false;
-              if (direction[3])//if right
-              {
-                if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
-                {
-                  direction[3] = false;
-                } else
-                {
-                  direction[2] = false;
-                }
-              }
-            }
-          }
-        }
-      } else if (direction[2]) //if down
-      {
-        if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x + 1, currentTile.y)))//up closer than down
-        {
-          //down = false
-          direction[2] = false;
-          if (direction[3])//if right
-          {
-            if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
-            {
-              //right = false
-              direction[3] = false;
-            } else
-            {
-              //up = false
-              direction[0] = false;
-            }
-          }
-        } else
-        {
-          //up = false 
-          direction[0] = false;
-          if (direction[3])//if right
-          {
-            if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1))) { //if down closer than right
-              direction[3] = false;
-            } else
-            {
-              direction[2] = false;
-            }
-          }
-        }
-      } else if (direction[3]) //if right
-      {
-        if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
-        {
-          //right = false;
-          direction[3] = false;
-        } else
-        {
-          //up = false
-          direction[0] = false;
-        }
-      }
-    } else if (direction[1]) 
-    {
-      if (direction[2]) 
-      {
-        if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x + 1, currentTile.y)))//if left closer than down
-        {
-          //down = false
-          direction[2] = false;
-          if (direction[3])//if right
-          {
-            if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))//if left closer than right
-            {
-              //right = false
-              direction[3] = false;
-            } else
-            {
-              //left = false 
-              direction[1] = false;
-            }
-          }
-        } else {
-          //left = false
-          direction[1] = false;
-          if (direction[3])//if right
-          {
-            if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
-            {
-              //right is false
-              direction[3] = false;
-            } else
-            {
-              //down is false
-              direction[2] = false;
-            }
-          }
-        }
-      } else if (direction[3])//if right 
-      {
-        if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))//if left closer than right
-        {
-          //right = false;
-          direction[3] = false;
-        } else
-        {
-          //left = false
-          direction[1] = false;
-        }
-      }
-    } else if (direction[2]) 
-    {
-      if (direction[3]) 
-      {
-        if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
-        {
-          direction[3] = false;
-        } else {
-          direction[2] = false;
-        }
-      }
-    }// else if (direction[3]) 
-    //{
-    //}
-    
-    */
+     {
+     if (direction[1])//if left
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y - 1)))//if up closer than left
+     {
+     //left = false
+     direction[1] = false;
+     if (direction[2])//if down
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x + 1, currentTile.y)))//up closer than down
+     {
+     //down = false
+     direction[2] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
+     {
+     //right = false
+     direction[3] = false;
+     } else {
+     direction[0] = false;
+     }
+     }
+     } else {
+     //up = false
+     direction[0] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
+     {
+     //right = false
+     direction[3] = false;
+     } else
+     {
+     //down = false
+     direction[2] = false;
+     }
+     }
+     }
+     } else if (direction[3]) {//if right
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
+     {
+     //right = false
+     direction[3] = false;
+     } else
+     {
+     //up = false
+     direction[0] = false;
+     }
+     }
+     } else {//if down
+     //up = false
+     direction[0] = false;
+     if (direction[2])//if down
+     {
+     if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x + 1, currentTile.y)))//if left closer than down
+     {
+     direction[2] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))
+     {
+     direction[3] = false;
+     } else
+     {
+     direction[1] = false;
+     }
+     }
+     } else
+     {
+     direction[1] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
+     {
+     direction[3] = false;
+     } else
+     {
+     direction[2] = false;
+     }
+     }
+     }
+     }
+     }
+     } else if (direction[2]) //if down
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x + 1, currentTile.y)))//up closer than down
+     {
+     //down = false
+     direction[2] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
+     {
+     //right = false
+     direction[3] = false;
+     } else
+     {
+     //up = false
+     direction[0] = false;
+     }
+     }
+     } else
+     {
+     //up = false 
+     direction[0] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1))) { //if down closer than right
+     direction[3] = false;
+     } else
+     {
+     direction[2] = false;
+     }
+     }
+     }
+     } else if (direction[3]) //if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x - 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if up closer than right
+     {
+     //right = false;
+     direction[3] = false;
+     } else
+     {
+     //up = false
+     direction[0] = false;
+     }
+     }
+     } else if (direction[1]) 
+     {
+     if (direction[2]) 
+     {
+     if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x + 1, currentTile.y)))//if left closer than down
+     {
+     //down = false
+     direction[2] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))//if left closer than right
+     {
+     //right = false
+     direction[3] = false;
+     } else
+     {
+     //left = false 
+     direction[1] = false;
+     }
+     }
+     } else {
+     //left = false
+     direction[1] = false;
+     if (direction[3])//if right
+     {
+     if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
+     {
+     //right is false
+     direction[3] = false;
+     } else
+     {
+     //down is false
+     direction[2] = false;
+     }
+     }
+     }
+     } else if (direction[3])//if right 
+     {
+     if (distanceToTarget(new PVector(currentTile.x, currentTile.y - 1), new PVector(currentTile.x, currentTile.y + 1)))//if left closer than right
+     {
+     //right = false;
+     direction[3] = false;
+     } else
+     {
+     //left = false
+     direction[1] = false;
+     }
+     }
+     } else if (direction[2]) 
+     {
+     if (direction[3]) 
+     {
+     if (distanceToTarget(new PVector(currentTile.x + 1, currentTile.y), new PVector(currentTile.x, currentTile.y + 1)))//if down closer than right
+     {
+     direction[3] = false;
+     } else {
+     direction[2] = false;
+     }
+     }
+     }// else if (direction[3]) 
+     //{
+     //}
+     
+     */
   }//end pickOneDirection
 
   public boolean distanceToTarget(PVector tile1, PVector tile2) {
@@ -814,7 +825,7 @@ float distUp = getDistance(0, 0);
   public void setTarget(PVector target) {
     this.target = target;
   }
-  
+
   public float getDistance(int xAdd, int yAdd) {
     return dist(target.x, target.y, currentTile.x + xAdd, currentTile.y + yAdd);
   }

@@ -130,17 +130,17 @@ void loadData() {
   }
 
   //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false);
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f);
   spriteObject.add(blinky);
   enemyObject.add(blinky);
-  pinky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI/*HALF_PI*/, false);
+  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 2.5f);
   //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
   spriteObject.add(pinky);
   enemyObject.add(pinky);
-  //inky = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI/*HALF_PI*/, false);
-  //spriteObject.add(inky);
-  //enemyObject.add(inky);
-  clyde = new Ghost(width * 0.5f, (tileSize * 12)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI/*HALF_PI*/, false);
+  inky = new Ghost((tileSize * 12)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 2.5f);
+  spriteObject.add(inky);
+  enemyObject.add(inky);
+  clyde = new Ghost((tileSize * 15)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 2.5f);
   spriteObject.add(clyde);
   enemyObject.add(clyde);
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
@@ -234,28 +234,30 @@ void gamePlay() {
   }//end for()
 
   if (mode[0]) {
-    //Set Blinky's target
+    //Set Blinky's home tile target
     target = blinky.homeTile;
     blinky.setTarget(target);
     println("Blinky target: " + target);
     
-    //set Pinkys target
+    //set Pinkys home tile target
     target = pinky.homeTile;
     pinky.setTarget(target);
     println("Pinky target: " + target);
     
-    //Set Inkys target
+    //Set Inkys hometile target
     target = inky.homeTile;
     inky.setTarget(target);
     
-    //Set Clydes target
+    //Set Clydes home tile target
     target = clyde.homeTile;
     clyde.setTarget(target);
   } else if (mode[1]) {
+    //Set Blinkys chase target
     target = pakmac.getLocation();
     blinky.setTarget(target);
     println(target);
     
+    //Set Pinkys chase target
     targetTheta = pakmac.getTheta();    
     target = pakmac.getLocation();
     if(targetTheta == 0){
@@ -270,6 +272,25 @@ void gamePlay() {
     pinky.setTarget(target);
     println(target);
     
+    //Set Inkys chase target
+    target = pakmac.getLocation();
+    if(targetTheta == 0){
+      target.y += 2;
+    }else if(targetTheta == HALF_PI){
+      target.x += 2;
+    }else if(targetTheta == PI){
+      target.y -= 2;
+    }else{
+     target.x -= 2; 
+    }
+    PVector blinkyLoc = blinky.getLocation();
+    float xAdd = target.x - blinkyLoc.x;
+    float yAdd = target.y - blinkyLoc.y;
+    target.x += xAdd;
+    target.y += yAdd;
+    inky.setTarget(target);
+    
+    //Set Clydes chase target
     target = pakmac.getLocation();
     if(dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) <= 8){
       target = clyde.homeTile;
@@ -278,6 +299,8 @@ void gamePlay() {
     else{
      clyde.setTarget(target); 
     }
+    println("Clydes location: " + clyde.pos.x + ", " + clyde.pos.y);
+    println("Pinkys location: " + pinky.pos.x + ", " + pinky.pos.y);
   }
 
   pakmac.update('W', 'S', 'A', 'D');

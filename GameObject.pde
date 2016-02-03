@@ -14,7 +14,7 @@ class GameObject {
 
 
   //Constructor method
-  GameObject(float x, float y, float objectWidth, float objectHeight, color colour) {
+  GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float speed) {
     //this.x = x;
     //this.y = y;
     pos = new PVector(x, y);
@@ -24,13 +24,14 @@ class GameObject {
     this.objectHeight = objectHeight;
     objectRadius = objectWidth * 0.5f;
     this.colour = colour;
+    this.speed = speed;
     stroke(colour);
     fill(colour);
   }
 
   void render() {
     //noStroke();
-    fill(colour);
+    //fill(colour);
   }//end render()
 
   void update() {
@@ -40,56 +41,13 @@ class GameObject {
     //int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
 
 
-    if (theta == 0.0f) {
-      if (pos.x >= width) {
-        pos.x = 0;
-      }//end if()
+    rightDirection();
 
-      if (get((int) pos.x + (tileSize), (int) pos.y) != maze.getWallColour()) {// && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-      //else if(maze.path.getPathNext(xReference + 1, yReference) == 0){
-      //  pos.x = map(xReference - 0.5f, 0, 27, 0, width);//width - (tileSize + (tileSize * 0.5f));
-      //}
-      //pos.add(0.5f, 0, 0);
-    }//enf if()
+    leftDirection();
 
-    if (theta == radians(180.0f)) {
-      if (pos.x <= 0) {
-        pos.x = width;
-      }//end if()
+    downDirection();
 
-      if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {// && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-      //else if(maze.path.getPathNext(xReference - 1, yReference) == 0){
-      // pos.x = map(xReference, 1, 28, tileSize +(tileSize * 0.5f), width);//width - (tileSize + (tileSize * 0.5f));
-      //}
-    }//enf if()
-
-    if (theta == radians(90.0f)) {
-      if (pos.y >= height) {
-        pos.y = 0;
-      }//end if()
-
-      if (get((int) pos.x, (int) pos.y + (tileSize + 1)) != maze.getWallColour()) {// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour()) { //(get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-    }//enf if()
-
-    if (theta == radians(270.0f)) {
-      if (pos.y <= 0) {
-        pos.y = height;
-      }//end if()
-
-      if (get((int) pos.x, (int) pos.y - (tileSize + 1)) != maze.getWallColour()) {// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour()) {//(get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-    }//enf if()
+    upDirection();
 
     //forward.mult(speed);
     //pos.add(forward);
@@ -128,6 +86,65 @@ class GameObject {
   //      setClose1();
   //    }
   //}//end turnDown()
+  
+  void upDirection(){
+    if (theta == radians(270.0f)) {
+      if (pos.y <= 0) {
+        pos.y = height;
+      }//end if()
+
+      if (get((int) pos.x, (int) pos.y - (tileSize + 1)) != maze.getWallColour()) {// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y - tileSize) != maze.getWallColour()) {//(get((int) pos.x, (int) pos.y - tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+        forward.mult(speed);
+        pos.add(forward);
+      }//end if()
+    }//enf if()
+  }
+  
+  void leftDirection(){
+    if (theta == radians(180.0f)) {
+      if (pos.x <= 0) {
+        pos.x = width;
+      }//end if()
+
+      if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()/* || get((int) pos.x - (tileSize), (int) pos.y) != BROWN*/) {// && get((int) pos.x - tileSize, (int) pos.y - (int)(tileSize * 0.5f)) != maze.getWallColour() && get((int) pos.x - tileSize, (int) pos.y + (int) (tileSize * 0.5f)) != maze.getWallColour()) {// (get((int) pos.x - tileSize, (int) pos.y) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+        forward.mult(speed);
+        pos.add(forward);
+      }//end if()
+      //else if(maze.path.getPathNext(xReference - 1, yReference) == 0){
+      // pos.x = map(xReference, 1, 28, tileSize +(tileSize * 0.5f), width);//width - (tileSize + (tileSize * 0.5f));
+      //}
+    }//enf if()
+  }
+  
+  void downDirection(){
+    if (theta == radians(90.0f)) {
+      if (pos.y >= height) {
+        pos.y = 0;
+      }//end if()
+
+      if (get((int) pos.x, (int) pos.y + (tileSize + 1)) != maze.getWallColour()/* ||get((int) pos.x, (int) pos.y + (tileSize + 1)) != BROWN*/) {// && get((int) pos.x - (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour() && get((int) pos.x + (int)(tileSize * 0.5f), (int) pos.y + tileSize) != maze.getWallColour()) { //(get((int) pos.x, (int) pos.y + tileSize) != maze.getWallColour()){//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+        forward.mult(speed);
+        pos.add(forward);
+      }//end if()
+    }//enf if()
+  }
+  
+  void rightDirection(){
+    if (theta == 0.0f) {
+      if (pos.x >= width) {
+        pos.x = 0;
+      }//end if()
+
+      if (get((int) pos.x + (tileSize), (int) pos.y) != maze.getWallColour()) {// && get((int) pos.x + tileSize, (int) pos.y - tileSize + 1) != maze.getWallColour() && get((int) pos.x + tileSize, (int) pos.y + tileSize - 1) != maze.getWallColour()) {//dist(pos.x, pos.y, pos.x + tileSize, pos.y) != color(255)){//maze.path.getPathNext(xReference + 1, yReference) == 1) {
+        forward.mult(speed);
+        pos.add(forward);
+      }//end if()
+      //else if(maze.path.getPathNext(xReference + 1, yReference) == 0){
+      //  pos.x = map(xReference - 0.5f, 0, 27, 0, width);//width - (tileSize + (tileSize * 0.5f));
+      //}
+      //pos.add(0.5f, 0, 0);
+    }//enf if()
+  }
 
   void openMouth() {
     startAngle = start2 + theta;

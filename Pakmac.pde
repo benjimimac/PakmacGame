@@ -5,7 +5,7 @@ class Pakmac extends GameObject {
   PShape openedMouth;
 
   Pakmac(float x, float y, float objectWidth, float objectHeight, color colour) {
-    super(x, y, objectWidth, objectHeight, colour);
+    super(x, y, objectWidth, objectHeight, colour, 3.0f);
     setStart1();
     setClose1();
 
