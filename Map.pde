@@ -3,11 +3,13 @@ class Map extends GameObject{
   PShape walls;
   MapPath path;
   color colour;
+  int dotCount;
 
   //Constructor method
   Map(ArrayList<PVector> wallReference, MapPath path) {
     super(0,0,0,0,0,0);
     this.path = path;
+    dotCount = 0;
     colour = color(0, 0, 255);
     fill(colour);
     stroke(colour);
@@ -56,6 +58,8 @@ class Map extends GameObject{
 
   public void render() {
     shape(walls);
+    textSize(16);
+    text("Score " + pakmac.score, width * 0.4f, tileSize * 0.6f);
   }//end render()
 
   public color getWallColour() {

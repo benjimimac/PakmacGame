@@ -11,11 +11,14 @@ class Ghost extends GameObject {
   boolean ghostArea;
   boolean ready;
   float x, y;
+  PShape frightenedSprite;
 
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, PVector nextTile) {
     super(x, y, objectWidth, objectHeight, colour, speed);
     this.x = x;
     this.y = y;
+    
+    //frightenedSprite = createShape(GROUP);
     //Group shapes together to make the ghost
     fill(colour);
     stroke(colour);
@@ -362,9 +365,9 @@ class Ghost extends GameObject {
     }
     //boolean testTarget = getDirection();
 
-    if (frameCount % 240 == 0) {
-      ready = true;
-    }
+    //if (frameCount % 240 == 0) {
+    //  ready = true;
+    //}
 
     //pickOneDirection();
   }//end update()
@@ -554,10 +557,10 @@ class Ghost extends GameObject {
     }
 
 
-    float distUp = getDistance(0, 0);
-    float distLeft = getDistance(0, -1);
-    float distDown = getDistance(1, 0);
-    float distRight = getDistance(0, 1);
+    int distUp = getDistance(-1, 0);
+    int distLeft = getDistance(0, -1);
+    int distDown = getDistance(1, 0);
+    int distRight = getDistance(0, 1);
 
     //float distUp = 0;
     //float distLeft = 0;
@@ -970,8 +973,44 @@ class Ghost extends GameObject {
     this.target = target;
   }
 
-  public float getDistance(int xAdd, int yAdd) {
-    return dist(pakmac.pos.x, pakmac.pos.y, pos.x + (yAdd * tileSize), pos.y + (xAdd * tileSize));
+  public int getDistance(int xAdd, int yAdd) {
+    //return dist(pakmac.pos.x, pakmac.pos.y, pos.x + (yAdd * tileSize), pos.y + (xAdd * tileSize));
+    int count = 0;
+    PVector temp = new PVector(getLocation().x + xAdd, getLocation().y + yAdd);
+
+    while (temp.dist(target) != 0) { 
+      //while(temp.x != target.x && temp.y != target.y){
+      if (temp.x < target.x) {
+        if(temp.y < target.y){
+          temp.x += 1;
+          temp.y += 1;
+        }else if(temp.y > target.y){
+          temp.x += 1;
+          temp.y -= 1;
+        }else{
+          temp.x += 1;
+        }
+      } else if (temp.x > target.x) {
+        if(temp.y < target.y){
+          temp.x -= 1;
+          temp.y += 1;
+        }else if(temp.y > target.y){
+          temp.x -= 1;
+          temp.y -= 1;
+        }else{
+          temp.x -=1;
+        }
+      } else {
+        if(temp.y < target.y){
+          temp.y += 1;
+        }else{//double check maybe an else if
+          temp.y -= 1;
+        }
+      }
+      count += 1;
+    }
+
+    return  count;
   }
 
   public boolean allowedToTurn(int xAdd, int yAdd) {

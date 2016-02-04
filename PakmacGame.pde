@@ -9,6 +9,7 @@ Ghost pinky;
 Ghost inky;
 Ghost clyde;
 Dot food;
+Powerup powerup;
 Map maze;
 Timer timer;
 int tileSize;
@@ -126,7 +127,7 @@ void loadData() {
   gameObject.add(pakmac);
 
 
-  
+
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
@@ -189,6 +190,10 @@ void loadData() {
           food = new Dot((j * tileSize) + (tileSize * 0.5f), tileSize + (i * tileSize) + ( tileSize * 0.5f), tileSize * 0.2f, tileSize * 0.2f, color(255));
           gameObject.add(food);
           // }
+        }
+        if (pathValues[j].equals("3")) {
+          powerup = new Powerup((j * tileSize) + (tileSize * 0.5f), tileSize + (i * tileSize) + (tileSize * 0.5f), tileSize * 0.8f, tileSize * 0.8f, color(255));
+          gameObject.add(powerup);
         }
 
         //if(pathValues[j].equals("3")){
@@ -270,26 +275,26 @@ void gamePlay() {
     targetTheta = pakmac.getTheta();    
     target = pakmac.getLocation();
     if (targetTheta == 0) {
-    target.y += 4;
+      target.y += 4;
     } else if (targetTheta == HALF_PI) {
-    target.x += 4;
+      target.x += 4;
     } else if (targetTheta == PI) {
-    target.y -= 4;
+      target.y -= 4;
     } else {
-    target.x -= 4;
+      target.x -= 4;
     }
     pinky.setTarget(target);
 
     //Set Inkys chase target
     target = pakmac.getLocation();
     if (targetTheta == 0) {
-     target.y += 2;
+      target.y += 2;
     } else if (targetTheta == HALF_PI) {
-     target.x += 2;
+      target.x += 2;
     } else if (targetTheta == PI) {
-     target.y -= 2;
+      target.y -= 2;
     } else {
-     target.x -= 2;
+      target.x -= 2;
     }
     PVector blinkyLoc = blinky.getLocation();
     float xAdd = target.x - blinkyLoc.x;
@@ -301,17 +306,26 @@ void gamePlay() {
     //Set Clydes chase target
     target = pakmac.getLocation();
     if (dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
-     target = clyde.homeTile;
-     clyde.setTarget(target);
+      target = clyde.homeTile;
+      clyde.setTarget(target);
     } else {
-     clyde.setTarget(target);
+      clyde.setTarget(target);
     }
-    
+
     println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
     println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
     println("inky: " + inky.pos.x + ", " + inky.pos.y + ", " + inky.getLocation() + ", " + inky.target + " - " + inky.ghostArea + ", " + inky.ready + ", " + degrees(inky.theta));//inky.getLocation());
     println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
-
+    
+    if(frameCount == 30){
+      pinky.ready = true;
+    }
+    if(maze.dotCount == 30){
+     inky.ready = true; 
+    }
+    if(maze.dotCount == 85){
+      clyde.ready = true;
+    }
 
     checkCollisions();
   }
@@ -349,17 +363,30 @@ void checkCollisions() {
               eat.rewind();
               eat.play();
             }
-            
-            if(player.pos.dist(dot.pos) <= 5){
+
+            if (player.pos.dist(dot.pos) <= 5) {
+              ((Dot) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);
               pakmac.closeMouth();
               println("remove");
             }
-            
-            
           } /*else {
            pakmac.closeMouth();
-          }*/
+           }*/
+        }
+
+        if (dot instanceof Powerup) {
+          if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
+
+            pakmac.openMouth();
+              
+            if (player.pos.dist(dot.pos) <= 5) {
+              ((Powerup) dot).applyTo((Pakmac)player);
+              gameObject.remove(dot);
+              pakmac.closeMouth();
+              println("remove");
+            }
+          }
         }
       }
     }

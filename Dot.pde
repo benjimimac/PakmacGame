@@ -1,4 +1,4 @@
-class Dot extends GameObject{
+class Dot extends GameObject implements Goal{
   PShape dot;
   //Constructor method
   Dot(float x, float y, float objectWidth, float objectHeight, color colour){
@@ -8,7 +8,7 @@ class Dot extends GameObject{
   }
   
   void render(){
-    super.render();
+    //super.render();
     //pos.x = mouseX;
     //pos.y = mouseY;
     pushMatrix();
@@ -16,5 +16,10 @@ class Dot extends GameObject{
     shape(dot);
     popMatrix();
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
+  }
+  
+  void applyTo(Pakmac pakmac){
+    pakmac.score += 10;
+    maze.dotCount ++;
   }
 }
