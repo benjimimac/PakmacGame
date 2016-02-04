@@ -26,7 +26,6 @@ class Pakmac extends GameObject {
   }
 
   void update(){//char up, char down, char left, char right) {
-    //println("20 radians is " + );
     super.update();
     //forward.x =  cos(theta);
     //forward.y = sin(theta);
@@ -88,7 +87,6 @@ class Pakmac extends GameObject {
     ////forward.mult(speed);
     ////pos.add(forward);
 
-    ////println(pos);
 
     if (keys[right]) {
       if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
@@ -107,7 +105,6 @@ class Pakmac extends GameObject {
           openedMouth.rotate(-(PI + HALF_PI));
           closedMouth.rotate(-(PI + HALF_PI));
         }//end if()
-        println(degrees(theta));
         theta = radians(0.0f);
         setStart1();
         setClose1();
@@ -132,7 +129,6 @@ class Pakmac extends GameObject {
           closedMouth.rotate(-HALF_PI);
         }//end if()
         theta = PI;
-        println(degrees(theta));
         setStart1();
         setClose1();
       }
@@ -157,7 +153,6 @@ class Pakmac extends GameObject {
           closedMouth.rotate(-PI);
         }//end if()
         theta = HALF_PI;
-        println(degrees(theta));
         setStart1();
         setClose1();
       }
@@ -181,7 +176,6 @@ class Pakmac extends GameObject {
           closedMouth.rotate(PI);
         }//end if()
         //theta = HALF_PI;
-        println(degrees(theta));
         theta = PI + HALF_PI;
         setStart1();
         setClose1();

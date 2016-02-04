@@ -9,9 +9,13 @@ class Ghost extends GameObject {
   PVector homeTile;
   int time;
   boolean ghostArea;
+  boolean ready;
+  float x, y;
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed) {
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, PVector nextTile) {
     super(x, y, objectWidth, objectHeight, colour, speed);
+    this.x = x;
+    this.y = y;
     //Group shapes together to make the ghost
     fill(colour);
     stroke(colour);
@@ -55,11 +59,13 @@ class Ghost extends GameObject {
     int yReference;
     int xReference;
     currentTile = new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
-    nextTile = new PVector(currentTile.x, currentTile.y - 2);
+    //nextTile = new PVector(currentTile.x, currentTile.y - 2);
+    this.nextTile = nextTile;
     this.homeTile = homeTile;
     time = 0;
     this.theta = theta;
     this.ghostArea =  ghostArea;
+    this.ready = ready;
     //nextTile.y -= 1;
   }//end Ghost construuctor method
 
@@ -76,11 +82,19 @@ class Ghost extends GameObject {
   }
 
   void update() {//char up, char down, char left, char right) {
+    //PVector middle = new PVector(tileSize + (tileSize * 14), width * 0.5f);
+    PVector middle = new PVector(width * 0.5f, tileSize + (tileSize * 14) + (tileSize * 0.5f));
+    PVector left = new PVector((tileSize * 12), tileSize + (tileSize * 14) + (tileSize * 0.5f));
+    PVector right = new PVector((tileSize * 16), tileSize + (tileSize * 14) + (tileSize * 0.5f));
+    if (getLocation().x == 11 && (getLocation().y == 14)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
+      ghostArea = false;
+      speed = 2.0f;
+    }
     if (!ghostArea) {
+      println("Not ghost area");
       super.update();
       getDirections();
       if (direction[0]) {//keys[up] || testTarget) {
-        //println("In up direction");
         if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
           if (theta == radians(0.0f)) {
             pushMatrix();
@@ -199,27 +213,166 @@ class Ghost extends GameObject {
     } else {
       forward.x =  cos(theta);
       forward.y = sin(theta);
-      if(pos.y <= 376){
-       theta = HALF_PI;
+      println("Ghost Area");
+      if (ready) {
+        println("Ready");
+        //println("Ready");
+        //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
+        if (pos.dist(middle) <= 2) {
+          println("middle less than 2 " + getLocation() + ghostArea);
+          //ghostArea = false;
+          if (theta == HALF_PI) {
+            if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
+              pushMatrix();
+              pupil1.translate(0, -10);
+              pupil2.translate(0, -10);
+              popMatrix();
+              theta = PI + HALF_PI;
+            }
+          }
+          if (theta == 0) {
+            //if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
+            pushMatrix();
+            pupil1.translate(-5, -5);
+            pupil2.translate(-5, -5);
+            popMatrix();
+            theta = PI + HALF_PI;
+            //}
+          }
+
+          if (theta == PI) {
+            //if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
+            pushMatrix();
+            pupil1.translate(5, -5);
+            pupil2.translate(5, -5);
+            popMatrix();
+            theta = PI + HALF_PI;
+            //}
+          }
+        }
+
+        // if (theta == 0) {
+        //   pushMatrix();
+        //   pupil1.translate(-5, -5);
+        //   pupil2.translate(-5, -5);
+        //   popMatrix();
+        //   theta = PI + HALF_PI;
+        // }
+
+        // if (theta == PI) {
+        //   pushMatrix();
+        //   pupil1.translate(5, -5);
+        //   pupil2.translate(5, -5);
+        //   popMatrix();
+        //   theta = PI + HALF_PI;
+        // }
+        //}
+
+        if (pos.dist(left) == 0) {
+          if (theta == PI + HALF_PI) {
+            pushMatrix();
+            pupil1.translate(5, 5);
+            pupil2.translate(5, 5);
+            popMatrix();
+          }
+
+          if (theta == HALF_PI) {
+            pushMatrix();
+            pupil1.translate(5, -5);
+            pupil2.translate(5, -5);
+            popMatrix();
+          }
+          theta = 0;
+        }
+
+        if (pos.dist(right) == 0) {
+          if (theta == PI + HALF_PI) {
+            pushMatrix();
+            pupil1.translate(-5, 5);
+            pupil2.translate(-5, 5);
+            popMatrix();
+          }
+
+          if (theta == HALF_PI) {
+            pushMatrix();
+            pupil1.translate(-5, -5);
+            pupil2.translate(-5, -5);
+            popMatrix();
+          }
+          theta = PI;
+        }
+
+        //  if (theta == HALF_PI) {
+        //    pushMatrix();
+        //    pupil1.translate(-5, 5);
+        //    pupil2.translate(-5, 5);
+        //    popMatrix();
+        //  }
+
+        //  theta = 0;
+        //}
+
+        //if (pos.dist(right) == 0) {
+        //  if (theta == PI + HALF_PI) {
+        //    pushMatrix();
+        //    pupil1.translate(-5, 5);
+        //    pupil2.translate(-5, 5);
+        //    popMatrix();
+        //  }
+
+        //  if (theta == HALF_PI) {
+        //    pushMatrix();
+        //    pupil1.translate(-5, -5);
+        //    pupil2.translate(-5, -5);
+        //    popMatrix();
+        //  }
+
+        //  theta = PI;
+        //}
+
+        //if(pos.dist(new PVector(x, y)) <= 5){
+        //}
+      } else {
+
+        if (theta == PI + HALF_PI) {
+          if (get((int) pos.x, (int) pos.y - (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y - (tileSize + 5)) == maze.getWallColour()) {//pos.y <= 376) {
+            pushMatrix();
+            pupil1.translate(0, 10);
+            pupil2.translate(0, 10);
+            popMatrix();
+            theta = HALF_PI;
+          }
+        }
+
+        if (theta == HALF_PI) {
+          if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
+            pushMatrix();
+            pupil1.translate(0, -10);
+            pupil2.translate(0, -10);
+            popMatrix();
+            theta = PI + HALF_PI;
+          }
+        }
       }
-      if(pos.y >= 400){
-       theta = PI + HALF_PI;
-      }
+
       super.upDirection();
+      super.leftDirection();
       super.downDirection();
+      super.rightDirection();
     }
     //boolean testTarget = getDirection();
-    //println(testTarget);
+
+    if (frameCount % 240 == 0) {
+      ready = true;
+    }
 
     //pickOneDirection();
   }//end update()
 
   public void getDirections() {//PVector target) {
     //boolean[] tempDir = new boolean[4];  //to be copied to the direction array later
-    //println("Before - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
     currentTile = getLocation();
     if (currentTile.x == nextTile.x && currentTile.y == nextTile.y) {
-      //println("nextTile == currentTile");
       //Set direction array all to false
       for (int i = 0; i < direction.length; i++) {
         direction[i] = false;
@@ -228,8 +381,6 @@ class Ghost extends GameObject {
       //target = pakmac.getLocation();
       //target = homeTile;
       //this.target = target;
-      //println("target is " + target);
-      //println(currentTile);
 
 
 
@@ -238,12 +389,9 @@ class Ghost extends GameObject {
         if (theta != HALF_PI) {
           direction[0] = true;
         }
-        //println("Up is " + (currentTile.x - 1) + ", " + (currentTile.y)); 
-        //println("Next is " + maze.path.getPathNext((int) currentTile.x - 1, (int) currentTile.y)); 
 
 
         //if (dist(target.x, target.y, tempRef.x - 1, tempRef.y) <= dist(target.y, target.x, tempRef.y - 1, tempRef.x)) {
-        // //println(/*maze.path.getPathNext((int) tempRef.x, (int) tempRef.y - 1) +*/ tempRef.x + ", " + (tempRef.y - 1));
         // return true;
         //}
       }
@@ -269,10 +417,8 @@ class Ghost extends GameObject {
         }
       }
       //nextTile = currentTile;
-      //println("Before pickOneDirection() - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
 
       pickOneDirection();
-      //println("After pickoneDirection - up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
 
       if (direction[0]) {        
         nextTile.x -= 1;
@@ -294,11 +440,9 @@ class Ghost extends GameObject {
           nextTile.y = 0;
         }
       }//end if()
-      //println("- up: " + direction[0] + ", left: " + direction[0] + ", down: " + direction[2] + ", right" + direction[3]);
     } else {
       //println("Not equal");
     }
-    //println("current is: " + currentTile + ", next is: " + nextTile);
     //direction = tempDir;
 
 
@@ -827,7 +971,7 @@ class Ghost extends GameObject {
   }
 
   public float getDistance(int xAdd, int yAdd) {
-    return dist(target.x, target.y, currentTile.x + xAdd, currentTile.y + yAdd);
+    return dist(pakmac.pos.x, pakmac.pos.y, pos.x + (yAdd * tileSize), pos.y + (xAdd * tileSize));
   }
 
   public boolean allowedToTurn(int xAdd, int yAdd) {

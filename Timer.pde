@@ -17,7 +17,6 @@ class Timer extends GameObject {
   }
 
   void render() {
-    //println(minutes + ":" + seconds + ":" + tenths + ", count is : " + count + ", frameCount: " + frameCount);
     fill(255);
     textSize(40);
     text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, 100, height - tileSize);

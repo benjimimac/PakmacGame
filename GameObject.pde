@@ -55,7 +55,6 @@ class GameObject {
     //forward.mult(speed);
     //pos.add(forward);
 
-    //println(pos);
   }//end update()
 
   //void turnRight(){
@@ -188,7 +187,6 @@ class GameObject {
     //Return yReference then xReference
     int xReference = (int) map(pos.x, 0, width, 0, 28);
     int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
-    // println(yReference + ", " + xReference);
     return new PVector(yReference, xReference);
   }
 }

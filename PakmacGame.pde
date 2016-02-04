@@ -81,7 +81,6 @@ void draw() {
     line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
   }
 
-  //println("Pakmac: " + pakmac.getLocation() + ", Blinky: " + blinky.getLocation());
 
   if (dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0) {//pakmac.getLocation() == blinky.getLocation()){
     println("The same tile");
@@ -127,20 +126,7 @@ void loadData() {
   gameObject.add(pakmac);
 
 
-  //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f);
-  gameObject.add(blinky);
-  enemyObject.add(blinky);
-  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 2.5f);
-  //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
-  gameObject.add(pinky);
-  enemyObject.add(pinky);
-  inky = new Ghost((tileSize * 12)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 2.5f);
-  gameObject.add(inky);
-  enemyObject.add(inky);
-  clyde = new Ghost((tileSize * 15)  + (tileSize * 0.5f), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 2.5f);
-  gameObject.add(clyde);
-  enemyObject.add(clyde);
+  
   //Create an ArrayList to store temp PVector references - these row and column references will be passed 
   //to the map object to create the map
   ArrayList<PVector> wallReference = new ArrayList<PVector>();
@@ -216,6 +202,20 @@ void loadData() {
   maze = new Map(wallReference, path);
 
   gameObject.add(maze);
+  //Add ghost sprites
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f, true, new PVector(11, 12));
+  gameObject.add(blinky);
+  enemyObject.add(blinky);
+  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
+  gameObject.add(pinky);
+  enemyObject.add(pinky);
+  inky = new Ghost((tileSize * 12), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  gameObject.add(inky);
+  enemyObject.add(inky);
+  clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  gameObject.add(clyde);
+  enemyObject.add(clyde);
 
   loaded = true;
 
@@ -239,7 +239,6 @@ void gamePlay() {
 
   for (int i = 0; i < gameObject.size(); i++) {
     gameObject.get(i).render();
-    //println(i);
   }//end for()
 
   //for (int i = 0; i < foodObject.size(); i++) {
@@ -271,26 +270,26 @@ void gamePlay() {
     targetTheta = pakmac.getTheta();    
     target = pakmac.getLocation();
     if (targetTheta == 0) {
-      target.y += 4;
+    target.y += 4;
     } else if (targetTheta == HALF_PI) {
-      target.x += 4;
+    target.x += 4;
     } else if (targetTheta == PI) {
-      target.y -= 4;
+    target.y -= 4;
     } else {
-      target.x -= 4;
+    target.x -= 4;
     }
     pinky.setTarget(target);
 
     //Set Inkys chase target
     target = pakmac.getLocation();
     if (targetTheta == 0) {
-      target.y += 2;
+     target.y += 2;
     } else if (targetTheta == HALF_PI) {
-      target.x += 2;
+     target.x += 2;
     } else if (targetTheta == PI) {
-      target.y -= 2;
+     target.y -= 2;
     } else {
-      target.x -= 2;
+     target.x -= 2;
     }
     PVector blinkyLoc = blinky.getLocation();
     float xAdd = target.x - blinkyLoc.x;
@@ -301,12 +300,17 @@ void gamePlay() {
 
     //Set Clydes chase target
     target = pakmac.getLocation();
-    if (dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) <= 8) {
-      target = clyde.homeTile;
-      clyde.setTarget(target);
+    if (dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
+     target = clyde.homeTile;
+     clyde.setTarget(target);
     } else {
-      clyde.setTarget(target);
+     clyde.setTarget(target);
     }
+    
+    println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
+    println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
+    println("inky: " + inky.pos.x + ", " + inky.pos.y + ", " + inky.getLocation() + ", " + inky.target + " - " + inky.ghostArea + ", " + inky.ready + ", " + degrees(inky.theta));//inky.getLocation());
+    println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
 
 
     checkCollisions();
@@ -326,7 +330,6 @@ void gamePlay() {
   // //  eat.rewind();
   // //  eat.play();
   // //}
-  // println("Eaten");
   //} else {
   // pakmac.closeMouth();
   //}
@@ -347,7 +350,7 @@ void checkCollisions() {
               eat.play();
             }
             
-            if(player.pos.dist(dot.pos) <= 2){
+            if(player.pos.dist(dot.pos) <= 5){
               gameObject.remove(dot);
               pakmac.closeMouth();
               println("remove");
