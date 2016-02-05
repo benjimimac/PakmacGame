@@ -4,12 +4,14 @@ class Pakmac extends GameObject {
   PShape closedMouth;
   PShape openedMouth;
   int score;
+  int level;
 
   Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right) {
     super(x, y, objectWidth, objectHeight, colour, 3.0f);
     setStart1();
     setClose1();
     score = 0;
+    level = 1;
 
     start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
     close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);

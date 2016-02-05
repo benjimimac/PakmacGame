@@ -60,8 +60,8 @@ void setup() {
   menuOption = 1;  //Default is 0 for main menu
 
   mode = new boolean[3];
-  mode[0] = false;  //Scatter mode
-  mode[1] = true;  //Chase mode
+  mode[0] = true;  //Scatter mode
+  mode[1] = false;  //Chase mode
   mode[2] = false;  //Frightened mode
 
   loaded = false; //If false load the new map data - true play game
@@ -250,6 +250,8 @@ void gamePlay() {
   //  foodObject.get(i).render();
   //}//end for()
 
+  
+
   if (mode[0]) {
     //Set Blinky's home tile target
     target = blinky.homeTile;
@@ -316,19 +318,19 @@ void gamePlay() {
     println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
     println("inky: " + inky.pos.x + ", " + inky.pos.y + ", " + inky.getLocation() + ", " + inky.target + " - " + inky.ghostArea + ", " + inky.ready + ", " + degrees(inky.theta));//inky.getLocation());
     println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
-    
-    if(frameCount == 30){
-      pinky.ready = true;
-    }
-    if(maze.dotCount == 30){
-     inky.ready = true; 
-    }
-    if(maze.dotCount == 85){
-      clyde.ready = true;
-    }
-
-    checkCollisions();
   }
+
+  if (frameCount == 30) {
+    pinky.ready = true;
+  }
+  if (maze.dotCount == 30) {
+    inky.ready = true;
+  }
+  if (maze.dotCount == 85) {
+    clyde.ready = true;
+  }
+
+  checkCollisions();
 
   //pakmac.update();//'W', 'S', 'A', 'D');
   //blinky.update();//'I', 'K', 'J', 'L');
@@ -379,7 +381,7 @@ void checkCollisions() {
           if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
 
             pakmac.openMouth();
-              
+
             if (player.pos.dist(dot.pos) <= 5) {
               ((Powerup) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);

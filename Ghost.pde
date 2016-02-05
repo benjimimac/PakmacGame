@@ -17,7 +17,7 @@ class Ghost extends GameObject {
     super(x, y, objectWidth, objectHeight, colour, speed);
     this.x = x;
     this.y = y;
-    
+
     //frightenedSprite = createShape(GROUP);
     //Group shapes together to make the ghost
     fill(colour);
@@ -89,6 +89,21 @@ class Ghost extends GameObject {
     PVector middle = new PVector(width * 0.5f, tileSize + (tileSize * 14) + (tileSize * 0.5f));
     PVector left = new PVector((tileSize * 12), tileSize + (tileSize * 14) + (tileSize * 0.5f));
     PVector right = new PVector((tileSize * 16), tileSize + (tileSize * 14) + (tileSize * 0.5f));
+
+    if (pakmac.level == 1) {
+      if (timer.count == 420 || timer.count == 2040 || timer.count == 3540 || timer.count == 5040) {//Switch to chase
+        mode[0] = false;
+        mode[1] = true;
+        forceTurn();
+      }
+
+      if (timer.count == 1620 || timer.count == 3240 || timer.count == 4740) {
+        mode[0] = true;
+        mode[1] = false;
+        forceTurn();
+      }
+    }
+
     if (getLocation().x == 11 && (getLocation().y == 14)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
       ghostArea = false;
       speed = 2.0f;
@@ -981,29 +996,29 @@ class Ghost extends GameObject {
     while (temp.dist(target) != 0) { 
       //while(temp.x != target.x && temp.y != target.y){
       if (temp.x < target.x) {
-        if(temp.y < target.y){
+        if (temp.y < target.y) {
           temp.x += 1;
           temp.y += 1;
-        }else if(temp.y > target.y){
+        } else if (temp.y > target.y) {
           temp.x += 1;
           temp.y -= 1;
-        }else{
+        } else {
           temp.x += 1;
         }
       } else if (temp.x > target.x) {
-        if(temp.y < target.y){
+        if (temp.y < target.y) {
           temp.x -= 1;
           temp.y += 1;
-        }else if(temp.y > target.y){
+        } else if (temp.y > target.y) {
           temp.x -= 1;
           temp.y -= 1;
-        }else{
+        } else {
           temp.x -=1;
         }
       } else {
-        if(temp.y < target.y){
+        if (temp.y < target.y) {
           temp.y += 1;
-        }else{//double check maybe an else if
+        } else {//double check maybe an else if
           temp.y -= 1;
         }
       }
@@ -1018,5 +1033,13 @@ class Ghost extends GameObject {
       return true;
     }
     return false;
+  }
+  
+  void forceTurn(){
+   if(theta < PI){
+     theta += PI;
+   }else{
+     theta -= PI;
+   }
   }
 }//end Ghost class()
