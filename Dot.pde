@@ -1,4 +1,4 @@
-class Dot extends GameObject implements Goal{
+class Dot extends GameObject implements Points{
   PShape dot;
   //Constructor method
   Dot(float x, float y, float objectWidth, float objectHeight, color colour){
