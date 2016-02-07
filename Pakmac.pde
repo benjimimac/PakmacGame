@@ -3,20 +3,30 @@ class Pakmac extends GameObject {
   //private float start1, start2, close1, close2, startAngle, closeAngle;
   PShape closedMouth;
   PShape openedMouth;
+  PShape[] spriteOpenMouth;
   int score;
   int level;
   int lives;
   PShape liveSprite;
   boolean died;
+  float angle;
+  boolean eating;
 
-  Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right) {
+  Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right, float theta) {
     super(x, y, objectWidth, objectHeight, colour, 3.0f);
     setStart1();
     setClose1();
+    this.x = x;
+    this.y = y;
     score = 0;
     level = 1;
     lives = 3;
     died = false;
+    angle = HALF_PI * 0.9f;
+    i = 1;
+    eating = false;
+    this.theta = theta;
+    this.startTheta = theta;
 
     start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
     close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);
@@ -24,14 +34,21 @@ class Pakmac extends GameObject {
     closeAngle = close1;
 
     //closedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
-    closedMouth = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
+    sprite = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
 
-    openedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, start2, close2, PIE);
-    sprite = closedMouth;
+    //openedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, start2, close2, PIE);
+    //sprite = closedMouth;
     this.up = up;
     this.left = left;
     this.down = down;
     this.right = right;
+
+    spriteOpenMouth = new PShape[4];
+    spriteOpenMouth[0] = createShape(ARC, 0, 0, objectWidth, objectHeight, -HALF_PI + angle, PI + HALF_PI - angle, PIE);
+    spriteOpenMouth[1] = createShape(ARC, 0, 0, objectWidth, objectHeight, -PI + angle, PI - angle, PIE);
+    spriteOpenMouth[2] = createShape(ARC, 0, 0, objectWidth, objectHeight, HALF_PI + angle, HALF_PI + TWO_PI - angle, PIE);
+    spriteOpenMouth[3] = createShape(ARC, 0, 0, objectWidth, objectHeight, angle, TWO_PI - angle, PIE);
+
 
     liveSprite = createShape(ARC, 0, 0, objectWidth * 0.5f, objectHeight * 0.5f, -PI + (TWO_PI * 0.12f), PI - (TWO_PI * 0.12f), PIE);
   }
@@ -101,95 +118,103 @@ class Pakmac extends GameObject {
 
     if (keys[right]) {
       if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
-        if (theta == HALF_PI) {
-          //sprite.rotate(-HALF_PI);
-          openedMouth.rotate(-HALF_PI);
-          closedMouth.rotate(-HALF_PI);
-        }//end if()
-        if (theta == PI) {
-          //sprite.rotate(-PI);
-          openedMouth.rotate(-PI);
-          closedMouth.rotate(-PI);
-        }//end if
-        if (theta == PI + HALF_PI) {
-          //sprite.rotate(-(PI + HALF_PI));
-          openedMouth.rotate(-(PI + HALF_PI));
-          closedMouth.rotate(-(PI + HALF_PI));
-        }//end if()
-        theta = radians(0.0f);
-        setStart1();
-        setClose1();
+        //if (theta == HALF_PI) {
+        //  //sprite.rotate(-HALF_PI);
+        //  openedMouth.rotate(-HALF_PI);
+        //  closedMouth.rotate(-HALF_PI);
+        //}//end if()
+        //if (theta == PI) {
+        //  //sprite.rotate(-PI);
+        //  openedMouth.rotate(-PI);
+        //  closedMouth.rotate(-PI);
+        //}//end if
+        //if (theta == PI + HALF_PI) {
+        //  //sprite.rotate(-(PI + HALF_PI));
+        //  openedMouth.rotate(-(PI + HALF_PI));
+        //  closedMouth.rotate(-(PI + HALF_PI));
+        //}//end if()
+        //theta = radians(0.0f);
+        //setStart1();
+        //setClose1();
+        i = 3;
+        theta = 0;
       }
       //super.turnRight();
     }
     if (keys[left]) {
       if (get((int) pos.x - (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour() && get((int) pos.x - (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour()) {
-        if (theta == radians(0.0f)) {
-          //sprite.rotate(PI);
-          openedMouth.rotate(PI);
-          closedMouth.rotate(PI);
-        }//end if()
-        if (theta == HALF_PI) {
-          //sprite.rotate(HALF_PI);
-          openedMouth.rotate(HALF_PI);
-          closedMouth.rotate(HALF_PI);
-        }//end if
-        if (theta == PI + HALF_PI) {
-          //sprite.rotate(-HALF_PI);
-          openedMouth.rotate(-HALF_PI);
-          closedMouth.rotate(-HALF_PI);
-        }//end if()
+        //if (theta == radians(0.0f)) {
+        //  //sprite.rotate(PI);
+        //  openedMouth.rotate(PI);
+        //  closedMouth.rotate(PI);
+        //}//end if()
+        //if (theta == HALF_PI) {
+        //  //sprite.rotate(HALF_PI);
+        //  openedMouth.rotate(HALF_PI);
+        //  closedMouth.rotate(HALF_PI);
+        //}//end if
+        //if (theta == PI + HALF_PI) {
+        //  //sprite.rotate(-HALF_PI);
+        //  openedMouth.rotate(-HALF_PI);
+        //  closedMouth.rotate(-HALF_PI);
+        //}//end if()
+        //theta = PI;
+        //setStart1();
+        //setClose1();
+        i = 1;
         theta = PI;
-        setStart1();
-        setClose1();
       }
       //super.turnLeft();
     }
     if (keys[down]) {
 
       if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
-        if (theta == radians(0.0f)) {
-          //sprite.rotate(HALF_PI);
-          openedMouth.rotate(HALF_PI);
-          closedMouth.rotate(HALF_PI);
-        }//end if()
-        if (theta == PI) {
-          //sprite.rotate(-HALF_PI);
-          openedMouth.rotate(-HALF_PI);
-          closedMouth.rotate(-HALF_PI);
-        }//end if
-        if (theta == PI + HALF_PI) {
-          //sprite.rotate(-PI);
-          openedMouth.rotate(-PI);
-          closedMouth.rotate(-PI);
-        }//end if()
+        //if (theta == radians(0.0f)) {
+        //  //sprite.rotate(HALF_PI);
+        //  openedMouth.rotate(HALF_PI);
+        //  closedMouth.rotate(HALF_PI);
+        //}//end if()
+        //if (theta == PI) {
+        //  //sprite.rotate(-HALF_PI);
+        //  openedMouth.rotate(-HALF_PI);
+        //  closedMouth.rotate(-HALF_PI);
+        //}//end if
+        //if (theta == PI + HALF_PI) {
+        //  //sprite.rotate(-PI);
+        //  openedMouth.rotate(-PI);
+        //  closedMouth.rotate(-PI);
+        //}//end if()
+        //theta = HALF_PI;
+        //setStart1();
+        //setClose1();
+        i = 2;
         theta = HALF_PI;
-        setStart1();
-        setClose1();
       }
       //super.turnDown();
     }
     if (keys[up]) {
       if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
-        if (theta == radians(0.0f)) {
-          //sprite.rotate(PI + HALF_PI);
-          openedMouth.rotate(PI + HALF_PI);
-          closedMouth.rotate(PI + HALF_PI);
-        }//end if()
-        if (theta == PI) {
-          //sprite.rotate(HALF_PI);
-          openedMouth.rotate(HALF_PI);
-          closedMouth.rotate(HALF_PI);
-        }//end if
-        if (theta == HALF_PI) {
-          //sprite.rotate(PI);
-          openedMouth.rotate(PI);
-          closedMouth.rotate(PI);
-        }//end if()
-        //theta = HALF_PI;
+        //if (theta == radians(0.0f)) {
+        //  //sprite.rotate(PI + HALF_PI);
+        //  openedMouth.rotate(PI + HALF_PI);
+        //  closedMouth.rotate(PI + HALF_PI);
+        //}//end if()
+        //if (theta == PI) {
+        //  //sprite.rotate(HALF_PI);
+        //  openedMouth.rotate(HALF_PI);
+        //  closedMouth.rotate(HALF_PI);
+        //}//end if
+        //if (theta == HALF_PI) {
+        //  //sprite.rotate(PI);
+        //  openedMouth.rotate(PI);
+        //  closedMouth.rotate(PI);
+        //}//end if()
+        ////theta = HALF_PI;
+        //theta = PI + HALF_PI;
+        //setStart1();
+        //setClose1();
+        i = 0;
         theta = PI + HALF_PI;
-        setStart1();
-        setClose1();
       }
       //super.turnUp();
     }
@@ -200,7 +225,12 @@ class Pakmac extends GameObject {
     //arc(pos.x, pos.y, objectWidth, objectHeight, startAngle, closeAngle, PIE);
     pushMatrix();
     translate(pos.x, pos.y);
-    shape(sprite);
+    if (!eating) {
+      shape(sprite);
+    } else {
+      println("eating");
+      shape(spriteOpenMouth[i]);
+    }
     popMatrix();
 
     for (int i = 0; i < lives; i++) {
@@ -214,7 +244,7 @@ class Pakmac extends GameObject {
   void openMouth() {
     //startAngle = start2 + theta;
     //closeAngle = close2 + theta;
-    sprite = openedMouth;
+    //sprite = openedMouth;
   }
 
   void closeMouth() {

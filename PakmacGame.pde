@@ -74,13 +74,13 @@ void draw() {
 
   option();
 
-  stroke(255, 0, 0);
-  for (int i = 0; i <= 31; i++) {
-    line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  }
-  for (int i = 0; i <= 28; i++) {
-    line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  }
+  //stroke(255, 0, 0);
+  //for (int i = 0; i <= 31; i++) {
+  //  line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  //}
+  //for (int i = 0; i <= 28; i++) {
+  //  line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  //}
 
 
   //if (dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0) {//pakmac.getLocation() == blinky.getLocation()){
@@ -208,20 +208,20 @@ void loadData() {
 
   gameObject.add(maze);
   //Add ghost sprites
-  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f, true, new PVector(11, 12));
+  blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f, true, 11, 12);
   gameObject.add(blinky);
   enemyObject.add(blinky);
-  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 1.0f, false, 11, 14);
   //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
   gameObject.add(pinky);
   enemyObject.add(pinky);
-  inky = new Ghost((tileSize * 12), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  inky = new Ghost((tileSize * 12), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 1.0f, false, 11, 14);
   gameObject.add(inky);
   enemyObject.add(inky);
-  clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 1.0f, false, new PVector(11, 14));
+  clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 1.0f, false, 11, 14);
   gameObject.add(clyde);
   enemyObject.add(clyde);
-  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
+  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
   gameObject.add(pakmac);
 
   loaded = true;
@@ -241,135 +241,162 @@ void loadData() {
 void gamePlay() {
   //pakmac.render();
   //food.render();
-  PVector target;
-  float targetTheta;
+
 
   for (int i = 0; i < gameObject.size(); i++) {
     gameObject.get(i).render();
   }//end for()
+  println("Blinky: " + blinky.currentTile + ", " + blinky.nextTile);
 
   //for (int i = 0; i < foodObject.size(); i++) {
   //  foodObject.get(i).render();
   //}//end for()
 
-
-
-  if (mode[0]) {
-    //Set Blinky's home tile target
-    target = blinky.homeTile;
-    blinky.setTarget(target);
-
-    //set Pinkys home tile target
-    target = pinky.homeTile;
-    pinky.setTarget(target);
-
-    //Set Inkys hometile target
-    target = inky.homeTile;
-    inky.setTarget(target);
-
-    //Set Clydes home tile target
-    target = clyde.homeTile;
-    clyde.setTarget(target);
-  } else if (mode[1]) {
-    //Set Blinkys chase target
-    target = pakmac.getLocation();
-    blinky.setTarget(target);
-
-    //Set Pinkys chase target
-    targetTheta = pakmac.getTheta();    
-    target = pakmac.getLocation();
-    if (targetTheta == 0) {
-      target.y += 4;
-    } else if (targetTheta == HALF_PI) {
-      target.x += 4;
-    } else if (targetTheta == PI) {
-      target.y -= 4;
-    } else {
-      target.x -= 4;
-    }
-    pinky.setTarget(target);
-
-    //Set Inkys chase target
-    target = pakmac.getLocation();
-    if (targetTheta == 0) {
-      target.y += 2;
-    } else if (targetTheta == HALF_PI) {
-      target.x += 2;
-    } else if (targetTheta == PI) {
-      target.y -= 2;
-    } else {
-      target.x -= 2;
-    }
-    PVector blinkyLoc = blinky.getLocation();
-    float xAdd = target.x - blinkyLoc.x;
-    float yAdd = target.y - blinkyLoc.y;
-    target.x += xAdd;
-    target.y += yAdd;
-    inky.setTarget(target);
-
-    //Set Clydes chase target
-    target = pakmac.getLocation();
-    clyde.setTarget(target);
-    if (!clyde.ghostArea) {
-      if (clyde.getDistance(0, 0) < 8) {//dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
-        target = clyde.homeTile;
-        clyde.setTarget(target);
-      } else {
-        clyde.setTarget(target);
-      }
-    }
-
-    //println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
-    //println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
-    //println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
-  } else if (mode[2]) {
-    PVector random = new PVector((int) random(0, 31), (int) random(0, 28));
-    blinky.setTarget(random);
-
-
-    random = new PVector((int) random(0, 31), (int) random(0, 28));
-    pinky.setTarget(random);
-
-    random = new PVector((int) random(0, 31), (int) random(0, 28));
-    inky.setTarget(random);
-
-    random = new PVector((int) random(0, 31), (int) random(0, 28));
-    clyde.setTarget(random);
-  }
-  //println(blinky.ghostArea + ", " + blinky.ready);
-  if (timer.getGhostTimer() == 420 || timer.getGhostTimer() == 2040 || timer.getGhostTimer() == 3540 || timer.getGhostTimer() == 5040) {//Switch to chase
-    mode[0] = false;
-    mode[1] = true;
-    mode[2] = false;
-    //forceTurn();
-  } else if (timer.getGhostTimer() == 1620 || timer.getGhostTimer() == 3240 || timer.getGhostTimer() == 4740) {
-    mode[0] = true;
-    mode[1] = false;
-    mode[2] = false;
-    //forceTurn();
-  }
-  //println("UP: " + blinky.direction[0] + ", LEFT: " + blinky.direction[1] + ", DOWN: " + blinky.direction[2] + ", RIGHT: " + blinky.direction[3] + ", TARGET: " + blinky.target + ", CURRENT: " + blinky.currentTile + ", NEXT: " + blinky.nextTile);
-  //println("inky: " + "currentTile: " + inky.currentTile + ", nextTile: " + inky.nextTile + ", lastTile:" + inky.lastTile + ", ghostArea: " + inky.ghostArea + ", ready: " + inky.ready + ", scatter: " + mode[0] + ", chase: " + mode[1]);//inky.getLocation());
-
-  if (frameCount == 30) {
-    pinky.ready = true;
-  }
-  if (maze.dotCount == 30) {
-    inky.ready = true;
-  }
-  if (maze.dotCount == 85) {
-    clyde.ready = true;
-  }
-
-  checkFoodCollisions();
-  checkGhostCollisions();
-
-  //pakmac.update();//'W', 'S', 'A', 'D');
-  //blinky.update();//'I', 'K', 'J', 'L');
   if (!pakmac.died) {
+    PVector target;
+    float targetTheta;
+    if (mode[0]) {
+      //Set Blinky's home tile target
+      target = blinky.homeTile;
+      blinky.setTarget(target);
+
+      //set Pinkys home tile target
+      target = pinky.homeTile;
+      pinky.setTarget(target);
+
+      //Set Inkys hometile target
+      target = inky.homeTile;
+      inky.setTarget(target);
+
+      //Set Clydes home tile target
+      target = clyde.homeTile;
+      clyde.setTarget(target);
+    } else if (mode[1]) {
+      //Set Blinkys chase target
+      target = pakmac.getLocation();
+      blinky.setTarget(target);
+
+      //Set Pinkys chase target
+      targetTheta = pakmac.getTheta();    
+      target = pakmac.getLocation();
+      if (targetTheta == 0) {
+        target.y += 4;
+      } else if (targetTheta == HALF_PI) {
+        target.x += 4;
+      } else if (targetTheta == PI) {
+        target.y -= 4;
+      } else {
+        target.x -= 4;
+      }
+      pinky.setTarget(target);
+
+      //Set Inkys chase target
+      target = pakmac.getLocation();
+      if (targetTheta == 0) {
+        target.y += 2;
+      } else if (targetTheta == HALF_PI) {
+        target.x += 2;
+      } else if (targetTheta == PI) {
+        target.y -= 2;
+      } else {
+        target.x -= 2;
+      }
+      PVector blinkyLoc = blinky.getLocation();
+      float xAdd = target.x - blinkyLoc.x;
+      float yAdd = target.y - blinkyLoc.y;
+      target.x += xAdd;
+      target.y += yAdd;
+      inky.setTarget(target);
+
+      //Set Clydes chase target
+      target = pakmac.getLocation();
+      clyde.setTarget(target);
+      if (!clyde.ghostArea) {
+        if (clyde.getDistance(0, 0) < 8) {//dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
+          target = clyde.homeTile;
+          clyde.setTarget(target);
+        } else {
+          clyde.setTarget(target);
+        }
+      }
+
+      //println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
+      //println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
+      //println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
+    } else if (mode[2]) {
+      PVector random = new PVector((int) random(0, 31), (int) random(0, 28));
+      blinky.setTarget(random);
+
+
+      random = new PVector((int) random(0, 31), (int) random(0, 28));
+      pinky.setTarget(random);
+
+      random = new PVector((int) random(0, 31), (int) random(0, 28));
+      inky.setTarget(random);
+
+      random = new PVector((int) random(0, 31), (int) random(0, 28));
+      clyde.setTarget(random);
+    }
+    //println(blinky.ghostArea + ", " + blinky.ready);
+    if (timer.getGhostTimer() == 420 || timer.getGhostTimer() == 2040 || timer.getGhostTimer() == 3540 || timer.getGhostTimer() == 5040) {//Switch to chase
+      mode[0] = false;
+      mode[1] = true;
+      mode[2] = false;
+      //forceTurn();
+    } else if (timer.getGhostTimer() == 1620 || timer.getGhostTimer() == 3240 || timer.getGhostTimer() == 4740) {
+      mode[0] = true;
+      mode[1] = false;
+      mode[2] = false;
+      //forceTurn();
+    }
+    //println("UP: " + blinky.direction[0] + ", LEFT: " + blinky.direction[1] + ", DOWN: " + blinky.direction[2] + ", RIGHT: " + blinky.direction[3] + ", TARGET: " + blinky.target + ", CURRENT: " + blinky.currentTile + ", NEXT: " + blinky.nextTile);
+    //println("inky: " + "currentTile: " + inky.currentTile + ", nextTile: " + inky.nextTile + ", lastTile:" + inky.lastTile + ", ghostArea: " + inky.ghostArea + ", ready: " + inky.ready + ", scatter: " + mode[0] + ", chase: " + mode[1]);//inky.getLocation());
+
+    if (frameCount == 30) {
+      pinky.ready = true;
+    }
+    if (maze.dotCount == 30) {
+      inky.ready = true;
+    }
+    if (maze.dotCount == 85) {
+      clyde.ready = true;
+    }
+
+    checkFoodCollisions();
+    checkGhostCollisions();
+
+    //pakmac.update();//'W', 'S', 'A', 'D');
+    //blinky.update();//'I', 'K', 'J', 'L');
+
     for (int i = 0; i < gameObject.size(); i++) {
       gameObject.get(i).update();
     }//end for(i)
+  } else {
+    println("dead");
+    timer.deathTimer++;
+    if (timer.deathTimer == 300) {
+      for (int i = gameObject.size() - 1; i >= 0; i--) {
+        GameObject sprite = gameObject.get(i);
+        if (sprite instanceof Pakmac || sprite instanceof Ghost) {
+          sprite.pos = new PVector(sprite.x, sprite.y);
+          sprite.theta = sprite.startTheta;
+          sprite.i = sprite.startI;
+          if (sprite instanceof Ghost) {
+            println("test");
+            ((Ghost) sprite).resetGhost();
+            //((Ghost) sprite).nextTile = new PVector(((Ghost) sprite).startNextTile.x, ((Ghost) sprite).startNextTile.y);//((Ghost) sprite).startNextTile;
+          }
+
+          //if (sprite instanceof Ghost) {
+          //  ((Ghost)sprite).pos = new PVector(((Ghost)sprite).x, ((Ghost)sprite).y);
+          //  ((Ghost)sprite).theta = ((Ghost)sprite).startTheta;
+          //  ((Ghost)sprite).i = ((Ghost)sprite).startI;
+          //}
+        }
+      }
+      pakmac.died = false;
+      timer.deathTimer = 0;
+    }
   }
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
 
@@ -395,16 +422,17 @@ void checkFoodCollisions() {
         GameObject dot = gameObject.get(j);
         if (dot instanceof Dot) {
           if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
-            pakmac.openMouth();
+            //pakmac.openMouth();
+            pakmac.eating = true;
             if (!eat.isPlaying()) {
               eat.rewind();
               eat.play();
             }
 
-            if (player.pos.dist(dot.pos) <= 5) {
+            if (player.pos.dist(dot.pos) <= (player.halfWidth * 0.5f) + dot.halfWidth) {
               ((Dot) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);
-              pakmac.closeMouth();
+              //pakmac.closeMouth();
               println("remove");
             }
           } /*else {
@@ -416,7 +444,8 @@ void checkFoodCollisions() {
             mode[1] = false;
             mode[2] = true;
 
-            pakmac.openMouth();
+            //pakmac.openMouth();
+            pakmac.eating = true;
 
             if (player.pos.dist(dot.pos) <= 5) {
               for (int k = gameObject.size() - 10; k >=0; k--) {
@@ -428,7 +457,7 @@ void checkFoodCollisions() {
               }
               ((Powerup) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);
-              pakmac.closeMouth();
+              pakmac.eating = false;
               println("remove");
             }
           }
@@ -446,16 +475,34 @@ void checkGhostCollisions() {
         GameObject ghost = gameObject.get(j);
         if (ghost instanceof Ghost) {
           if (pak.getLocation().dist(ghost.getLocation()) == 0) {
-            println("Same tile");
+            //println("Same tile");
             if (!mode[2] && !((Pakmac) pak).died) {
               ((Pakmac) pak).died = true;
               ((Pakmac) pak).lives -= 1;
+              //((Ghost) ghost).i = (int) map(((Ghost) ghost).theta, 0, PI + HALF_PI, 0, 3);
+              //((Ghost) ghost).theta = ((Ghost) ghost).startTheta;
+              //println(((Ghost) ghost).i + ", " + degrees(((Ghost) ghost).theta));
+              resetGhosts();
             }//end if()
           }//end if()
         }//end if()
       }//end for(j)
     }//end if()
   }//end for(i)
+}
+
+void resetGhosts() {
+  blinky.theta = blinky.startTheta;
+  blinky.i = 1;
+
+  pinky.theta = pinky.startTheta;
+  pinky.i = 0;
+
+  inky.theta = inky.startTheta;
+  inky.i = 0;
+
+  clyde.theta = clyde.startTheta;
+  clyde.i = 0;
 }
 
 void keyPressed() {

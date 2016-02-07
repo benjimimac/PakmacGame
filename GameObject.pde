@@ -4,23 +4,27 @@ class GameObject {
   protected PVector startPos;
   protected PVector forward;
   protected PShape sprite;
-  protected float theta = radians(180.0f);
+  protected float theta;
+  protected float startTheta;
   protected float objectHeight, objectWidth, objectRadius;
   protected color colour;
   protected float speed = 3.0f;
+  float x, y;
 
   protected float start1, start2, close1, close2, startAngle, closeAngle;
   protected char up, left, down, right;
   float halfWidth;
+  int i;
+  int startI;
 
 
 
   //Constructor method
   GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float speed) {
-    //this.x = x;
-    //this.y = y;
+    this.x = x;
+    this.y = y;
     pos = new PVector(x, y);
-    startPos = new PVector(x, y);
+    //startPos = new PVector(x, y);
     forward = new PVector(0, 0);
     this.objectWidth = objectWidth;
     this.objectHeight = objectHeight;
@@ -54,7 +58,6 @@ class GameObject {
 
     //forward.mult(speed);
     //pos.add(forward);
-
   }//end update()
 
   //void turnRight(){

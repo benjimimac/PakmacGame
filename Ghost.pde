@@ -7,22 +7,31 @@ class Ghost extends GameObject { //<>// //<>//
   PVector target;
   boolean[] direction = new boolean[4];
   PVector currentTile;
+  int startTileCol;
+  int startTileRow;
   PVector nextTile;
+  int nextTileCol;
+  int nextTileRow;
   PVector lastTile;
   PVector homeTile;
   int time;
   boolean ghostArea;
   boolean ready;
-  float x, y;
-  int i;
+  boolean startGhostArea;
+  boolean startReady;
+
+
   boolean scared;
 
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, PVector nextTile) {
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileCol, int nextTileRow) {
     super(x, y, objectWidth, objectHeight, colour, speed);
     this.x = x;
     this.y = y;
-    i = (int) map(theta, 0, PI + HALF_PI, 0, 3);
+    this.theta = theta;
+    this.startTheta = theta;
+    i = (int) map(startTheta, PI + HALF_PI, 0, 3, 0);
+    startI = i;
     sprites = new PShape[4];
     scared = false;
 
@@ -110,18 +119,24 @@ class Ghost extends GameObject { //<>// //<>//
     for (int i = 0; i < direction.length; i++) {
       direction[i] = false;
     }//end for(i)
-    int yReference;
-    int xReference;
+    //int yReference;
+    //int xReference;
 
-    currentTile = new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
+    startTileRow = (int) map(pos.x, 0, width, 0, 28);
+    startTileCol = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
+    currentTile = new PVector(startTileCol, startTileRow);//new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
     lastTile = new PVector(11, 15);
     //nextTile = new PVector(currentTile.x, currentTile.y - 2);
-    this.nextTile = nextTile;
+    this.nextTileCol = nextTileCol;
+    this.nextTileRow = nextTileRow;
+    this.nextTile = new PVector(nextTileCol, nextTileRow);
     this.homeTile = homeTile;
     time = 0;
     this.theta = theta;
     this.ghostArea =  ghostArea;
     this.ready = ready;
+    this.startGhostArea = ghostArea;
+    this.startReady = ready;
     //nextTile.y -= 1;
   }//end Ghost construuctor method
 
@@ -136,6 +151,8 @@ class Ghost extends GameObject { //<>// //<>//
       shape(frightened);
     }
     popMatrix();
+
+
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
   }
@@ -1095,7 +1112,7 @@ class Ghost extends GameObject { //<>// //<>//
     //return dist(pakmac.pos.x, pakmac.pos.y, pos.x + (yAdd * tileSize), pos.y + (xAdd * tileSize));
     int count = 0;
     PVector temp = new PVector(getLocation().x + xAdd, getLocation().y + yAdd);
-    
+
     while (temp.dist(target) != 0) { 
       //while(temp.x != target.x && temp.y != target.y){
       if (temp.x < target.x) {
@@ -1156,5 +1173,11 @@ class Ghost extends GameObject { //<>// //<>//
       //direction[1] = true;
     }
     nextTile = lastTile;
+  }
+
+  void resetGhost() {
+    nextTile = new PVector(nextTileCol, nextTileRow);
+    ghostArea = startGhostArea;
+    ready = startReady;
   }
 }//end Ghost class()
