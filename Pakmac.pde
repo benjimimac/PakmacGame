@@ -5,6 +5,9 @@ class Pakmac extends GameObject {
   PShape openedMouth;
   int score;
   int level;
+  int lives;
+  PShape liveSprite;
+  boolean died;
 
   Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right) {
     super(x, y, objectWidth, objectHeight, colour, 3.0f);
@@ -12,6 +15,8 @@ class Pakmac extends GameObject {
     setClose1();
     score = 0;
     level = 1;
+    lives = 3;
+    died = false;
 
     start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
     close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);
@@ -20,16 +25,18 @@ class Pakmac extends GameObject {
 
     //closedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
     closedMouth = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
-    
+
     openedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, start2, close2, PIE);
     sprite = closedMouth;
     this.up = up;
     this.left = left;
     this.down = down;
     this.right = right;
+
+    liveSprite = createShape(ARC, 0, 0, objectWidth * 0.5f, objectHeight * 0.5f, -PI + (TWO_PI * 0.12f), PI - (TWO_PI * 0.12f), PIE);
   }
 
-  void update(){//char up, char down, char left, char right) {
+  void update() {//char up, char down, char left, char right) {
     super.update();
     //forward.x =  cos(theta);
     //forward.y = sin(theta);
@@ -195,8 +202,13 @@ class Pakmac extends GameObject {
     translate(pos.x, pos.y);
     shape(sprite);
     popMatrix();
-    
-    
+
+    for (int i = 0; i < lives; i++) {
+      pushMatrix();
+      translate(tileSize + (tileSize * i), height - tileSize * 2);
+      shape(liveSprite);
+      popMatrix();
+    }
   }
 
   void openMouth() {

@@ -25,7 +25,7 @@ class Timer extends GameObject {
   void render() {
     fill(255);
     textSize(40);
-    text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, 100, height - tileSize);
+    text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, width * 0.3f, height - tileSize);
   }
   void update() {
     if(!mode[2]){

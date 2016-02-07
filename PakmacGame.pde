@@ -123,8 +123,8 @@ void loadData() {
   surface.setSize(700, 906);
   tileSize = width / 28;
 
-  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
-  gameObject.add(pakmac);
+  //pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
+  //gameObject.add(pakmac);
 
 
 
@@ -221,6 +221,8 @@ void loadData() {
   clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 1.0f, false, new PVector(11, 14));
   gameObject.add(clyde);
   enemyObject.add(clyde);
+  pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
+  gameObject.add(pakmac);
 
   loaded = true;
 
@@ -320,19 +322,19 @@ void gamePlay() {
     //println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
     //println("pinky: " + pinky.pos.x + ", " + pinky.pos.y + ", " + pinky.getLocation() + ", " + pinky.target + " - " + pinky.ghostArea + ", " + pinky.ready + ", " + degrees(pinky.theta));//pinky.getLocation());
     //println("clyde: " + clyde.pos.x + ", " + clyde .pos.y + ", " + clyde.getLocation() + ", " + clyde.target + " - " + clyde.ghostArea + ", " + clyde.ready + ", " + degrees(clyde.theta));//clyde.getLocation());
-  }else if(mode[2]){
-   PVector random = new PVector((int) random(0, 31), (int) random(0, 28));
-   blinky.setTarget(random);
-   
-   
-   random = new PVector((int) random(0, 31), (int) random(0, 28));
-   pinky.setTarget(random);
-   
-   random = new PVector((int) random(0, 31), (int) random(0, 28));
-   inky.setTarget(random);
-   
-   random = new PVector((int) random(0, 31), (int) random(0, 28));
-   clyde.setTarget(random);
+  } else if (mode[2]) {
+    PVector random = new PVector((int) random(0, 31), (int) random(0, 28));
+    blinky.setTarget(random);
+
+
+    random = new PVector((int) random(0, 31), (int) random(0, 28));
+    pinky.setTarget(random);
+
+    random = new PVector((int) random(0, 31), (int) random(0, 28));
+    inky.setTarget(random);
+
+    random = new PVector((int) random(0, 31), (int) random(0, 28));
+    clyde.setTarget(random);
   }
   //println(blinky.ghostArea + ", " + blinky.ready);
   if (timer.getGhostTimer() == 420 || timer.getGhostTimer() == 2040 || timer.getGhostTimer() == 3540 || timer.getGhostTimer() == 5040) {//Switch to chase
@@ -359,12 +361,15 @@ void gamePlay() {
     clyde.ready = true;
   }
 
-  checkCollisions();
+  checkFoodCollisions();
+  checkGhostCollisions();
 
   //pakmac.update();//'W', 'S', 'A', 'D');
   //blinky.update();//'I', 'K', 'J', 'L');
-  for (int i = 0; i < gameObject.size(); i++) {
-    gameObject.get(i).update();
+  if (!pakmac.died) {
+    for (int i = 0; i < gameObject.size(); i++) {
+      gameObject.get(i).update();
+    }//end for(i)
   }
   //line(100, 140, 100 + pakmac.getObjectRadius(), 140);
 
@@ -380,7 +385,7 @@ void gamePlay() {
   //}
 }
 
-void checkCollisions() {
+void checkFoodCollisions() {
   //Collisions for food and powerups
   for (int i = 0; i < gameObject.size(); i++) {
     GameObject player = gameObject.get(i);
@@ -405,19 +410,19 @@ void checkCollisions() {
           } /*else {
            pakmac.closeMouth();
            }*/
-        }else if (dot instanceof Powerup) {
+        } else if (dot instanceof Powerup) {
           if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
             mode[0] = false;
             mode[1] = false;
             mode[2] = true;
-            
+
             pakmac.openMouth();
 
             if (player.pos.dist(dot.pos) <= 5) {
-              for(int k = gameObject.size() - 10; k >=0; k--){
+              for (int k = gameObject.size() - 10; k >=0; k--) {
                 GameObject ghost = gameObject.get(k);
-                
-                if(ghost instanceof Ghost){
+
+                if (ghost instanceof Ghost) {
                   ((Powerup) dot).activateFrightened((Ghost) ghost);
                 }
               }
@@ -431,6 +436,26 @@ void checkCollisions() {
       }
     }
   }
+}
+
+void checkGhostCollisions() {
+  for (int i = gameObject.size() - 1; i >= 0; i--) {
+    GameObject pak = gameObject.get(i);
+    if (pak instanceof Pakmac) {
+      for (int j = gameObject.size() - 1; j >= 0; j--) {       
+        GameObject ghost = gameObject.get(j);
+        if (ghost instanceof Ghost) {
+          if (pak.getLocation().dist(ghost.getLocation()) == 0) {
+            println("Same tile");
+            if (!mode[2] && !((Pakmac) pak).died) {
+              ((Pakmac) pak).died = true;
+              ((Pakmac) pak).lives -= 1;
+            }//end if()
+          }//end if()
+        }//end if()
+      }//end for(j)
+    }//end if()
+  }//end for(i)
 }
 
 void keyPressed() {
