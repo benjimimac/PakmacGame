@@ -11,6 +11,7 @@ class Ghost extends GameObject { //<>// //<>//
   int startTileCol;
   int startTileRow;
   PVector nextTile;
+  PVector startNextTile;
   int nextTileCol;
   int nextTileRow;
   PVector lastTile;
@@ -141,8 +142,9 @@ class Ghost extends GameObject { //<>// //<>//
     currentTile = new PVector(startTileCol, startTileRow);//new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
     lastTile = new PVector(11, 15);
     //nextTile = new PVector(currentTile.x, currentTile.y - 2);
-    this.nextTileCol = nextTileCol;
-    this.nextTileRow = nextTileRow;
+    this.startNextTile = new PVector(nextTileCol, nextTileRow);
+    //this.nextTileCol = nextTileCol;
+    //this.nextTileRow = nextTileRow;
     this.nextTile = new PVector(nextTileCol, nextTileRow);
     this.homeTile = homeTile;
     time = 0;
@@ -1218,11 +1220,15 @@ class Ghost extends GameObject { //<>// //<>//
     nextTile = lastTile;
   }
 
-  void resetGhost() {
-    nextTile = new PVector(nextTileCol, nextTileRow);
-    theta = startTheta;
-    i = startI;
-    ghostArea = startGhostArea;
-    ready = startReady;
+  void resetGhostFields(){
+    resetGhost(startTheta, startI, startGhostArea, startReady);
+  }
+
+  void resetGhost(float theta, int i, boolean ghostArea, boolean ready) {
+    nextTile = startNextTile.copy();
+    this.theta = theta;
+    this.i = i;
+    this.ghostArea = ghostArea;
+    this.ready = ready;
   }
 }//end Ghost class()

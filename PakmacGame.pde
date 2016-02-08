@@ -428,7 +428,7 @@ void gamePlay() {
             sprite.i = sprite.startI;
             if (sprite instanceof Ghost) {
               println("test");
-              ((Ghost) sprite).resetGhost();
+              ((Ghost) sprite).resetGhostFields();
               //((Ghost) sprite).nextTile = new PVector(((Ghost) sprite).startNextTile.x, ((Ghost) sprite).startNextTile.y);//((Ghost) sprite).startNextTile;
             }
 
