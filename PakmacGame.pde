@@ -219,11 +219,20 @@ void loadData() {
         //}
         //blankReference.add(new PVector(j, i));
       }//end if()
+<<<<<<< HEAD
 
       if (pathValues[j].equals("6")) {
         //PVector tempGhostDoor = new PVector(j, i);
         path.setGhostDoor(i, j);
       }
+=======
+      
+      if (pathValues[j].equals("6")) {
+        PVector tempGhostDoor = new PVector(j, i);
+        path.setGhostDoor(tempGhostDoor);
+      }
+      
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
     }//end for(j)
   }//end for(i)
 
@@ -265,8 +274,13 @@ void gamePlay() {
   //pakmac.render();
   //food.render();
   //println(pinky.ghostArea + ", " + pinky.ready);
+<<<<<<< HEAD
 
   println("Blinky " + blinky.currentTile + ", " + blinky.nextTile);
+=======
+  
+  println("Blinky " + blinky.eaten);
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
 
   for (int i = 0; i < gameObject.size(); i++) {
     gameObject.get(i).render();
@@ -376,9 +390,16 @@ void gamePlay() {
             newTarget = new PVector((int) random(0, 31), (int) random(0, 28));
             ((Ghost) ghost).setTarget(newTarget);
           } else {
+<<<<<<< HEAD
             newTarget = ghostAreaRespawn.copy();
             ((Ghost) ghost).setTarget(newTarget);
           }
+=======
+            newTarget = new PVector(14, 13);
+            ((Ghost) ghost).setTarget(newTarget);
+          }
+          
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
         }
       }
     }
@@ -428,7 +449,11 @@ void gamePlay() {
             sprite.i = sprite.startI;
             if (sprite instanceof Ghost) {
               println("test");
+<<<<<<< HEAD
               ((Ghost) sprite).resetGhostFields();
+=======
+              ((Ghost) sprite).resetGhost();
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
               //((Ghost) sprite).nextTile = new PVector(((Ghost) sprite).startNextTile.x, ((Ghost) sprite).startNextTile.y);//((Ghost) sprite).startNextTile;
             }
 

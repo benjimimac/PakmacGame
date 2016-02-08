@@ -170,7 +170,11 @@ class Ghost extends GameObject { //<>// //<>//
     }
     popMatrix();
 
+<<<<<<< HEAD
     //println("Ghost eaten: " + eaten + ", Target: " + target);
+=======
+    println("Ghost eaten: " + eaten + ", Target: " + target);
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
 
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
@@ -267,7 +271,11 @@ class Ghost extends GameObject { //<>// //<>//
 
         //println("Ready");
         //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
+<<<<<<< HEAD
         if (pos.dist(centre) <= 2) {
+=======
+        if (pos.dist(middle) <= 2) {
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
           //ghostArea = false;
           //if (theta == HALF_PI) {
           //  if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
@@ -1220,6 +1228,7 @@ class Ghost extends GameObject { //<>// //<>//
     nextTile = lastTile;
   }
 
+<<<<<<< HEAD
   void resetGhostFields(){
     resetGhost(startTheta, startI, startGhostArea, startReady);
   }
@@ -1230,5 +1239,13 @@ class Ghost extends GameObject { //<>// //<>//
     this.i = i;
     this.ghostArea = ghostArea;
     this.ready = ready;
+=======
+  void resetGhost() {
+    nextTile = new PVector(nextTileCol, nextTileRow);
+    theta = startTheta;
+    i = startI;
+    ghostArea = startGhostArea;
+    ready = startReady;
+>>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
   }
 }//end Ghost class()
