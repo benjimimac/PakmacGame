@@ -8,7 +8,7 @@ class Timer extends GameObject {
   long ghostTimer;
   int frightened;
   int lastMode;
-  int deathTimer;
+  int pauseTimer;
 
   public Timer() {
     super(0, 0, 0, 0, 0, 0);
@@ -21,7 +21,7 @@ class Timer extends GameObject {
     ghostTimer = 0;
     frightened = 0;
     lastMode = 0;
-    deathTimer = 0;
+    pauseTimer = 0;
   }
 
   void render() {

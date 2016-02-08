@@ -1,8 +1,10 @@
 class Dot extends GameObject implements Points{
   PShape dot;
+  
   //Constructor method
   Dot(float x, float y, float objectWidth, float objectHeight, color colour){
     super(x, y, objectWidth, objectHeight, colour, 0.0f);
+    
     
     dot = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
   }
@@ -22,5 +24,6 @@ class Dot extends GameObject implements Points{
     pakmac.score += 10;
     pakmac.eating = false;
     maze.dotCount ++;
+    pakmac.foodCount += 1;
   }
 }

@@ -1,7 +1,8 @@
 class Ghost extends GameObject { //<>// //<>//
   //Fields
   PShape[] sprites;
-  PShape frightened;
+  PShape frightenedSprite;
+  PShape[] eatenSprite;
   PShape pupil1;
   PShape pupil2;
   PVector target;
@@ -20,7 +21,7 @@ class Ghost extends GameObject { //<>// //<>//
   boolean startGhostArea;
   boolean startReady;
 
-
+  boolean eaten;
   boolean scared;
 
 
@@ -31,9 +32,11 @@ class Ghost extends GameObject { //<>// //<>//
     this.theta = theta;
     this.startTheta = theta;
     i = (int) map(startTheta, PI + HALF_PI, 0, 3, 0);
-    startI = i;
+    startI = (int) map(startTheta, PI + HALF_PI, 0, 3, 0);
     sprites = new PShape[4];
+    eatenSprite = new PShape[4];
     scared = false;
+    eaten = false;
 
     //frightenedSprite = createShape(GROUP);
     //Create 4 separate sprites for each direction
@@ -42,6 +45,7 @@ class Ghost extends GameObject { //<>// //<>//
       fill(colour);
       stroke(colour);
       sprites[index] = createShape(GROUP);
+      eatenSprite[index] = createShape(GROUP);
       PShape head = createShape(ARC, 0, 0, objectWidth, objectWidth, PI, TWO_PI, PIE);
       sprites[index].addChild(head);
       PShape body = createShape(RECT, 0 - objectHeight, 0, objectWidth, objectHeight);
@@ -56,8 +60,10 @@ class Ghost extends GameObject { //<>// //<>//
       stroke(255);
       PShape eye1 = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f), objectHeight * 0.5f, objectHeight * 0.615384f);
       sprites[index].addChild(eye1);
+      eatenSprite[index].addChild(eye1);
       PShape eye2 = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f), objectHeight * 0.5f, objectHeight * 0.615384f);
       sprites[index].addChild(eye2);
+      eatenSprite[index].addChild(eye2);
     }
     fill(0);
     stroke(0);
@@ -67,53 +73,61 @@ class Ghost extends GameObject { //<>// //<>//
     PShape pupil2Up = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) - 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
     sprites[0].addChild(pupil1Up);
     sprites[0].addChild(pupil2Up);
+    eatenSprite[0].addChild(pupil1Up);
+    eatenSprite[0].addChild(pupil2Up);
 
     //Pupils facing left
     PShape  pupil1Left = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape  pupil2Left = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     sprites[1].addChild(pupil1Left);
     sprites[1].addChild(pupil2Left);
+    eatenSprite[1].addChild(pupil1Left);
+    eatenSprite[1].addChild(pupil2Left);
 
     //Pupils facing down
     PShape pupil1Down = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape pupil2Down = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
     sprites[2].addChild(pupil1Down);
     sprites[2].addChild(pupil2Down);
+    eatenSprite[2].addChild(pupil1Down);
+    eatenSprite[2].addChild(pupil2Down);
 
     //Pupils facing right
     PShape pupil1Right = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) + 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape pupil2Right = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) + 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     sprites[3].addChild(pupil1Right);
     sprites[3].addChild(pupil2Right);
+    eatenSprite[3].addChild(pupil1Right);
+    eatenSprite[3].addChild(pupil2Right);
 
     fill(0, 0, 245);
     stroke(0, 0, 245);
-    frightened = createShape(GROUP);
+    frightenedSprite = createShape(GROUP);
     PShape head = createShape(ARC, 0, 0, objectWidth, objectWidth, PI, TWO_PI, PIE);
-    frightened.addChild(head);
+    frightenedSprite.addChild(head);
     PShape body = createShape(RECT, 0 - objectHeight, 0, objectWidth, objectHeight);
-    frightened.addChild(body);
+    frightenedSprite.addChild(body);
     fill(0);
     stroke(0);
     PShape foot1= createShape(TRIANGLE, 0 - objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
-    frightened.addChild(foot1);
+    frightenedSprite.addChild(foot1);
     PShape foot2= createShape(TRIANGLE, 0 + objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
-    frightened.addChild(foot2);
+    frightenedSprite.addChild(foot2);
     fill(255);
     stroke(255);
     PShape eye1 = createShape(ELLIPSE, 0 - (objectHeight * 0.3f), 0 - (objectHeight * 0.25f), objectHeight * 0.3f, objectHeight * 0.3f);
-    frightened.addChild(eye1);
+    frightenedSprite.addChild(eye1);
     PShape eye2 = createShape(ELLIPSE, 0 + (objectHeight * 0.3f), 0 - (objectHeight * 0.25f), objectHeight * 0.3f, objectHeight * 0.3f);
-    frightened.addChild(eye2);
+    frightenedSprite.addChild(eye2);
     PShape mouth1 = createShape(LINE, 0 - (objectHeight * 0.8f), 0 + (objectHeight * 0.45f), 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
     // 0 + (objectHeight * 0.8f), 0 + (objectHeight * 0.45f));
-    frightened.addChild(mouth1);
+    frightenedSprite.addChild(mouth1);
     PShape mouth2 = createShape(LINE, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.35f), 0, 0 + (objectHeight * 0.45f));
-    frightened.addChild(mouth2);
+    frightenedSprite.addChild(mouth2);
     PShape mouth3 = createShape(LINE, 0, 0 + (objectHeight * 0.45f), 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
-    frightened.addChild(mouth3);
+    frightenedSprite.addChild(mouth3);
     PShape mouth4 = createShape(LINE, 0 + (objectHeight * 0.8f), 0 + (objectHeight * 0.45f), 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
-    frightened.addChild(mouth4);
+    frightenedSprite.addChild(mouth4);
 
     //Set direction array to false by default
     for (int i = 0; i < direction.length; i++) {
@@ -145,13 +159,16 @@ class Ghost extends GameObject { //<>// //<>//
     pushMatrix();
     translate(pos.x, pos.y);
     //pupil1.rotate(PI);
-    if (!scared) {
+    if (!scared && !eaten) {
       shape(sprites[i]);
+    } else if (eaten) {
+      shape(eatenSprite[i]);
     } else {    
-      shape(frightened);
+      shape(frightenedSprite);
     }
     popMatrix();
 
+    println("Ghost eaten: " + eaten + ", Target: " + target);
 
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
@@ -227,7 +244,6 @@ class Ghost extends GameObject { //<>// //<>//
         //println("Ready");
         //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
         if (pos.dist(middle) <= 2) {
-          println("middle less than 2 " + getLocation() + ghostArea);
           //ghostArea = false;
           //if (theta == HALF_PI) {
           //  if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
@@ -397,15 +413,11 @@ class Ghost extends GameObject { //<>// //<>//
 
 
       //Check tile above
+
       if (maze.path.getPathNext((int) currentTile.x - 1, (int) currentTile.y) == 1) {
         if (theta != HALF_PI) {
           direction[0] = true;
         }
-
-
-        //if (dist(target.x, target.y, tempRef.x - 1, tempRef.y) <= dist(target.y, target.x, tempRef.y - 1, tempRef.x)) {
-        // return true;
-        //}
       }
 
       //Check tile left
@@ -415,12 +427,20 @@ class Ghost extends GameObject { //<>// //<>//
         }
       }
 
-      //Check down tile
-      if (maze.path.getPathNext((int) currentTile.x + 1, (int) currentTile.y) == 1) {
-        if (theta != PI + HALF_PI) {
-          direction[2] = true;
+      if (!eaten) {
+        //Check down tile
+        if (maze.path.getPathNext((int) currentTile.x + 1, (int) currentTile.y) == 1) {
+          if (theta != PI + HALF_PI) {
+            direction[2] = true;
+          }
+        }//end if()
+      } else {
+        if (maze.path.getPathNext((int) currentTile.x + 1, (int) currentTile.y) == 1 || maze.path.getPathNext((int) currentTile.x + 1, (int) currentTile.y) == 5) {
+          if (theta != PI + HALF_PI) {
+            direction[2] = true;
+          }
         }
-      }//end if()
+      }
 
       //check tile right
       if (maze.path.getPathNext((int) currentTile.x, (int) currentTile.y + 1) == 1) {
@@ -559,10 +579,11 @@ class Ghost extends GameObject { //<>// //<>//
     //  }//end if()
     //}//end else
 
-
-    if (checkCurrentTile(new PVector(11, 12)) || checkCurrentTile(new PVector(11, 15)) || checkCurrentTile(new PVector(23, 12)) || checkCurrentTile(new PVector(23, 15)))
-    {
-      direction[0] = false;
+    if (!eaten) {
+      if (checkCurrentTile(new PVector(11, 12)) || checkCurrentTile(new PVector(11, 15)) || checkCurrentTile(new PVector(23, 12)) || checkCurrentTile(new PVector(23, 15)))
+      {
+        direction[0] = false;
+      }
     }
 
 
@@ -1177,6 +1198,8 @@ class Ghost extends GameObject { //<>// //<>//
 
   void resetGhost() {
     nextTile = new PVector(nextTileCol, nextTileRow);
+    theta = startTheta;
+    i = startI;
     ghostArea = startGhostArea;
     ready = startReady;
   }

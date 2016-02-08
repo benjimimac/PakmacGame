@@ -11,6 +11,8 @@ class Pakmac extends GameObject {
   boolean died;
   float angle;
   boolean eating;
+  int foodCount;
+  boolean finished;
 
   Pakmac(float x, float y, float objectWidth, float objectHeight, color colour, char up, char left, char down, char right, float theta) {
     super(x, y, objectWidth, objectHeight, colour, 3.0f);
@@ -27,11 +29,14 @@ class Pakmac extends GameObject {
     eating = false;
     this.theta = theta;
     this.startTheta = theta;
+    finished = false;
 
     start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
     close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);
     startAngle = start1;
     closeAngle = close1;
+    
+    foodCount = 0;
 
     //closedMouth = createShape(ARC, 0, 0, objectWidth, objectHeight, startAngle, closeAngle, PIE);
     sprite = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
@@ -55,6 +60,9 @@ class Pakmac extends GameObject {
 
   void update() {//char up, char down, char left, char right) {
     super.update();
+    if(foodCount == 240){
+      finished = true;
+    }
     //forward.x =  cos(theta);
     //forward.y = sin(theta);
     ////int xReference = (int) map(pos.x, 0, width, 0, 28);
@@ -228,7 +236,6 @@ class Pakmac extends GameObject {
     if (!eating) {
       shape(sprite);
     } else {
-      println("eating");
       shape(spriteOpenMouth[i]);
     }
     popMatrix();
