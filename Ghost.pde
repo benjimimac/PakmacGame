@@ -168,7 +168,7 @@ class Ghost extends GameObject { //<>// //<>//
     }
     popMatrix();
 
-    println("Ghost eaten: " + eaten + ", Target: " + target);
+    //println("Ghost eaten: " + eaten + ", Target: " + target);
 
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
@@ -182,7 +182,7 @@ class Ghost extends GameObject { //<>// //<>//
     }
 
 
-    if (getLocation().x == 11 && (getLocation().y == 14)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
+    if (ghostArea && getLocation().x == 11 && (getLocation().y == 14)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
       ghostArea = false;
       //nextTile = new PVector(11, 12);
       speed = 2.0f;
@@ -193,6 +193,21 @@ class Ghost extends GameObject { //<>// //<>//
 
 
       getDirections();
+      if(currentTile.dist(ghostAreaRespawn) == 0){
+        for(int i = 0; i < direction.length; i++){
+          direction[i] = false;
+        }
+        
+        direction[0] = true;
+        pos = respawnPos.copy();
+        theta = PI + HALF_PI;
+        i = 0;
+        ghostArea = true;
+        ready = true;
+        eaten = false;
+        nextTile = newNextTile.copy();
+      }
+      
       if (direction[0]) {//keys[up] || testTarget) {
         if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
           this.i = 0;
@@ -213,12 +228,22 @@ class Ghost extends GameObject { //<>// //<>//
         //super.turnLeft();
       } else if (direction[2]) {//keys[down]) {
 
-        if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
-          this.i = 2;
+        if (!eaten) {
+          println("jsggggggggggggggggl");
+          if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
+            this.i = 2;
 
-          theta = HALF_PI;
-          //setStart1();
-          //setClose1();
+            theta = HALF_PI;
+            //setStart1();
+            //setClose1();
+          }
+        }else{
+          println("helphelphelp");
+          if ((get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()) || get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN){
+            this.i = 2;
+
+            theta = HALF_PI;
+          }
         }
         //super.turnDown();
       } else if (direction[3]) {//keys[right]) {
@@ -236,14 +261,11 @@ class Ghost extends GameObject { //<>// //<>//
       forward.y = sin(theta);
       if (ready) {
         //PVector middle = new PVector(tileSize + (tileSize * 14), width * 0.5f);
-        PVector middle = new PVector(width * 0.5f, tileSize + (tileSize * 14) + (tileSize * 0.5f));
-        PVector left = new PVector((tileSize * 12), tileSize + (tileSize * 14) + (tileSize * 0.5f));
-        PVector right = new PVector((tileSize * 16), tileSize + (tileSize * 14) + (tileSize * 0.5f));
-        PVector outside = new PVector(width * 0.5f, tileSize + (tileSize * 11) + (tileSize * 0.5f));
+        
 
         //println("Ready");
         //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
-        if (pos.dist(middle) <= 2) {
+        if (pos.dist(centre) <= 2) {
           //ghostArea = false;
           //if (theta == HALF_PI) {
           //  if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
@@ -307,12 +329,12 @@ class Ghost extends GameObject { //<>// //<>//
         // }
         //}
 
-        if (pos.dist(left) == 0) {
+        if (pos.dist(leftCentre) == 0) {
           this.i = 3;
           theta = 0;
         }
 
-        if (pos.dist(right) == 0) {
+        if (pos.dist(rightCentre) == 0) {
           this.i = 1;
           theta = PI;
         }

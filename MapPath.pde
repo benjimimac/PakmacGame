@@ -15,8 +15,8 @@ class MapPath {
     path[(int) pathTile.y][(int) pathTile.x] = 1;
   }//end setPath method()
   
-  public void setGhostDoor(PVector ghostDoor){
-    path[(int) ghostDoor.x][(int) ghostDoor.y] = 5;
+  public void setGhostDoor(int i, int j){
+    path[i][j] = 5;
   }
   
   public int getPathNext(int x, int y){
