@@ -9,6 +9,10 @@ class Timer extends GameObject {
   int frightened;
   int lastMode;
   int pauseTimer;
+  long levelStart;
+  boolean beginLevel;
+  boolean gamePause;
+  int eatGhost;
 
   public Timer() {
     super(0, 0, 0, 0, 0, 0);
@@ -22,12 +26,28 @@ class Timer extends GameObject {
     frightened = 0;
     lastMode = 0;
     pauseTimer = 0;
+    beginLevel = false;
+    levelStart = 0;
+    gamePause = false;
+    eatGhost = 0;
   }
 
   void render() {
     fill(255);
     textSize(40);
     text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, width * 0.3f, height - tileSize);
+    
+    levelStart += 1;
+    if(levelStart == 180){
+      beginLevel = true;
+    }
+    
+    if(gamePause){
+      eatGhost += 1;
+      if(eatGhost == 60){
+        gamePause = false;
+      }
+    }
   }
   void update() {
     if (!mode[2]) {
@@ -94,6 +114,7 @@ class Timer extends GameObject {
    // } else{//(pakmac.died){
       
     //}
+    
   }
 
   long getGhostTimer() {
