@@ -24,6 +24,7 @@ class GameObject {
     this.x = x;
     this.y = y;
     pos = new PVector(x, y);
+    startPos = pos.copy();
     //startPos = new PVector(x, y);
     forward = new PVector(0, 0);
     this.objectWidth = objectWidth;

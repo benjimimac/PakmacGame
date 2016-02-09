@@ -15,13 +15,8 @@ class MapPath {
     path[(int) pathTile.y][(int) pathTile.x] = 1;
   }//end setPath method()
   
-<<<<<<< HEAD
   public void setGhostDoor(int i, int j){
     path[i][j] = 5;
-=======
-  public void setGhostDoor(PVector ghostDoor){
-    path[(int) ghostDoor.x][(int) ghostDoor.y] = 5;
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
   }
   
   public int getPathNext(int x, int y){

@@ -23,6 +23,7 @@ PVector outside;
 PVector respawnPos;
 float respawnTheta;
 PVector ghostAreaRespawn; 
+PVector respawnNextTile;
 PVector newNextTile;
 
 final color BROWN  = color(139, 69, 19);
@@ -73,14 +74,7 @@ void setup() {
   mode[1] = false;  //Chase mode
   mode[2] = false;  //Frightened mode
 
-  centre = new PVector(width * 0.5f, tileSize + (tileSize * 14) + (tileSize * 0.5f));
-  leftCentre = new PVector((tileSize * 12), tileSize + (tileSize * 14) + (tileSize * 0.5f));
-  rightCentre = new PVector((tileSize * 16), tileSize + (tileSize * 14) + (tileSize * 0.5f));
-  outside = new PVector(width * 0.5f, tileSize + (tileSize * 11) + (tileSize * 0.5f));
-  respawnTheta = PI + HALF_PI;
-  respawnPos = new PVector((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f));
-  ghostAreaRespawn = new PVector(14, 13);
-  newNextTile = new PVector(11, 14);
+  
 
   loaded = false; //If false load the new map data - true play game
 }
@@ -91,14 +85,14 @@ void draw() {
   stroke(255);
 
   option();
-
-  //stroke(255, 0, 0);
-  //for (int i = 0; i <= 31; i++) {
-  //  line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
-  //}
-  //for (int i = 0; i <= 28; i++) {
-  //  line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
-  //}
+println(degrees(blinky.theta) + ", " + blinky.ghostArea + ", " + blinky.ready + ", " + blinky.currentTile + ", " + blinky.nextTile + ", " + blinky.startNextTile);
+  stroke(255, 0, 0);
+  for (int i = 0; i <= 31; i++) {
+    line(0, tileSize + (i * tileSize), width, tileSize + (i * tileSize));
+  }
+  for (int i = 0; i <= 28; i++) {
+    line(tileSize * i, tileSize, tileSize * i, tileSize + (tileSize * 31));
+  }
 
 
   //if (dist(pakmac.getLocation().x, pakmac.getLocation().y, blinky.getLocation().x, blinky.getLocation().y) == 0) {//pakmac.getLocation() == blinky.getLocation()){
@@ -140,6 +134,16 @@ void loadData() {
   //Resize the window for game play - 840 * 930
   surface.setSize(700, 906);
   tileSize = width / 28;
+  
+  centre = new PVector(width * 0.5f, tileSize + (tileSize * 14) + (tileSize * 0.5f));
+  leftCentre = new PVector((tileSize * 12), tileSize + (tileSize * 14) + (tileSize * 0.5f));
+  rightCentre = new PVector((tileSize * 16), tileSize + (tileSize * 14) + (tileSize * 0.5f));
+  outside = new PVector(width * 0.5f, tileSize + (tileSize * 12) + (tileSize * 0.5f));
+  respawnTheta = PI + HALF_PI;
+  respawnPos = new PVector((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f));
+  ghostAreaRespawn = new PVector(14, 13);
+  newNextTile = new PVector(11, 13);
+  
 
   //pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D');
   //gameObject.add(pakmac);
@@ -219,20 +223,11 @@ void loadData() {
         //}
         //blankReference.add(new PVector(j, i));
       }//end if()
-<<<<<<< HEAD
 
       if (pathValues[j].equals("6")) {
-        //PVector tempGhostDoor = new PVector(j, i);
+        //PVector tempGhostDoor = new PVector(i, j);
         path.setGhostDoor(i, j);
       }
-=======
-      
-      if (pathValues[j].equals("6")) {
-        PVector tempGhostDoor = new PVector(j, i);
-        path.setGhostDoor(tempGhostDoor);
-      }
-      
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
     }//end for(j)
   }//end for(i)
 
@@ -243,14 +238,14 @@ void loadData() {
   blinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2.5f, true, 11, 12);
   gameObject.add(blinky);
   enemyObject.add(blinky);
-  pinky = new Ghost((tileSize * 14), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 1.0f, true, 11, 14);
+  pinky = new Ghost(width * 0.5f, (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), HALF_PI, true, 0.5f, true, 11, 13);
   //pinky = new Ghost(width * 0.5f, (tileSize * 12) + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 184, 222), new PVector(-1, 6), PI, false);
   gameObject.add(pinky);
   enemyObject.add(pinky);
-  inky = new Ghost((tileSize * 12), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 1.0f, false, 11, 14);
+  inky = new Ghost((tileSize * 12), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(0, 255, 223), new PVector(32, 18), PI + HALF_PI, true, 0.5f, false, 11, 13);
   gameObject.add(inky);
   enemyObject.add(inky);
-  clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 1.0f, false, 11, 14);
+  clyde = new Ghost((tileSize * 16), (tileSize * 15)/*(tileSize * 15)*/ + (tileSize * 0.5f), (tileSize * 2) * 0.85, tileSize * 0.85, color(255, 160, 0), new PVector(32, 1), PI + HALF_PI, true, 0.5f, false, 11, 13);
   gameObject.add(clyde);
   enemyObject.add(clyde);
   pakmac = new Pakmac(width * 0.5f, tileSize + (tileSize * 23) + (tileSize * 0.5f), tileSize * 1.6, tileSize * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
@@ -274,13 +269,8 @@ void gamePlay() {
   //pakmac.render();
   //food.render();
   //println(pinky.ghostArea + ", " + pinky.ready);
-<<<<<<< HEAD
 
-  println("Blinky " + blinky.currentTile + ", " + blinky.nextTile);
-=======
-  
-  println("Blinky " + blinky.eaten);
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
+
 
   for (int i = 0; i < gameObject.size(); i++) {
     gameObject.get(i).render();
@@ -323,25 +313,25 @@ void gamePlay() {
     } else if (mode[1]) {
       //Set Blinkys chase target
       if (!blinky.eaten) {
-        target = pakmac.getLocation();
-        blinky.setTarget(target);
+       target = pakmac.getLocation();
+       blinky.setTarget(target);
       }
 
       //Set Pinkys chase target
       targetTheta = pakmac.getTheta();  
       if (!pinky.eaten) {
 
-        target = pakmac.getLocation();
-        if (targetTheta == 0) {
-          target.y += 4;
-        } else if (targetTheta == HALF_PI) {
-          target.x += 4;
-        } else if (targetTheta == PI) {
-          target.y -= 4;
-        } else {
-          target.x -= 4;
-        }
-        pinky.setTarget(target);
+       target = pakmac.getLocation();
+       if (targetTheta == 0) {
+         target.y += 4;
+       } else if (targetTheta == HALF_PI) {
+         target.x += 4;
+       } else if (targetTheta == PI) {
+         target.y -= 4;
+       } else {
+         target.x -= 4;
+       }
+       pinky.setTarget(target);
       }
 
       //Set Inkys chase target
@@ -357,6 +347,7 @@ void gamePlay() {
           target.x -= 2;
         }
         PVector blinkyLoc = blinky.getLocation();
+        //PVector blinkyLoc = new PVector(1, 1);
         float xAdd = target.x - blinkyLoc.x;
         float yAdd = target.y - blinkyLoc.y;
         target.x += xAdd;
@@ -366,16 +357,16 @@ void gamePlay() {
 
       //Set Clydes chase target
       if (!clyde.eaten) {
-        target = pakmac.getLocation();
-        clyde.setTarget(target);
-        if (!clyde.ghostArea) {
-          if (clyde.getDistance(0, 0) < 8) {//dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
-            target = clyde.homeTile;
-            clyde.setTarget(target);
-          } else {
-            clyde.setTarget(target);
-          }
-        }
+       target = pakmac.getLocation();
+       clyde.setTarget(target);
+       if (!clyde.ghostArea) {
+         if (clyde.getDistance(0, 0) < 8) {//dist(clyde.currentTile.x, clyde.currentTile.y, target.x, target.y) < 8) {
+           target = clyde.homeTile;
+           clyde.setTarget(target);
+         } else {
+           clyde.setTarget(target);
+         }
+       }
       }
 
       //println("blinky: " + blinky.pos.x + ", " + blinky.pos.y + ", " + blinky.getLocation() + ", " + blinky.target + " - " + blinky.ghostArea + ", " + blinky.ready + ", " + degrees(blinky.theta));//pinky.getLocation());
@@ -390,16 +381,9 @@ void gamePlay() {
             newTarget = new PVector((int) random(0, 31), (int) random(0, 28));
             ((Ghost) ghost).setTarget(newTarget);
           } else {
-<<<<<<< HEAD
-            newTarget = ghostAreaRespawn.copy();
-            ((Ghost) ghost).setTarget(newTarget);
-          }
-=======
             newTarget = new PVector(14, 13);
             ((Ghost) ghost).setTarget(newTarget);
           }
-          
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
         }
       }
     }
@@ -425,7 +409,7 @@ void gamePlay() {
       clyde.ready = true;
     }
 
-    checkFoodCollisions();
+    checkCollisions();
     //checkGhostCollisions();
 
     //pakmac.update();//'W', 'S', 'A', 'D');
@@ -444,16 +428,12 @@ void gamePlay() {
         for (int i = gameObject.size() - 1; i >= 0; i--) {
           GameObject sprite = gameObject.get(i);
           if (sprite instanceof Pakmac || sprite instanceof Ghost) {
-            sprite.pos = new PVector(sprite.x, sprite.y);
+            sprite.pos = sprite.startPos.copy();//new PVector(sprite.x, sprite.y);
             sprite.theta = sprite.startTheta;
             sprite.i = sprite.startI;
             if (sprite instanceof Ghost) {
               println("test");
-<<<<<<< HEAD
-              ((Ghost) sprite).resetGhostFields();
-=======
               ((Ghost) sprite).resetGhost();
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
               //((Ghost) sprite).nextTile = new PVector(((Ghost) sprite).startNextTile.x, ((Ghost) sprite).startNextTile.y);//((Ghost) sprite).startNextTile;
             }
 
@@ -484,7 +464,7 @@ void gamePlay() {
   //}
 }
 
-void checkFoodCollisions() {
+void checkCollisions() {
   //Collisions for food and powerups
   for (int i = 0; i < gameObject.size(); i++) {
     GameObject player = gameObject.get(i);
@@ -514,18 +494,26 @@ void checkFoodCollisions() {
             mode[0] = false;
             mode[1] = false;
             mode[2] = true;
+            
+            GameObject ghost;
+            for(int k = gameObject.size() - 1; k >= 0; k--){
+              ghost = gameObject.get(k);
+              if(ghost instanceof Ghost){
+                ((Ghost) ghost). scared = true;
+              }//end if()
+            }//end for(k)
 
             //pakmac.openMouth();
-            pakmac.eating = true;
+            ((Pakmac) player).eating = true;
 
             if (player.pos.dist(dot.pos) <= 5) {
-              for (int k = gameObject.size() - 10; k >=0; k--) {
-                GameObject ghost = gameObject.get(k);
+              //for (int k = gameObject.size() - 10; k >=0; k--) {
+              //  GameObject ghost = gameObject.get(k);
 
-                if (ghost instanceof Ghost) {
-                  //((Powerup) dot).activateFrightened((Ghost) ghost);
-                }
-              }
+              //  if (ghost instanceof Ghost) {
+              //    //((Powerup) dot).activateFrightened((Ghost) ghost);
+              //  }
+              //}
               ((Powerup) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);
               pakmac.eating = false;
@@ -544,7 +532,7 @@ void checkFoodCollisions() {
         if (ghost instanceof Ghost) {
           if (pak.getLocation().dist(ghost.getLocation()) == 0) {
             //println("Same tile");
-            if (!mode[2]) {// && !((Pakmac) pak).died) {
+            if (!mode[2] && !((Ghost) ghost).eaten) {// && !((Pakmac) pak).died) {
               ((Pakmac) pak).died = true;
               ((Pakmac) pak).lives -= 1;
               //((Ghost) ghost).i = (int) map(((Ghost) ghost).theta, 0, PI + HALF_PI, 0, 3);
@@ -554,33 +542,6 @@ void checkFoodCollisions() {
             } else {//end if()
               ((Ghost) ghost).eaten = true;              
               ((Ghost) ghost).ready = true;
-              //((Ghost) ghost).setTarget(new PVector(0, 0));
-            }
-          }//end if()
-        }//end if()
-      }//end for(j)
-    }//end if()
-  }//end for(i)
-}
-
-void checkGhostCollisions() {
-  for (int i = gameObject.size() - 1; i >= 0; i--) {
-    GameObject pak = gameObject.get(i);
-    if (pak instanceof Pakmac) {
-      for (int j = gameObject.size() - 1; j >= 0; j--) {       
-        GameObject ghost = gameObject.get(j);
-        if (ghost instanceof Ghost) {
-          if (pak.getLocation().dist(ghost.getLocation()) == 0) {
-            //println("Same tile");
-            if (!mode[2]) {// && !((Pakmac) pak).died) {
-              ((Pakmac) pak).died = true;
-              ((Pakmac) pak).lives -= 1;
-              //((Ghost) ghost).i = (int) map(((Ghost) ghost).theta, 0, PI + HALF_PI, 0, 3);
-              //((Ghost) ghost).theta = ((Ghost) ghost).startTheta;
-              //println(((Ghost) ghost).i + ", " + degrees(((Ghost) ghost).theta));
-              //resetGhosts();
-            } else {//end if()
-              ((Ghost) ghost).eaten = true;
               //((Ghost) ghost).setTarget(new PVector(0, 0));
             }
           }//end if()

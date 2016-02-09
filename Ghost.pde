@@ -21,12 +21,13 @@ class Ghost extends GameObject { //<>// //<>//
   boolean ready;
   boolean startGhostArea;
   boolean startReady;
+  float startSpeed;
 
   boolean eaten;
   boolean scared;
 
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileCol, int nextTileRow) {
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectHeight, colour, speed);
     this.x = x;
     this.y = y;
@@ -38,6 +39,7 @@ class Ghost extends GameObject { //<>// //<>//
     eatenSprite = new PShape[4];
     scared = false;
     eaten = false;
+    startSpeed = speed;
 
     //frightenedSprite = createShape(GROUP);
     //Create 4 separate sprites for each direction
@@ -137,15 +139,15 @@ class Ghost extends GameObject { //<>// //<>//
     //int yReference;
     //int xReference;
 
-    startTileRow = (int) map(pos.x, 0, width, 0, 28);
-    startTileCol = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
+    //startTileRow = (int) map(pos.x, 0, width, 0, 28);
+    //startTileCol = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
     currentTile = new PVector(startTileCol, startTileRow);//new PVector(yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31), xReference = (int) map(pos.x, 0, width, 0, 28));
     lastTile = new PVector(11, 15);
     //nextTile = new PVector(currentTile.x, currentTile.y - 2);
-    this.startNextTile = new PVector(nextTileCol, nextTileRow);
-    //this.nextTileCol = nextTileCol;
-    //this.nextTileRow = nextTileRow;
-    this.nextTile = new PVector(nextTileCol, nextTileRow);
+    this.startNextTile = new PVector(nextTileRow, nextTileCol);
+    this.nextTileCol = nextTileCol;
+    this.nextTileRow = nextTileRow;
+    this.nextTile = startNextTile.copy();//new PVector(nextTileCol, nextTileRow);
     this.homeTile = homeTile;
     time = 0;
     this.theta = theta;
@@ -154,44 +156,43 @@ class Ghost extends GameObject { //<>// //<>//
     this.startGhostArea = ghostArea;
     this.startReady = ready;
     //nextTile.y -= 1;
-  }//end Ghost construuctor method
+  }//end Ghost construuctor methods
 
   void render() {
     //super.render();
     pushMatrix();
     translate(pos.x, pos.y);
     //pupil1.rotate(PI);
-    if (!scared && !eaten) {
-      shape(sprites[i]);
-    } else if (eaten) {
+    if (eaten) {
       shape(eatenSprite[i]);
+    } else if (!scared) {
+      shape(sprites[i]);
     } else {    
       shape(frightenedSprite);
     }
     popMatrix();
 
-<<<<<<< HEAD
-    //println("Ghost eaten: " + eaten + ", Target: " + target);
-=======
-    println("Ghost eaten: " + eaten + ", Target: " + target);
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
+
 
     //arc(pos.x, pos.y, objectWidth, objectHeight, PI, TWO_PI, PIE);
     //ellipse(pos.x, pos.y, objectWidth, objectHeight);
   }
 
   void update() {//char up, char down, char left, char right) {
-    if (mode[2]) {
-      if (!ghostArea && ready) {
-        scared = true;
-      }
-    }
+    //if (mode[2]) {
+    //  if (!ghostArea && ready) {
+    //    scared = true;
+    //  }
+    //}
 
 
-    if (ghostArea && getLocation().x == 11 && (getLocation().y == 14)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
+    if (ghostArea && pos.dist(outside) <= 10) {//getLocation().x == 11 && (getLocation().y == 14 || getLocation().y == 13)) {//middle.pos.distpos.dist(middle) <= 10) {    getLocation().y == 13 || 
       ghostArea = false;
-      //nextTile = new PVector(11, 12);
+      nextTile = newNextTile.copy();
+      i = 1;
+      theta = PI;
       speed = 2.0f;
+      println("jhjgkgkjg");
     }
     if (!ghostArea) {
       super.update();
@@ -199,21 +200,23 @@ class Ghost extends GameObject { //<>// //<>//
 
 
       getDirections();
-      if(currentTile.dist(ghostAreaRespawn) == 0){
-        for(int i = 0; i < direction.length; i++){
+      if (currentTile.dist(ghostAreaRespawn) == 0) {
+
+        for (int i = 0; i < direction.length; i++) {
           direction[i] = false;
         }
-        
+        println("Ghost line 207");
         direction[0] = true;
-        pos = respawnPos.copy();
+        pos = centre.copy();//respawnPos.copy();
         theta = PI + HALF_PI;
         i = 0;
         ghostArea = true;
         ready = true;
         eaten = false;
+        scared = false;
         nextTile = newNextTile.copy();
       }
-      
+
       if (direction[0]) {//keys[up] || testTarget) {
         if (get((int) pos.x, (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y - (tileSize + 5)) != maze.getWallColour()/*maze.path.getPathNext(xReference, yReference - 1) == 1*/) {
           this.i = 0;
@@ -235,7 +238,6 @@ class Ghost extends GameObject { //<>// //<>//
       } else if (direction[2]) {//keys[down]) {
 
         if (!eaten) {
-          println("jsggggggggggggggggl");
           if (get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()  &&  get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN) {
             this.i = 2;
 
@@ -243,9 +245,8 @@ class Ghost extends GameObject { //<>// //<>//
             //setStart1();
             //setClose1();
           }
-        }else{
-          println("helphelphelp");
-          if ((get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()) || get((int) pos.x, (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != BROWN){
+        } else {
+          if ((get((int) pos.x, (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour() && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) != maze.getWallColour()) || get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN && get((int) pos.x - (tileSize - 3), (int) pos.y + (tileSize + 5)) == BROWN && get((int) pos.x + (tileSize - 3), (int) pos.y + (tileSize + 5)) == BROWN) {
             this.i = 2;
 
             theta = HALF_PI;
@@ -257,30 +258,27 @@ class Ghost extends GameObject { //<>// //<>//
           this.i = 3;
 
           theta = radians(0.0f);
-          //setStart1();
-          //setClose1();
         }
-        //super.turnRight();
       }
     } else {
       forward.x =  cos(theta);
       forward.y = sin(theta);
       if (ready) {
-        //PVector middle = new PVector(tileSize + (tileSize * 14), width * 0.5f);
-        
-
         //println("Ready");
         //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
-<<<<<<< HEAD
         if (pos.dist(centre) <= 2) {
-=======
-        if (pos.dist(middle) <= 2) {
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
+          println("middle" + pos);
+          for (int index = 0; index < direction.length; index++) {
+            direction[index] = false;
+          }
+
+          direction[0] = true;
           //ghostArea = false;
           //if (theta == HALF_PI) {
           //  if (get((int) pos.x, (int) pos.y + (tileSize + 5)) == BROWN || get((int) pos.x, (int) pos.y + (tileSize + 5)) == maze.getWallColour()) {//pos.y >= 400) {
           this.i = 0;
           theta = PI + HALF_PI;
+
           //}
           // }
           //if (theta == 0) {
@@ -302,6 +300,11 @@ class Ghost extends GameObject { //<>// //<>//
           //  theta = PI + HALF_PI;
           //  //}
           //}
+        } 
+        if (pos.dist(leftCentre) == 0) {
+          println("left");
+          this.i = 3;
+          theta = 0;
         }
 
         //if (theta == PI + HALF_PI) {
@@ -317,11 +320,14 @@ class Ghost extends GameObject { //<>// //<>//
           theta = PI + HALF_PI;
         }
 
-        if (pos.dist(outside) <= 2) {
-          i = 1;
-          theta = PI;
-          setTarget(homeTile);
-        }
+        //if (pos.dist(outside) <= 5) {
+        //  println("outside");
+        //  i = 1;
+        //  theta = PI;
+        //  setTarget(homeTile.copy());
+        //}
+
+
         // if (theta == 0) {
         //   pushMatrix();
         //   pupil1.translate(-5, -5);
@@ -339,12 +345,10 @@ class Ghost extends GameObject { //<>// //<>//
         // }
         //}
 
-        if (pos.dist(leftCentre) == 0) {
-          this.i = 3;
-          theta = 0;
-        }
+
 
         if (pos.dist(rightCentre) == 0) {
+          println("right");
           this.i = 1;
           theta = PI;
         }
@@ -412,8 +416,8 @@ class Ghost extends GameObject { //<>// //<>//
 
   public void getDirections() {//PVector target) {
     //boolean[] tempDir = new boolean[4];  //to be copied to the direction array later
-    currentTile = getLocation();
-    if (currentTile.x == nextTile.x && currentTile.y == nextTile.y) {
+    currentTile = getLocation().copy();
+    if (currentTile.dist(nextTile) == 0) {//currentTile.x == nextTile.x && currentTile.y == nextTile.y) {
 
       //println("current == next");
 
@@ -431,7 +435,7 @@ class Ghost extends GameObject { //<>// //<>//
       //  //forceTurn();
       //}
       // }
-      lastTile = currentTile;
+      lastTile = currentTile.copy();
 
       //Set direction array all to false
       for (int i = 0; i < direction.length; i++) {
@@ -1225,27 +1229,27 @@ class Ghost extends GameObject { //<>// //<>//
       theta = PI;
       //direction[1] = true;
     }
-    nextTile = lastTile;
+    nextTile = lastTile.copy();
   }
 
-<<<<<<< HEAD
-  void resetGhostFields(){
-    resetGhost(startTheta, startI, startGhostArea, startReady);
-  }
+  //void resetGhostFields() {
+  //  resetGhost(startTheta, startI, startGhostArea, startReady);
+  //}
 
-  void resetGhost(float theta, int i, boolean ghostArea, boolean ready) {
-    nextTile = startNextTile.copy();
-    this.theta = theta;
-    this.i = i;
-    this.ghostArea = ghostArea;
-    this.ready = ready;
-=======
   void resetGhost() {
-    nextTile = new PVector(nextTileCol, nextTileRow);
-    theta = startTheta;
-    i = startI;
-    ghostArea = startGhostArea;
-    ready = startReady;
->>>>>>> 45237e9... Eaten ghost tracks to ghost area now - Such a pain in the bumgit add .git add .
+
+    pos = startPos.copy();
+    nextTile = startNextTile.copy();//new PVector(nextTileCol, nextTileRow);
+    this.theta = startTheta;
+    this.i = startI + 0;
+    direction[i] = true;
+    this.ghostArea = startGhostArea;
+    this.ready = startReady;
+    eaten = false;
+    for (int index = 0; index < direction.length; index++) {
+      direction[index] = false;
+    }
+    direction[i] = true;
+    speed = startSpeed;
   }
 }//end Ghost class()
