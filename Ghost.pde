@@ -22,7 +22,7 @@ class Ghost extends GameObject {  //<>//
   boolean startGhostArea;
   boolean startReady;
   float startSpeed;
-
+  PVector[] restrictedTiles;
   boolean eaten;
   boolean scared;
 
@@ -147,6 +147,13 @@ class Ghost extends GameObject {  //<>//
     this.ready = ready;
     this.startGhostArea = ghostArea;
     this.startReady = ready;
+
+    //Ghosts cannot turn up into a restricted tile
+    restrictedTiles = new PVector[4];
+    restrictedTiles[0] = new PVector(11, 12);
+    restrictedTiles[1] = new PVector(11, 15);
+    restrictedTiles[2] = new PVector(23, 12);
+    restrictedTiles[3] = new PVector(23, 15);
   }//end Ghost construuctor methods
 
   void render() {
@@ -252,7 +259,7 @@ class Ghost extends GameObject {  //<>//
           this.i = 0;
           theta = PI + HALF_PI;
         }
-        
+
         if (pos.dist(rightCentre) == 0) {
           this.i = 1;
           theta = PI;
@@ -273,7 +280,7 @@ class Ghost extends GameObject {  //<>//
       super.leftDirection();
       super.downDirection();
       super.rightDirection();
-    }    
+    }
   }//end update()
 
   public void getDirections() {
@@ -285,7 +292,7 @@ class Ghost extends GameObject {  //<>//
       for (int i = 0; i < direction.length; i++) {
         direction[i] = false;
       }//end for(i)
-      
+
       //Check tile above
       if (maze.path.getPathNext((int) currentTile.x - 1, (int) currentTile.y) == 1) {
         if (theta != HALF_PI) {
@@ -343,17 +350,17 @@ class Ghost extends GameObject {  //<>//
           nextTile.y = 0;
         }
       }//end if()
-    } 
+    }
   }//end getDirections
 
   public void pickOneDirection() {
-   if (!eaten) {
-      if (checkCurrentTile(new PVector(11, 12)) || checkCurrentTile(new PVector(11, 15)) || checkCurrentTile(new PVector(23, 12)) || checkCurrentTile(new PVector(23, 15)))
+    if (!eaten) {     
+      if (checkCurrentTile(restrictedTiles[0]) || checkCurrentTile(restrictedTiles[1]) || checkCurrentTile(restrictedTiles[2]) || checkCurrentTile(restrictedTiles[3]))
       {
         direction[0] = false;
       }
     }
-  
+
     //Call the get distance method to check how far away the target is in each direction
     int distUp = getDistance(-1, 0);
     int distLeft = getDistance(0, -1);
@@ -362,7 +369,7 @@ class Ghost extends GameObject {  //<>//
 
     //every direction and distance must be checked and compared
     //and systematicall ruled out
-    
+
     //if up is a valid option - check it against every other distance and direction
     if (direction[0]) {
       if (direction[1]) {
@@ -569,7 +576,7 @@ class Ghost extends GameObject {  //<>//
 
   void resetGhost() {
     pos = startPos.copy();
-    nextTile = startNextTile.copy();//new PVector(nextTileCol, nextTileRow);
+    nextTile = startNextTile.copy();
     this.theta = startTheta;
     this.i = startI + 0;
     direction[i] = true;

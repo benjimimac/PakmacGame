@@ -20,8 +20,6 @@ class Menu {
     if(pressed){
      menuOption = 1; 
     }
-    
-    println(pressed);
   }
 
   //render method
