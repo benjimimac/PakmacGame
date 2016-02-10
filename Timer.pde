@@ -13,6 +13,7 @@ class Timer extends GameObject {
   boolean beginLevel;
   boolean gamePause;
   int eatGhost;
+  int mouthOpen;
 
   public Timer() {
     super(0, 0, 0, 0, 0, 0);
@@ -30,24 +31,26 @@ class Timer extends GameObject {
     levelStart = 0;
     gamePause = false;
     eatGhost = 0;
+    mouthOpen = 0;
   }
 
   void render() {
     fill(255);
     textSize(40);
     text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, width * 0.3f, height - tileSize);
-    
+  if(!gameOver){
     levelStart += 1;
-    if(levelStart == 180){
+    if (levelStart == 180) {
       beginLevel = true;
     }
-    
-    if(gamePause){
+
+    if (gamePause) {
       eatGhost += 1;
-      if(eatGhost == 60){
+      if (eatGhost == 60) {
         gamePause = false;
       }
     }
+  }
   }
   void update() {
     if (!mode[2]) {
@@ -60,7 +63,6 @@ class Timer extends GameObject {
       }
     } else {
       frightened++;
-      println(frightened);
 
       if (frightened == 480) {
         for (int i = 0; i < mode.length; i++) {
@@ -78,43 +80,48 @@ class Timer extends GameObject {
     }
 
     //if (!pakmac.died) {
-      count++;
-      if (count % 6 == 0) {
-        tenths += 1;
-      }
-      if (count % 60 == 0) {
-        zeros += 1;
-      }
-      if (count % 600 == 0) {
-        tens += 1;
-      }
-      if (count % 3600 == 0) {
-        hundreds += 1;
-      }
+    count++;
+    if (count % 6 == 0) {
+      tenths += 1;
+    }
+    if (count % 60 == 0) {
+      zeros += 1;
+    }
+    if (count % 600 == 0) {
+      tens += 1;
+    }
+    if (count % 3600 == 0) {
+      hundreds += 1;
+    }
 
-      if (count % 36000 == 0) {
-        thousands += 1;
-      }
+    if (count % 36000 == 0) {
+      thousands += 1;
+    }
 
-      if (tenths == 10) {
-        tenths = 0;
-      }
-      if (zeros == 10) {
-        zeros = 0;
-      }
+    if (tenths == 10) {
+      tenths = 0;
+    }
+    if (zeros == 10) {
+      zeros = 0;
+    }
 
-      if (tens == 6) {
-        tens = 0;
-      }
+    if (tens == 6) {
+      tens = 0;
+    }
 
-      if (hundreds == 10) {
-        hundreds = 0;
-      }
-      
-   // } else{//(pakmac.died){
-      
+    if (hundreds == 10) {
+      hundreds = 0;
+    }
+
+    //if (pakmac.eating) {
+    //  mouthOpen += 1;
+    //}else{
+    // mouthOpen = 0; 
     //}
-    
+
+    // } else{//(pakmac.died){
+
+    //}
   }
 
   long getGhostTimer() {

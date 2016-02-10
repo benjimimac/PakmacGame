@@ -5,7 +5,6 @@ class Pakmac extends GameObject {
   PShape openedMouth;
   PShape[] spriteOpenMouth;
   int score;
-  int level;
   int lives;
   PShape liveSprite;
   boolean died;
@@ -21,8 +20,6 @@ class Pakmac extends GameObject {
     this.x = x;
     this.y = y;
     score = 0;
-    level = 1;
-    lives = 3;
     died = false;
     angle = HALF_PI * 0.9f;
     i = 1;
@@ -30,6 +27,8 @@ class Pakmac extends GameObject {
     this.theta = theta;
     this.startTheta = theta;
     finished = false;
+    score = currentScore;
+    lives = currentLives;
 
     start2 = radians(250.0f);//PI + (TWO_PI * 0.2f);
     close2 = radians(470.0f);//PI - (TWO_PI * 0.2f);
@@ -271,4 +270,13 @@ class Pakmac extends GameObject {
   //void setClose1() {
   //  close1 = theta + TWO_PI - radians(20.0f);
   //}
+  
+  void resetPakmac() {
+
+    pos = startPos.copy();
+    this.theta = PI;
+    this.i = 1;
+    eating = false;
+    
+  }
 }

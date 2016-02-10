@@ -192,7 +192,6 @@ class Ghost extends GameObject { //<>// //<>//
       i = 1;
       theta = PI;
       speed = 2.0f;
-      println("jhjgkgkjg");
     }
     if (!ghostArea) {
       super.update();
@@ -205,7 +204,6 @@ class Ghost extends GameObject { //<>// //<>//
         for (int i = 0; i < direction.length; i++) {
           direction[i] = false;
         }
-        println("Ghost line 207");
         direction[0] = true;
         pos = centre.copy();//respawnPos.copy();
         theta = PI + HALF_PI;
@@ -267,7 +265,6 @@ class Ghost extends GameObject { //<>// //<>//
         //println("Ready");
         //PVector middle = new PVector(tileSize + (tileSize * 11), width * 0.5f);
         if (pos.dist(centre) <= 2) {
-          println("middle" + pos);
           for (int index = 0; index < direction.length; index++) {
             direction[index] = false;
           }
@@ -302,7 +299,6 @@ class Ghost extends GameObject { //<>// //<>//
           //}
         } 
         if (pos.dist(leftCentre) == 0) {
-          println("left");
           this.i = 3;
           theta = 0;
         }
@@ -348,7 +344,6 @@ class Ghost extends GameObject { //<>// //<>//
 
 
         if (pos.dist(rightCentre) == 0) {
-          println("right");
           this.i = 1;
           theta = PI;
         }
