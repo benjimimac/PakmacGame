@@ -1,4 +1,4 @@
-import ddf.minim.*; //<>// //<>//
+import ddf.minim.*;  //<>//
 
 //Create all global variables
 ArrayList<GameObject> gameObject = new ArrayList<GameObject>();
@@ -516,9 +516,9 @@ void checkCollisions() {
       for (int j = gameObject.size() - 1; j >= 0; j--) {       
         GameObject ghost = gameObject.get(j);
         if (ghost instanceof Ghost) {
-          if (pak.getLocation().dist(ghost.getLocation()) <= 1) {
+          if (pak.pos.dist(ghost.pos) < pak.objectRadius + ghost.objectRadius){
             //println("Same tile");
-            if (!mode[2] && !((Ghost) ghost).eaten) {// && !((Pakmac) pak).died) {
+            if (!mode[2] && !((Ghost) ghost).eaten) {
               if (!dead.isPlaying()) {    
                 dead.rewind();
                 dead.play();
@@ -530,7 +530,7 @@ void checkCollisions() {
 
                 eat.rewind();
                 eat.play();
-              } else if (pak.getLocation().dist(ghost.getLocation()) == 0) {
+              } else if (pak.pos.dist(ghost.pos) < pak.objectRadius){
                 if (!((Ghost) ghost).eaten) {
                   maze.addGhostPoints();
                 }
