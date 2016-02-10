@@ -10,9 +10,6 @@ class Dot extends GameObject implements Points{
   }
   
   void render(){
-    //super.render();
-    //pos.x = mouseX;
-    //pos.y = mouseY;
     pushMatrix();
     translate(pos.x, pos.y);
     shape(dot);

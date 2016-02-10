@@ -10,10 +10,6 @@ class Powerup extends GameObject implements Points{//, GhostMode {
     pakmac.score += 50;
   }
   
-  //void activateFrightened(Ghost ghost){
-  //  ghost.scared = true;
-  //}
-  
   void render(){
     pushMatrix();
     translate(pos.x, pos.y);

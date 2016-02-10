@@ -19,7 +19,6 @@ class Map extends GameObject {
     fill(colour);
     stroke(colour);
     walls = createShape(GROUP);
-    //PShape[] tile = new PShape[wallReference.size()];
 
     ghostPoint = new PVector(-100, -100);
     move = 0;
@@ -32,7 +31,6 @@ class Map extends GameObject {
     //Create the maze current level
     for (int i = 0; i < wallReference.size(); i++) {
       PShape tile = createShape(RECT, wallReference.get(i).x * tileSize, tileSize + (wallReference.get(i).y * tileSize), tileSize, tileSize);
-
 
       //Add the new shape to the walls PShape
       walls.addChild(tile);
@@ -70,6 +68,7 @@ class Map extends GameObject {
     textSize(30);
     fill(255);
     text("Score " + pakmac.score, width * 0.8f, height - tileSize);
+    text("Level " + level, width * 0.8f, height - tileSize * 2);
 
     if (pakmac.finished) {
       finishedCount += 1;
@@ -91,20 +90,17 @@ class Map extends GameObject {
       gameOver = true;
       pakmac.lives = 3;
       level = 1;
-      pakmac.score = 0;
+      currentScore = 0;
     }
-
-    text(dotCount, width - 100, height - 50);
+    text(ghostPoints + ghostPoints, ghostPoint.x, ghostPoint.y + move--);
   }
 
   void addGhostPoints() {
     ghostPoint = pakmac.pos.copy();
     move = 0;
-    //ghostPoints *= ghostPointMultiplier;
-    //pakmac.score += ghostPointMultiplier;
-    //ghostPoint = pakmac.pos.copy();
-    //move = 0;
-    //ghostPointMultiplier += 1;
+    ghostPoints *= 2;
+    pakmac.score += (ghostPoints * 2);
+    ghostPoint = pakmac.pos.copy();
   }
 
   public color getWallColour() {

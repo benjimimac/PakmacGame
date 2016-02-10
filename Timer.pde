@@ -73,13 +73,11 @@ class Timer extends GameObject {
           GameObject ghost = gameObject.get(i);
           if (ghost instanceof Ghost) {
             ((Ghost) ghost).scared = false;
-            //((Ghost) ghost).frightened = false;
           }
         }
       }
     }
-
-    //if (!pakmac.died) {
+    
     count++;
     if (count % 6 == 0) {
       tenths += 1;
@@ -112,16 +110,6 @@ class Timer extends GameObject {
     if (hundreds == 10) {
       hundreds = 0;
     }
-
-    //if (pakmac.eating) {
-    //  mouthOpen += 1;
-    //}else{
-    // mouthOpen = 0; 
-    //}
-
-    // } else{//(pakmac.died){
-
-    //}
   }
 
   long getGhostTimer() {
