@@ -72,7 +72,7 @@ class GameObject {
         pos.x = width;
       }//end if()
 
-      if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {
+      if (get((int) pos.x - (tileSize + 1), (int) pos.y) != maze.getWallColour()) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()
@@ -98,7 +98,7 @@ class GameObject {
         pos.x = 0;
       }//end if()
 
-      if (get((int) pos.x + (tileSize), (int) pos.y) != maze.getWallColour()) {
+      if (get((int) pos.x + (tileSize + 1), (int) pos.y) != maze.getWallColour()) {
         forward.mult(speed);
         pos.add(forward);
       }//end if()      

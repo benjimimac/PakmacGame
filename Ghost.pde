@@ -1,4 +1,4 @@
-class Ghost extends GameObject {  //<>//
+class Ghost extends GameObject {  //<>// //<>//
   //Fields
   PShape[] sprites; //sprites will be stored in arrays to of size 4 - inedex 0 = up, 1 = left, 2 = down, 3 = right
   PShape frightenedSprite;

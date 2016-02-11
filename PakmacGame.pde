@@ -1,4 +1,4 @@
-import ddf.minim.*;  //<>//
+import ddf.minim.*;  //<>// //<>//
 
 //Create all global variables
 ArrayList<GameObject> gameObject = new ArrayList<GameObject>();
@@ -467,6 +467,7 @@ void checkCollisions() {
                 ((Ghost) ghost). scared = true;
               }//end if()
             }//end for(k)
+
 
             if (player.pos.dist(dot.pos) <= 5) {
               ((Powerup) dot).applyTo((Pakmac)player);

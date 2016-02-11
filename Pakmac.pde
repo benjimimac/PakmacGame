@@ -22,6 +22,7 @@ class Pakmac extends GameObject {
     died = false;
     angle = HALF_PI * 0.9f;
     i = 1;
+    eating = false;
     this.theta = theta;
     this.startTheta = theta;
     finished = false;
@@ -55,17 +56,15 @@ class Pakmac extends GameObject {
     if (foodCount == 240) {
       finished = true;
     }
-    
-    if(pos.x % tileSize > 10  && pos.y % tileSize > 10){
+
+    if (pos.x % tileSize > 10  && pos.y % tileSize > 10) {
       eating = false;
     }
-    println(pos.x % tileSize + ", " + pos.y % tileSize);
-      
-    
-    if((pos.x % tileSize < 10 && pos.y % tileSize > 10) || (pos.x % tileSize > 10 && pos.y % tileSize < 10)){
+
+    if ((pos.x % tileSize < 10 && pos.y % tileSize > 10) || (pos.x % tileSize > 10 && pos.y % tileSize < 10)) {
       eating = true;
     }
-    
+
     if (keys[right]) {
       if (get((int) pos.x + (tileSize + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y + (tileSize - 3)) != maze.getWallColour() && get((int) pos.x + (tileSize + 5), (int) pos.y - (tileSize - 3)) != maze.getWallColour()) {
         i = 3;
