@@ -441,8 +441,6 @@ void checkCollisions() {
         GameObject dot = gameObject.get(j);
         if (dot instanceof Dot) {
           if (player.pos.dist(dot.pos) < player.halfWidth + dot.halfWidth) {
-            //pakmac.openMouth();
-            pakmac.eating = true;
             if (!eat.isPlaying()) {
               eat.rewind();
               eat.play();
@@ -470,12 +468,9 @@ void checkCollisions() {
               }//end if()
             }//end for(k)
 
-            ((Pakmac) player).eating = true;
-
             if (player.pos.dist(dot.pos) <= 5) {
               ((Powerup) dot).applyTo((Pakmac)player);
               gameObject.remove(dot);
-              //pakmac.eating = false;
             }
           }
         }
@@ -506,11 +501,9 @@ void checkCollisions() {
                 if (!((Ghost) ghost).eaten) {
                   maze.addGhostPoints();
                 }
-                ((Pakmac) pak).eating = false;
                 ((Ghost) ghost).eaten = true;              
                 ((Ghost) ghost).ready = true;
               }
-              ((Pakmac) pak).eating = true;
             }
           }//end if()
         }//end if()

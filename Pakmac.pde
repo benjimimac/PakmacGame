@@ -22,7 +22,6 @@ class Pakmac extends GameObject {
     died = false;
     angle = HALF_PI * 0.9f;
     i = 1;
-    eating = false;
     this.theta = theta;
     this.startTheta = theta;
     finished = false;
@@ -55,6 +54,16 @@ class Pakmac extends GameObject {
     super.update();
     if (foodCount == 240) {
       finished = true;
+    }
+    
+    if(pos.x % tileSize > 10  && pos.y % tileSize > 10){
+      eating = false;
+    }
+    println(pos.x % tileSize + ", " + pos.y % tileSize);
+      
+    
+    if((pos.x % tileSize < 10 && pos.y % tileSize > 10) || (pos.x % tileSize > 10 && pos.y % tileSize < 10)){
+      eating = true;
     }
     
     if (keys[right]) {
@@ -114,6 +123,5 @@ class Pakmac extends GameObject {
     pos = startPos.copy();
     this.theta = PI;
     this.i = 1;
-    eating = false;
   }
 }

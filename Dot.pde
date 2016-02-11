@@ -19,7 +19,6 @@ class Dot extends GameObject implements Points{
   
   void applyTo(Pakmac pakmac){
     pakmac.score += 10;
-    pakmac.eating = false;
     maze.dotCount += 1;
     pakmac.foodCount += 1;
   }
