@@ -13,6 +13,15 @@ class Map extends GameObject{
     }
     
     this.path = path;
+    
+    println(path.length + ", " + path[30].length);
+    for(int i = 0; i < path.length; i++) {
+     for(int j = 0; j < path[i].length; j++) {
+       print(this.path[i][j] + " ");
+     }
+     println();
+    }
+    
   }
 
   void render() {

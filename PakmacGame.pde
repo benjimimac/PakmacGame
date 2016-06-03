@@ -3,12 +3,15 @@ Map map;
 Pakmac pakmac;
 float tileWidth;
 
+boolean[] keys = new boolean[512];
+
+
 boolean loaded;
 int menuOption;
 
 
 void setup() {
-  size(673, 900);
+  size(672, 900);
   surface.setResizable(true);
   fill(0);
   stroke(255);
@@ -197,7 +200,6 @@ void loadData() {
   strokeWeight(1);
 
   loaded = true;
-  
 }
 
 PShape getCorner(float x, float y, float shapeW, float shapeH, float start) {
@@ -260,10 +262,21 @@ void option() {
 void gamePlay() {
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
+    if (gameObjects.get(i) instanceof Pakmac) {
+      gameObjects.get(i).update();
+    }
   }
 }
 
 void createSprites() {
   pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
   gameObjects.add(pakmac);
+}
+
+void keyPressed() {
+  keys[keyCode] = true;
+}
+
+void keyReleased() {
+  keys[keyCode] = false;
 }
