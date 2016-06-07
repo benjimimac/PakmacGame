@@ -1,4 +1,4 @@
-class Dot extends GameObject {
+class Dot extends GameObject implements Points {
   
   PShape dot;
   
@@ -15,5 +15,10 @@ class Dot extends GameObject {
     translate(pos.x, pos.y);
     shape(dot);
     popMatrix();
+  }
+  
+  void applyTo(Pakmac pakmac) {
+   pakmac.score += 10;
+   pakmac.foodCount += 1;
   }
 }

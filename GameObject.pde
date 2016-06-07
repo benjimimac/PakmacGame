@@ -5,16 +5,20 @@ abstract class GameObject {
   color colour;
   float theta;
   float startTheta;
-  float speed = 3.0f;
+  float speed;
   PVector forward;
 
   PShape sprite;
-  PShape movingSprite[];
+  PShape movingSprite1[];
+  PShape movingSprite2[];
 
   float x, y;
 
   int xReference;
   int yReference;
+  
+  boolean switchSprite;
+  int spriteDirection;
 
   int test = 0;
 
@@ -26,13 +30,15 @@ abstract class GameObject {
     this.objectWidth = objectWidth;
     this.objectHeight = objectHeight;
     this.colour = colour;
-    forward = new PVector(0, 0);
+    forward = new PVector(0, 0);    
+    
+    switchSprite = false;
   }
 
   GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float theta) {
     this(x, y, objectWidth, objectHeight, colour);
     this.theta = theta;
-    println(degrees(theta));
+    //println(degrees(theta));
   }
 
   abstract void render();
@@ -44,7 +50,7 @@ abstract class GameObject {
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
     float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
 
-    println("GameObject class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
+    //println("GameObject class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
 
     switch ((int) degrees(theta)) {
     case 0:
@@ -71,7 +77,14 @@ abstract class GameObject {
     }
 
 
+    int xMod = (int) (pos.x % tileWidth);
+    int yMod = (int) (pos.y % tileWidth);
 
+    if (xMod > tileWidth * 0.25f && xMod < tileWidth * 0.75f && yMod > tileWidth * 0.25f && yMod < tileWidth * 0.75f) {
+      switchSprite = false;
+    } else {
+      switchSprite = true;
+    }
 
     //
 
@@ -80,19 +93,19 @@ abstract class GameObject {
 
   void upDirection() {
     int reference = (int) map(pos.y - 1 - (tileWidth * 0.5f), (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
-    
-      if (pos.y <= 0) {
-        pos.y = height;
-      }//end if()
 
-      if (map.path[reference][xReference] == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      } 
+    if (pos.y <= 0) {
+      pos.y = height;
+    }//end if()
+
+    if (map.path[reference][xReference] == 1) {
+      forward.mult(speed);
+      pos.add(forward);
+    }
   }
 
   void leftDirection() {
-    println("xReference mapped is - "  + map(xReference, 0, 28, 0, width));
+    //println("xReference mapped is - "  + map(xReference, 0, 28, 0, width));
     int reference = (int) map(pos.x - 1 - (tileWidth * 0.5f), 0, width, 0, 28);
 
     if (pos.x <= 0) {
@@ -110,30 +123,30 @@ abstract class GameObject {
 
   void downDirection() {
     //if (theta == radians(90.0f)) {
-      int reference = (int) map(pos.y + (tileWidth * 0.5f), (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
-      
-      if(reference == 31) {
-       reference = 0; 
-      }
-      
-      if (pos.y >= height) {
-        pos.y = 0;
-      }//end if()
+    int reference = (int) map(pos.y + (tileWidth * 0.5f), (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
 
-      if (map.path[reference][xReference] == 1) {
-        forward.mult(speed);
-        pos.add(forward);
-      } 
+    if (reference == 31) {
+      reference = 0;
+    }
+
+    if (pos.y >= height) {
+      pos.y = 0;
+    }//end if()
+
+    if (map.path[reference][xReference] == 1) {
+      forward.mult(speed);
+      pos.add(forward);
+    } 
     //}//end if()
   }
 
   void rightDirection() {
     int reference = (int) map(pos.x + (tileWidth * 0.5f), 0, width, 0, 28);
-    
-    if(reference == 28) {
-     reference = 0; 
+
+    if (reference == 28) {
+      reference = 0;
     }
-    
+
     //if (theta == 0.0f) {
     if (pos.x >= width) {
       pos.x = 0;

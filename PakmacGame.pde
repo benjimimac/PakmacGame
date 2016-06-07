@@ -1,6 +1,7 @@
 ArrayList<GameObject> gameObjects; //<>//
 Map map;
 Pakmac pakmac;
+Ghost blinky;
 float tileWidth;
 
 boolean[] keys = new boolean[512];
@@ -260,9 +261,11 @@ void option() {
 }
 
 void gamePlay() {
+  checkCollisions();
+  
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
-    if (gameObjects.get(i) instanceof Pakmac) {
+    if (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost) {
       gameObjects.get(i).update();
     }
   }
@@ -271,6 +274,30 @@ void gamePlay() {
 void createSprites() {
   pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
   gameObjects.add(pakmac);
+  
+  blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2f, true, 11, 12);
+  gameObjects.add(blinky);
+  println((tileWidth * 13) + (tileWidth * 0.5f));
+}
+
+void checkCollisions() {
+ 
+  for(int i = gameObjects.size() - 1; i >= 0; i--) {
+   GameObject player = gameObjects.get(i);
+   
+   if(player instanceof Pakmac) {
+    for(int j = gameObjects.size() - 1; j >= 0; j--) {
+      
+      GameObject dot = gameObjects.get(j);
+      
+      if(dot instanceof Dot) {
+        if(player.pos.dist(dot.pos) == 0) {
+          gameObjects.remove(dot);
+        }
+      }
+    }
+   }
+  }
 }
 
 void keyPressed() {
