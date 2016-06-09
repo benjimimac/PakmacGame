@@ -2,7 +2,7 @@ class Pakmac extends GameObject {
 
   float angle;
   char up, left, down, right;
-  int score, foodCount;
+  int score, foodCount, lives;
 
   Pakmac(float x, float y, float objectWidth, color colour, char up, char left, char down, char right, float theta) {
     super(x, y, objectWidth, objectWidth, colour, theta);
@@ -14,6 +14,7 @@ class Pakmac extends GameObject {
     
     score = 0;
     foodCount = 0;
+    lives = 3;
 
     fill(colour);
     stroke(colour);

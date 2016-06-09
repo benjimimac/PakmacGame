@@ -1,6 +1,7 @@
 class Ghost extends GameObject { //<>// //<>// //<>//
   float startTheta;
   PShape[] eatenSprite;
+  PShape[] frightenedSprite;
   PVector homeTile;
   boolean ghostArea;
   boolean ready;
@@ -13,12 +14,15 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   PVector startNextTile;
   PVector targetTile;
 
+  boolean forceTurn;
+
   boolean eaten;
+  boolean frightened;
 
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectWidth, colour, theta);
-    currentTile = new PVector(0, 0);
-    
+    currentTile = new PVector(15, 15);
+
     startTheta = theta;
     movingSprite1 = new PShape[4];
     movingSprite2 = new PShape[4];
@@ -26,10 +30,13 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     this.ghostArea = ghostArea;
     this.speed = speed;
     this.ready = ready;
-    
+
     spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
 
     eaten = false;
+    frightened = false;
+
+    forceTurn = false;
 
     //println(dataPath("hello.txt"));
 
@@ -38,6 +45,14 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     nextTile = startNextTile.copy();
     lastTile = new PVector(11, 15);
     this.homeTile = homeTile;
+
+    fill(0);
+    stroke(0);
+    PShape foot1= createShape(TRIANGLE, 0 - objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
+    PShape foot2= createShape(TRIANGLE, 0 + objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
+    PShape foot3 = createShape(TRIANGLE, -objectHeight, objectHeight, -objectHeight * 0.5f, objectHeight, -objectHeight * 0.75f, objectHeight * 0.5f);
+    PShape foot4 = createShape(RECT, -2.5f, objectHeight - 5, 5, 5);
+    PShape foot5 = createShape(TRIANGLE, objectHeight, objectHeight, objectHeight * 0.5f, objectHeight, objectHeight * 0.75f, objectHeight * 0.5f);
 
     directions = new boolean[4];
 
@@ -57,19 +72,12 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       movingSprite1[i].addChild(body);
       movingSprite2[i].addChild(body);
 
-      fill(0);
-      stroke(0);
 
-      PShape foot1= createShape(TRIANGLE, 0 - objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
-      movingSprite1[i].addChild(foot1);
-      PShape foot2= createShape(TRIANGLE, 0 + objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
-      movingSprite1[i].addChild(foot2);
 
-      PShape foot3 = createShape(TRIANGLE, -objectHeight, objectHeight, -objectHeight * 0.5f, objectHeight, -objectHeight * 0.75f, objectHeight * 0.5f);
-      movingSprite2[i].addChild(foot3);
-      PShape foot4 = createShape(RECT, -2.5f, objectHeight - 5, 5, 5);
-      movingSprite2[i].addChild(foot4);
-      PShape foot5 = createShape(TRIANGLE, objectHeight, objectHeight, objectHeight * 0.5f, objectHeight, objectHeight * 0.75f, objectHeight * 0.5f);
+      movingSprite1[i].addChild(foot1);      
+      movingSprite1[i].addChild(foot2);      
+      movingSprite2[i].addChild(foot3);      
+      movingSprite2[i].addChild(foot4);      
       movingSprite2[i].addChild(foot5);
 
       // Create the eyes
@@ -124,30 +132,89 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     movingSprite2[3].addChild(pupil2Right);
     eatenSprite[3].addChild(pupil1Right);
     eatenSprite[3].addChild(pupil2Right);
+
+    frightenedSprite = new PShape[2];
+    for (int i = 0; i < frightenedSprite.length; i++) {
+      fill(0, 0, 245);
+      stroke(0, 0, 245);
+      frightenedSprite[i] = createShape(GROUP);
+      PShape head = createShape(ARC, 0, 0, objectWidth, objectWidth, PI, TWO_PI, PIE);
+      frightenedSprite[i].addChild(head);
+      PShape body = createShape(RECT, 0 - objectHeight, 0, objectWidth, objectHeight);
+      frightenedSprite[i].addChild(body);
+      fill(255);
+      stroke(255);
+      PShape eye1 = createShape(ELLIPSE, 0 - (objectHeight * 0.3f), 0 - (objectHeight * 0.25f), objectHeight * 0.3f, objectHeight * 0.3f);
+      frightenedSprite[i].addChild(eye1);
+      PShape eye2 = createShape(ELLIPSE, 0 + (objectHeight * 0.3f), 0 - (objectHeight * 0.25f), objectHeight * 0.3f, objectHeight * 0.3f);
+      frightenedSprite[i].addChild(eye2);
+      PShape mouth1 = createShape(LINE, 0 - (objectHeight * 0.8f), 0 + (objectHeight * 0.45f), 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
+      // 0 + (objectHeight * 0.8f), 0 + (objectHeight * 0.45f));
+      frightenedSprite[i].addChild(mouth1);
+      PShape mouth2 = createShape(LINE, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.35f), 0, 0 + (objectHeight * 0.45f));
+      frightenedSprite[i].addChild(mouth2);
+      PShape mouth3 = createShape(LINE, 0, 0 + (objectHeight * 0.45f), 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
+      frightenedSprite[i].addChild(mouth3);
+      PShape mouth4 = createShape(LINE, 0 + (objectHeight * 0.8f), 0 + (objectHeight * 0.45f), 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.35f));
+      frightenedSprite[i].addChild(mouth4);
+    }
+
+    fill(0);
+    stroke(0);
+
+    //PShape foot1= createShape(TRIANGLE, 0 - objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 - (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
+    frightenedSprite[0].addChild(foot1);
+    //PShape foot2= createShape(TRIANGLE, 0 + objectHeight, 0 + objectHeight, 0, 0 + objectHeight, 0 + (objectHeight * 0.5f), 0 + (objectHeight * 0.5f));
+    frightenedSprite[0].addChild(foot2);
+
+    //PShape foot3 = createShape(TRIANGLE, -objectHeight, objectHeight, -objectHeight * 0.5f, objectHeight, -objectHeight * 0.75f, objectHeight * 0.5f);
+    frightenedSprite[1].addChild(foot3);
+    //PShape foot4 = createShape(RECT, -2.5f, objectHeight - 5, 5, 5);
+    frightenedSprite[1].addChild(foot4);
+    //PShape foot5 = createShape(TRIANGLE, objectHeight, objectHeight, objectHeight * 0.5f, objectHeight, objectHeight * 0.75f, objectHeight * 0.5f);
+    frightenedSprite[1].addChild(foot5);
   }
 
   void render() {
     pushMatrix();
     translate(pos.x, pos.y);
-    shape(movingSprite2[spriteDirection]);
+    if (frightened) {
+      if (frameCount % 20 < 10) {
+        shape(frightenedSprite[0]);
+      } else {
+        shape(frightenedSprite[1]);
+      }
+    } else if (eaten) {
+      shape(eatenSprite[spriteDirection]);
+    } else {
+      if (frameCount % 20 < 10) {
+        shape(movingSprite2[spriteDirection]);
+      } else {
+        shape(movingSprite1[spriteDirection]);
+      }
+    }
     popMatrix();
+
+    //println(directions[0], directions[1], directions[2], directions[3]);
+    //println(map.path[(int) currentTile.x - 1][(int) currentTile.y], map.path[(int) currentTile.x][(int) currentTile.y - 1], map.path[(int) currentTile.x + 1][(int) currentTile.y], map.path[(int) currentTile.x][(int) currentTile.y + 1]);
+    //println(currentTile, nextTile, lastTile);
   }
 
   void update() {
     if (!ghostArea) {
       super.update();
       setDirections();
-      
-      if(directions[0] && pos.x % tileWidth == 12) {
+
+      if (directions[0] && pos.x % tileWidth == 12) {
         spriteDirection = 0;
         theta = PI + HALF_PI;
-      } else if(directions[1] && pos.y % tileWidth == 12) {
+      } else if (directions[1] && pos.y % tileWidth == 12) {
         spriteDirection = 1;
         theta = PI;
-      } else if(directions[2] && pos.x % tileWidth == 12) {
+      } else if (directions[2] && pos.x % tileWidth == 12) {
         spriteDirection = 2;
         theta = HALF_PI;
-      } else if(directions[3] && pos.y % tileWidth == 12) {
+      } else if (directions[3] && pos.y % tileWidth == 12) {
         spriteDirection = 3;
         theta = 0;
       }
@@ -155,66 +222,67 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   }
 
   void setDirections() {
-    
-    println(directions[0], directions[1], directions[2], directions[3]);
-    println(pos.x % 24, pos.y % 24);
-    println(currentTile, nextTile);
-    
+
     currentTile = getLocation();
 
     if (currentTile.dist(nextTile) == 0) {
-      lastTile = currentTile.copy();
 
-
-      // Set all elements of the directions array to be false
-      for (int i = 0; i < directions.length; i++) {
-        directions[i] = false;
-      }
-
-      // Check the 2d path array in the Map object - each tile above, below, left, and right
-      //above
-      if (map.checkPath((int) currentTile.x - 1, (int) currentTile.y) == 1 && theta != HALF_PI) {
-        directions[0] = true;
-      }
-
-      //left
-      if (map.checkPath((int) currentTile.x, (int) currentTile.y - 1) == 1 && theta != 0) {
-        directions[1] = true;
-      }
-
-      //down
-      if (!eaten) {
-        if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI) {
-          directions[2] = true;
-        }
+      if (forceTurn) {
+        forceTurn();
       } else {
-        if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
-          directions[2] = true;
+        lastTile = currentTile.copy();
+
+
+        // Set all elements of the directions array to be false
+        for (int i = 0; i < directions.length; i++) {
+          directions[i] = false;
         }
-      }
 
-      //right
-      if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && theta != PI) {
-        directions[3] = true;
-      }
+        // Check the 2d path array in the Map object - each tile above, below, left, and right
+        //above
+        if (map.checkPath((int) currentTile.x - 1, (int) currentTile.y) == 1 && theta != HALF_PI) {
+          directions[0] = true;
+        }
 
-      pickOneDirection();
+        //left
+        if (map.checkPath((int) currentTile.x, (int) currentTile.y - 1) == 1 && theta != 0) {
+          directions[1] = true;
+        }
 
-      if (directions[0]) {
+        //down
+        if (!eaten) {
+          if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI) {
+            directions[2] = true;
+          }
+        } else {
+          if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
+            directions[2] = true;
+          }
+        }
 
-        nextTile.add(-1, 0);
-      } else if (directions[1]) {
+        //right
+        if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && theta != PI) {
+          directions[3] = true;
+        }
 
-        nextTile.add(0, -1);
-      } else if (directions[2]) {
+        pickOneDirection();
 
-        nextTile.add(1, 0);
-      } else {
+        if (directions[0]) {
 
-        nextTile.add(0, 1);
+          nextTile.add(-1, 0);
+        } else if (directions[1]) {
+
+          nextTile.add(0, -1);
+        } else if (directions[2]) {
+
+          nextTile.add(1, 0);
+        } else {
+
+          nextTile.add(0, 1);
+        }
       }
     }
-    
+
     // Make sure the nextTile is still on the grid
     checkNextTileRange();
   }
@@ -398,22 +466,55 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     return count;
   }
-  
+
   void checkNextTileRange() {
-   if(nextTile.x < 0) {
-    nextTile.add(31, 0); 
-   }
-   
-   if(nextTile.x > 30) {
-     nextTile.add(-31, 0);
-   }
-   
-   if(nextTile.y < 0) {
-     nextTile.add(0, 28);
-   }
-   
-   if(nextTile.y > 27) {
-     nextTile.add(0, -28);
-   }
+    if (nextTile.x < 0) {
+      nextTile.add(31, 0);
+    }
+
+    if (nextTile.x > 30) {
+      nextTile.add(-31, 0);
+    }
+
+    if (nextTile.y < 0) {
+      nextTile.add(0, 28);
+    }
+
+    if (nextTile.y > 27) {
+      nextTile.add(0, -28);
+    }
+  }
+
+  void forceTurn() {
+    nextTile = lastTile;
+
+    switch (spriteDirection) {
+    case 0:
+      spriteDirection = 2;
+      theta = HALF_PI;
+      break;
+
+    case 1:
+      spriteDirection = 3;
+      theta = 0;
+      break;
+
+    case 2:
+      spriteDirection = 0;
+      theta = PI + HALF_PI;
+      break;
+
+    case 3:
+      spriteDirection = 1;
+      theta = PI;
+      break;
+    }
+
+    forceTurn = false;
+    lastTile = currentTile.copy();
+
+    for (int i = 0; i < directions.length; i++) {
+      directions[i] = false;
+    }
   }
 }

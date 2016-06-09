@@ -1,4 +1,5 @@
 ArrayList<GameObject> gameObjects; //<>//
+ArrayList<Ghost> ghosts;
 Map map;
 Pakmac pakmac;
 Ghost blinky;
@@ -12,6 +13,8 @@ int menuOption;
 
 PVector[] restrictedTiles;
 
+PShape life;
+
 
 void setup() {
   size(672, 900);
@@ -22,6 +25,7 @@ void setup() {
   tileWidth = 24.0f;
 
   gameObjects = new ArrayList<GameObject>();
+  ghosts = new ArrayList<Ghost>();
 
   loaded = false;
   menuOption = 1;
@@ -116,6 +120,12 @@ void loadData() {
         break;
 
       case 6:
+        path[i - 1][j] = 1;
+        break;
+
+      case 7:
+        Powerup powerup = new Powerup((j * tileWidth) + (tileWidth * 0.5f), tileWidth + (i * tileWidth) + (tileWidth * 0.5f), tileWidth * 0.8f, white);
+        gameObjects.add(powerup);
         path[i - 1][j] = 1;
         break;
 
@@ -257,9 +267,10 @@ void option() {
     if (loaded) {
       //maze.render();
       gamePlay();
+      displayDetails();
     } else {
-      loadData();
       createSprites();
+      loadData();
     }//end if/else()
 
     break;
@@ -280,15 +291,23 @@ void gamePlay() {
       gameObjects.get(i).update();
     }
   }
+  
+  if(frameCount % 500 == 25) {
+   blinky.forceTurn = true; 
+  }
 }
 
 void createSprites() {
   pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
   gameObjects.add(pakmac);
 
+
+  life = createShape(ARC, 0, 0, tileWidth, tileWidth, -PI + radians(20), PI - radians(20));
+
   blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2f, true, 11, 12);
   gameObjects.add(blinky);
-  println((tileWidth * 13) + (tileWidth * 0.5f));
+  ghosts.add(blinky);
+  //println((tileWidth * 13) + (tileWidth * 0.5f));
 }
 
 void checkCollisions() {
@@ -301,10 +320,17 @@ void checkCollisions() {
 
         GameObject dot = gameObjects.get(j);
 
-        if (dot instanceof Dot) {
+        if (dot instanceof Dot ) {
           if (player.pos.dist(dot.pos) < (player.objectHeight * 0.5f) - dot.objectHeight) {
             gameObjects.remove(dot);
+            ((Dot) dot).applyTo((Pakmac) player);
           }
+        } else if (dot instanceof Powerup) {
+          if (player.pos.dist(dot.pos) < (player.objectWidth * 0.5f) - dot.objectWidth * 0.5f) {
+            println("POWERUP");
+            gameObjects.remove(dot);
+            ((Powerup) dot).applyTo((Pakmac) player);
+          } 
         }
       }
     }
@@ -313,10 +339,42 @@ void checkCollisions() {
 
 void setTargetTiles() {
   
-  if(blinky.ready) {
-    
+  if(blinky.frightened) {
+    int row = (int) random(map.path.length);
+    int col = (int) random(map.path[0].length);
+    blinky.targetTile = new PVector(row, col);
+  } else if (blinky.ready) {
+
     blinky.targetTile = pakmac.getLocation();
   }
+}
+
+void displayDetails() {
+  fill(255);
+  stroke(255);
+  textSize(tileWidth * 2);
+  text("1UP", tileWidth, tileWidth * 1.75f);
+  text(pakmac.score, width * 0.25f, tileWidth * 1.75f);
+  text("HIGH", (width * 0.5f), tileWidth * 1.75f);
+  text(pakmac.score, width * 0.75f, tileWidth * 1.75f);
+
+  for (int i = 0; i < pakmac.lives; i++) {
+    pushMatrix();
+    translate(tileWidth + (tileWidth * (i * 1.5f)), height - (tileWidth * 2));
+    shape(life);
+    popMatrix();
+  }
+
+
+
+  //println(dataPath("text.csv"));
+  //File file = new File(dataPath("test.csv"));
+
+  //if(file.exists()) {
+  // println("exists"); 
+  //} else {
+  // println("not exist"); 
+  //}
 }
 
 void keyPressed() {
