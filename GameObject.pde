@@ -158,4 +158,12 @@ abstract class GameObject {
     }  
     //}//end if()
   }
+  
+ PVector getLocation() {
+  
+   int x = (int) map(pos.x, 0, width, 0, 28);
+   int y = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
+   
+   return new PVector(y, x);
+ }
 }

@@ -10,6 +10,8 @@ boolean[] keys = new boolean[512];
 boolean loaded;
 int menuOption;
 
+PVector[] restrictedTiles;
+
 
 void setup() {
   size(672, 900);
@@ -55,8 +57,15 @@ void loadData() {
   allWalls = new ArrayList<PShape>();
 
   String[] lines = loadStrings("test.csv");
-  String[] rgb = lines[0].split(",");
-  color colour = color(Integer.parseInt(rgb[0]), Integer.parseInt(rgb[1]), Integer.parseInt(rgb[2]));
+  String[] firstLine = lines[0].split(",");
+  color colour = color(Integer.parseInt(firstLine[0]), Integer.parseInt(firstLine[1]), Integer.parseInt(firstLine[2]));
+
+  restrictedTiles = new PVector[firstLine.length - 3];
+
+  for (int i = 3; i < firstLine.length; i++) {
+    String[] points = firstLine[i].split("-");
+    restrictedTiles[i - 3] = new PVector(Integer.parseInt(points[0]), Integer.parseInt(points[1]));
+  }
 
   strokeWeight(2);
 
@@ -262,7 +271,9 @@ void option() {
 
 void gamePlay() {
   checkCollisions();
-  
+
+  setTargetTiles();
+
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
     if (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost) {
@@ -274,29 +285,37 @@ void gamePlay() {
 void createSprites() {
   pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
   gameObjects.add(pakmac);
-  
+
   blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2f, true, 11, 12);
   gameObjects.add(blinky);
   println((tileWidth * 13) + (tileWidth * 0.5f));
 }
 
 void checkCollisions() {
- 
-  for(int i = gameObjects.size() - 1; i >= 0; i--) {
-   GameObject player = gameObjects.get(i);
-   
-   if(player instanceof Pakmac) {
-    for(int j = gameObjects.size() - 1; j >= 0; j--) {
-      
-      GameObject dot = gameObjects.get(j);
-      
-      if(dot instanceof Dot) {
-        if(player.pos.dist(dot.pos) == 0) {
-          gameObjects.remove(dot);
+
+  for (int i = gameObjects.size() - 1; i >= 0; i--) {
+    GameObject player = gameObjects.get(i);
+
+    if (player instanceof Pakmac) {
+      for (int j = gameObjects.size() - 1; j >= 0; j--) {
+
+        GameObject dot = gameObjects.get(j);
+
+        if (dot instanceof Dot) {
+          if (player.pos.dist(dot.pos) < (player.objectHeight * 0.5f) - dot.objectHeight) {
+            gameObjects.remove(dot);
+          }
         }
       }
     }
-   }
+  }
+}
+
+void setTargetTiles() {
+  
+  if(blinky.ready) {
+    
+    blinky.targetTile = pakmac.getLocation();
   }
 }
 
