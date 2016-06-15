@@ -19,6 +19,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   boolean eaten;
   boolean frightened;
 
+  int frightenedTimer;
+
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectWidth, colour, theta);
     currentTile = new PVector(15, 15);
@@ -179,11 +181,23 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     pushMatrix();
     translate(pos.x, pos.y);
     if (frightened) {
-      if (frameCount % 20 < 10) {
-        shape(frightenedSprite[0]);
+      if (frightenedTimer < FRIGHTENED_LIMIT - (120)) {
+        if (frameCount % 20 < 10) {
+          shape(frightenedSprite[0]);
+        } else {
+          shape(frightenedSprite[1]);
+        }
+      } else if (frightenedTimer < FRIGHTENED_LIMIT) {
+        if (frameCount % 20 < 10) {
+          shape(frightenedSprite[0]);
+        } else {
+          shape(movingSprite2[spriteDirection]);
+        }
       } else {
-        shape(frightenedSprite[1]);
+        frightened = false;
       }
+
+      frightenedTimer++;
     } else if (eaten) {
       shape(eatenSprite[spriteDirection]);
     } else {
@@ -295,129 +309,155 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       }
     }
 
-    int distUp = getDistance(-1, 0);
-    int distLeft = getDistance(0, -1);
-    int distDown = getDistance(1, 0);
-    int distRight = getDistance(0, 1);
+    int[] distance = new int[4];
+    distance[0] = getDistance(-1, 0);
+    distance[1] = getDistance(0, -1);
+    distance[2] = getDistance(1, 0);
+    distance[3] = getDistance(0, 1);
+    println("At (" + currentTile.x + ", " + currentTile.y + ") we have - " + directions[0], distance[0], directions[1], distance[1], directions[2], distance[2], directions[3], distance[3] +  "target is (" + targetTile.x + ", " + targetTile.y + ")");    
+    int index = 0;
+    int tempDistance = Integer.MAX_VALUE;
 
-    if (directions[0]) {
-      if (directions[1]) {
-        if (distUp <= distLeft) {
-          directions[1] = false;
-          if (directions[2]) {
-            if (distUp <= distDown) {
-              directions[2] = false;
-              if (directions[3]) {
-                if (distUp <= distRight) {
-                  directions[3] = false;
-                } else {
-                  directions[0] = false;
-                }
-              }
-            } else {
-              directions[0] = false;
-              if (directions[3]) {
-                if (distDown <= distRight) {
-                  directions[3] = false;
-                } else {
-                  directions[2] = false;
-                }
-              }
-            }
-          } else if (directions[3]) {
-            if (distUp <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[0] = false;
-            }
-          }
-        } else {
-          directions[0] = false;
-          if (directions[2]) {
-            if (distLeft <= distDown) {
-              directions[2] = false;
-              if (directions[3]) {
-                if (distLeft <= distRight) {
-                  directions[3] = false;
-                } else {
-                  directions[1] = false;
-                }
-              }
-            } else {
-              directions[1] = false;
-            }
-          } else if (directions[3]) {
-            if (distLeft <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[1] = false;
-            }
-          }
-        }
-      } else if (directions[2]) {
-        if (distUp <= distDown) {
-          directions[2] = false;
-          if (directions[3]) {
-            if (distUp <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[0] = false;
-            }
-          }
-        } else {
-          directions[0] = false;
-          if (directions[3]) {
-            if (distDown <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[2] = false;
-            }
-          }
-        }
-      } else if (directions[3]) {
-        if (distUp <= distRight) {
-          directions[3] = false;
-        } else {
-          directions[0] = false;
+    for (int i = 0; i < directions.length; i++) {
+      if (directions[i]) {
+        if (distance[i] < tempDistance) {
+          tempDistance = distance[i];
+          index = i;
         }
       }
-    } else if (directions[1]) { //else if left is a valid option - check it against the remaining two directions and distances
-      if (directions[2]) {
-        if (distLeft <= distDown) {
-          directions[2] = false; 
-          if (directions[3]) {
-            if (distLeft <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[1] = false;
-            }
-          }
-        } else {
-          directions[1] = false;
-          if (directions[3]) {
-            if (distDown <= distRight) {
-              directions[3] = false;
-            } else {
-              directions[2] = false;
-            }
-          }
-        }
-      } else if (directions[3]) {
-        if (distLeft <= distRight) {
-          directions[3] = false;
-        } else {
-          directions[1] = false;
-        }
+    }
+
+    for (int i = 0; i < directions.length; i++) {
+      if (i != index) {
+        directions[i] = false;
       }
-    } else if (directions[2]) { //else if down is a valid option check it against right direction and distance
-      if (directions[3]) {
-        if (distDown <= distRight) {
-          directions[3] = false;
-        } else {
-          directions[2] = false;
-        }
-      }
-    }//if none of up, down, or left are valid then right is an automatic choice
+    }
+
+    /*
+    int distUp = getDistance(-1, 0);
+     int distLeft = getDistance(0, -1);
+     int distDown = getDistance(1, 0);
+     int distRight = getDistance(0, 1);
+     
+     if (directions[0]) {
+     if (directions[1]) {
+     if (distUp <= distLeft) {
+     directions[1] = false;
+     if (directions[2]) {
+     if (distUp <= distDown) {
+     directions[2] = false;
+     if (directions[3]) {
+     if (distUp <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[0] = false;
+     }
+     }
+     } else {
+     directions[0] = false;
+     if (directions[3]) {
+     if (distDown <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[2] = false;
+     }
+     }
+     }
+     } else if (directions[3]) {
+     if (distUp <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[0] = false;
+     }
+     }
+     } else {
+     directions[0] = false;
+     if (directions[2]) {
+     if (distLeft <= distDown) {
+     directions[2] = false;
+     if (directions[3]) {
+     if (distLeft <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[1] = false;
+     }
+     }
+     } else {
+     directions[1] = false;
+     }
+     } else if (directions[3]) {
+     if (distLeft <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[1] = false;
+     }
+     }
+     }
+     } else if (directions[2]) {
+     if (distUp <= distDown) {
+     directions[2] = false;
+     if (directions[3]) {
+     if (distUp <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[0] = false;
+     }
+     }
+     } else {
+     directions[0] = false;
+     if (directions[3]) {
+     if (distDown <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[2] = false;
+     }
+     }
+     }
+     } else if (directions[3]) {
+     if (distUp <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[0] = false;
+     }
+     }
+     } else if (directions[1]) { //else if left is a valid option - check it against the remaining two directions and distances
+     if (directions[2]) {
+     if (distLeft <= distDown) {
+     directions[2] = false; 
+     if (directions[3]) {
+     if (distLeft <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[1] = false;
+     }
+     }
+     } else {
+     directions[1] = false;
+     if (directions[3]) {
+     if (distDown <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[2] = false;
+     }
+     }
+     }
+     } else if (directions[3]) {
+     if (distLeft <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[1] = false;
+     }
+     }
+     } else if (directions[2]) { //else if down is a valid option check it against right direction and distance
+     if (directions[3]) {
+     if (distDown <= distRight) {
+     directions[3] = false;
+     } else {
+     directions[2] = false;
+     }
+     }
+     }//if none of up, down, or left are valid then right is an automatic choice
+     */
   }
 
   boolean checkCurrentTile() {
@@ -451,7 +491,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
         } else if (temp.y > targetTile.y) {
           temp.add(-1, -1);
         } else {
-          temp.add(0, -1);
+          temp.add(-1, 0);
         }
       } else {
         if (temp.y < targetTile.y) {

@@ -4,6 +4,7 @@ Map map;
 Pakmac pakmac;
 Ghost blinky;
 float tileWidth;
+static final int FRIGHTENED_LIMIT = 420;
 
 boolean[] keys = new boolean[512];
 
@@ -292,9 +293,7 @@ void gamePlay() {
     }
   }
   
-  if(frameCount % 500 == 25) {
-   blinky.forceTurn = true; 
-  }
+  
 }
 
 void createSprites() {
