@@ -3,8 +3,8 @@ ArrayList<Ghost> ghosts;
 Map map;
 Pakmac pakmac;
 Ghost blinky;
+Timer timer;
 float tileWidth;
-static final int FRIGHTENED_LIMIT = 420;
 
 boolean[] keys = new boolean[512];
 
@@ -16,6 +16,8 @@ PVector[] restrictedTiles;
 
 PShape life;
 
+
+static final int FRIGHTENED_LIMIT = 420;
 
 void setup() {
   size(672, 900);
@@ -220,6 +222,9 @@ void loadData() {
   gameObjects.add(map);
   strokeWeight(1);
 
+  timer = new Timer();
+  gameObjects.add(timer);
+
   loaded = true;
 }
 
@@ -288,12 +293,10 @@ void gamePlay() {
 
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
-    if (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost) {
+    if (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost || gameObjects.get(i) instanceof Timer) {
       gameObjects.get(i).update();
     }
   }
-  
-  
 }
 
 void createSprites() {
@@ -329,7 +332,7 @@ void checkCollisions() {
             println("POWERUP");
             gameObjects.remove(dot);
             ((Powerup) dot).applyTo((Pakmac) player);
-          } 
+          }
         }
       }
     }
@@ -337,14 +340,20 @@ void checkCollisions() {
 }
 
 void setTargetTiles() {
-  
-  if(blinky.frightened) {
-    int row = (int) random(map.path.length);
-    int col = (int) random(map.path[0].length);
-    blinky.targetTile = new PVector(row, col);
-  } else if (blinky.ready) {
 
-    blinky.targetTile = pakmac.getLocation();
+  for (int i = 0; i < ghosts.size(); i++) {
+    if (ghosts.get(i).frightened) {
+      int row = (int) random(map.path.length);
+      int col = (int) random(map.path[0].length);
+      ghosts.get(i).targetTile = new PVector(row, col);
+    } else if (ghosts.get(i).ready) {
+
+      switch (i) {
+      case 0:
+        ghosts.get(i).targetTile = pakmac.getLocation();
+        break;
+      }
+    }
   }
 }
 
