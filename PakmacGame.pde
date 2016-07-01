@@ -6,6 +6,8 @@ Ghost blinky;
 Timer timer;
 float tileWidth;
 
+int modeChangeTimer[];
+
 boolean[] keys = new boolean[512];
 
 
@@ -32,6 +34,8 @@ void setup() {
 
   loaded = false;
   menuOption = 1;
+  
+  modeChangeTimer = new int[8];
 }
 
 void draw() {
