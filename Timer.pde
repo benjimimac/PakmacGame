@@ -22,7 +22,7 @@ class Timer extends GameObject {
     fill(255);
     textSize(40);
 
-    text(zeros + ":" + tenths, width * 0.3f, height - tileWidth);
+    text(thousands + "" + hundreds + ":" + tens + "" + zeros + ":" + tenths, width * 0.3f, height - tileWidth);
   }
 
 
@@ -31,38 +31,34 @@ class Timer extends GameObject {
     count++;
     if (count % 6 == 0) {
       tenths++;
-      if(tenths == 10) {
-       tenths = 0; 
-       zeros++;
-      }
     }
-    //if (count % 60 == 0) {
-    //  zeros += 1;
-    //}
-    //if (count % 600 == 0) {
-    //  tens += 1;
-    //}
-    //if (count % 3600 == 0) {
-    //  hundreds += 1;
-    //}
+    if (count % 60 == 0) {
+      zeros += 1;
+    }
+    if (count % 600 == 0) {
+      tens += 1;
+    }
+    if (count % 3600 == 0) {
+      hundreds += 1;
+    }
 
-    //if (count % 36000 == 0) {
-    //  thousands += 1;
-    //}
+    if (count % 36000 == 0) {
+      thousands += 1;
+    }
 
-    //if (tenths == 10) {
-    //  tenths = 0;
-    //}
-    //if (zeros == 10) {
-    //  zeros = 0;
-    //}
+    if (tenths == 10) {
+      tenths = 0;
+    }
+    if (zeros == 10) {
+      zeros = 0;
+    }
 
-    //if (tens == 6) {
-    //  tens = 0;
-    //}
+    if (tens == 6) {
+      tens = 0;
+    }
 
-    //if (hundreds == 10) {
-    //  hundreds = 0;
-    //}
+    if (hundreds == 10) {
+      hundreds = 0;
+    }
   }
 }
