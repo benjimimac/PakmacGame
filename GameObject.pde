@@ -1,149 +1,169 @@
-class GameObject {
-  //Fields
-  protected PVector pos;
-  protected PVector startPos;
-  protected PVector forward;
-  protected PShape sprite;
-  protected float theta;
-  protected float startTheta;
-  protected float objectHeight, objectWidth, objectRadius;
-  protected color colour;
-  protected float speed = 3.0f;
+abstract class GameObject {
+  PVector pos;
+  float objectWidth;
+  float objectHeight;
+  color colour;
+  float theta;
+  float startTheta;
+  float speed;
+  PVector forward;
+
+  PShape sprite;
+  PShape movingSprite1[];
+  PShape movingSprite2[];
+
   float x, y;
 
-  protected float start1, start2, close1, close2, startAngle, closeAngle;
-  protected char up, left, down, right;
-  float halfWidth;
-  int i;
-  int startI;
+  int xReference;
+  int yReference;
+  
+  boolean switchSprite;
+  int spriteDirection;
 
+  int test = 0;
 
-
-  //Constructor method
-  GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float speed) {
+  GameObject(float x, float y, float objectWidth, float objectHeight, color colour) {
     this.x = x;
     this.y = y;
     pos = new PVector(x, y);
-    startPos = pos.copy();
-    //startPos = new PVector(x, y);
-    forward = new PVector(0, 0);
+    //startPos = new PVector(x, y);//pos.copy();
     this.objectWidth = objectWidth;
     this.objectHeight = objectHeight;
-    objectRadius = objectWidth * 0.5f;
     this.colour = colour;
-    this.speed = speed;
-    stroke(colour);
-    fill(colour);
-    halfWidth = objectWidth * 0.5f;
+    forward = new PVector(0, 0);    
+    
+    switchSprite = false;
   }
 
-  void render() {
-  }//end render()
+  GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float theta) {
+    this(x, y, objectWidth, objectHeight, colour);
+    this.theta = theta;
+    //println(degrees(theta));
+  }
+
+  abstract void render();
 
   void update() {
     forward.x =  cos(theta);
     forward.y = sin(theta);
+    xReference = (int) map(pos.x, 0, width, 0, 28);
+    yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
+    float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
 
-    rightDirection();
+    //println("GameObject class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
 
-    leftDirection();
+    switch ((int) degrees(theta)) {
+    case 0:
 
-    downDirection();
+      rightDirection(); 
+      break;
 
-    upDirection();
+    case 90:
+      downDirection();
+      break;
+
+    case 180:
+      //println("left - " + pos);
+      leftDirection();
+      break;
+
+    case 270:
+      upDirection();
+      break;
+
+      //default:
+      //println("default - " + theta);
+      //break;
+    }
+
+
+    int xMod = (int) (pos.x % tileWidth);
+    int yMod = (int) (pos.y % tileWidth);
+
+    if (xMod > tileWidth * 0.25f && xMod < tileWidth * 0.75f && yMod > tileWidth * 0.25f && yMod < tileWidth * 0.75f) {
+      switchSprite = false;
+    } else {
+      switchSprite = true;
+    }
+
+    //
+
+    //
   }//end update()  
 
   void upDirection() {
-    if (theta == radians(270.0f)) {
-      if (pos.y <= 0) {
-        pos.y = height;
-      }//end if()
+    int reference = (int) map(pos.y - 1 - (tileWidth * 0.5f), (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
 
-      if (get((int) pos.x, (int) pos.y - (tileSize + 1)) != maze.getWallColour()) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-    }//enf if()
+    if (pos.y <= 0) {
+      pos.y = height;
+    }//end if()
+
+    if (map.path[reference][xReference] == 1) {
+      forward.mult(speed);
+      pos.add(forward);
+    }
   }
 
   void leftDirection() {
-    if (theta == radians(180.0f)) {
-      if (pos.x <= 0) {
-        pos.x = width;
-      }//end if()
+    //println("xReference mapped is - "  + map(xReference, 0, 28, 0, width));
+    int reference = (int) map(pos.x - 1 - (tileWidth * 0.5f), 0, width, 0, 28);
 
-      if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-    }//enf if()
+    if (pos.x <= 0) {
+      pos.x = width;
+    }//end if()
+    //println(pos.x % tileWidth + " - " + pos.y % tileWidth);
+    //if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {
+    if (map.path[yReference][reference] == 1) {// && map(pos.x - (tileWidth * 0.5f), 0, width, 0, 28) != xReference - 1) {
+
+      forward.mult(speed);
+      pos.add(forward);
+    } 
+    //}//enf if()
   }
 
   void downDirection() {
-    if (theta == radians(90.0f)) {
-      if (pos.y >= height) {
-        pos.y = 0;
-      }//end if()
+    //if (theta == radians(90.0f)) {
+    int reference = (int) map(pos.y + (tileWidth * 0.5f), (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
 
-      if (get((int) pos.x, (int) pos.y + (tileSize + 1)) != maze.getWallColour()) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()
-    }//enf if()
+    if (reference == 31) {
+      reference = 0;
+    }
+
+    if (pos.y >= height) {
+      pos.y = 0;
+    }//end if()
+
+    if (map.path[reference][xReference] == 1) {
+      forward.mult(speed);
+      pos.add(forward);
+    } 
+    //}//end if()
   }
 
   void rightDirection() {
-    if (theta == 0.0f) {
-      if (pos.x >= width) {
-        pos.x = 0;
-      }//end if()
+    int reference = (int) map(pos.x + (tileWidth * 0.5f), 0, width, 0, 28);
 
-      if (get((int) pos.x + (tileSize), (int) pos.y) != maze.getWallColour()) {
-        forward.mult(speed);
-        pos.add(forward);
-      }//end if()      
+    if (reference == 28) {
+      reference = 0;
+    }
+
+    //if (theta == 0.0f) {
+    if (pos.x >= width) {
+      pos.x = 0;
     }//end if()
-  }
 
-  void openMouth() {
-    startAngle = start2 + theta;
-    closeAngle = close2 + theta;
+    if (map.path[yReference][reference] == 1) {
+      forward.mult(speed);
+      pos.add(forward);
+    }  
+    //}//end if()
   }
-
-  void closeMouth() {
-    startAngle = start1;
-    closeAngle = close1;
-  }
-
-  void setStart1() {
-    start1 = theta + radians(20.0f);
-  }
-
-  void setClose1() {
-    close1 = theta + TWO_PI - radians(20.0f);
-  }
-
-  //Getters
-  public float getPosX() {
-    return pos.x;
-  }
-
-  public float getPosY() {
-    return pos.y;
-  }
-
-  public float getObjectRadius() {
-    return objectRadius;
-  }
-
-  public float getObjectHeight() {
-    return objectRadius;
-  }
-
-  public PVector getLocation() {
-    //Return yReference then xReference
-    int xReference = (int) map(pos.x, 0, width, 0, 28);
-    int yReference = (int) map(pos.y, tileSize, tileSize + (tileSize * 31), 0, 31);
-    return new PVector(yReference, xReference);
-  }
+  
+ PVector getLocation() {
+  
+   int x = (int) map(pos.x, 0, width, 0, 28);
+   int y = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
+   
+   return new PVector(y, x);
+ }
 }
