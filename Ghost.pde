@@ -240,7 +240,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     currentTile = getLocation();
 
     if (currentTile.dist(nextTile) == 0) {
-println("inside");
+
       if (forceTurn) {
         forceTurn();
       } else {
@@ -295,8 +295,6 @@ println("inside");
           nextTile.add(0, 1);
         }
       }
-    } else {
-     println("outside : currentTile - " + currentTile + " nextTile - " + nextTile); 
     }
 
     // Make sure the nextTile is still on the grid
@@ -312,51 +310,22 @@ println("inside");
     }
 
     int[] distance = new int[4];
-    //distance[0] = getDistance(-1, 0);
-    //distance[1] = getDistance(0, -1);
-    //distance[2] = getDistance(1, 0);
-    //distance[3] = getDistance(0, 1);
+    distance[0] = getDistance(-1, 0);
+    distance[1] = getDistance(0, -1);
+    distance[2] = getDistance(1, 0);
+    distance[3] = getDistance(0, 1);
     println("At (" + currentTile.x + ", " + currentTile.y + ") we have - " + directions[0], distance[0], directions[1], distance[1], directions[2], distance[2], directions[3], distance[3] +  "target is (" + targetTile.x + ", " + targetTile.y + ")");    
     int index = 0;
     int tempDistance = Integer.MAX_VALUE;
 
     for (int i = 0; i < directions.length; i++) {
-
       if (directions[i]) {
-
-        switch (i) {
-        case 0:
-          distance[i] = getDistance(-1, 0);
-          break;
-
-        case 1:
-          distance[i] = getDistance(0, -1);
-          break;
-
-        case 2:
-          distance[i] = getDistance(1, 0);
-          break;
-
-        case 3:
-          distance[i] = getDistance(0, 1);
-          break;
-        }
-        
-        if(distance[i] < tempDistance) {
-         tempDistance = distance[i];
-         index = i;
+        if (distance[i] < tempDistance) {
+          tempDistance = distance[i];
+          index = i;
         }
       }
     }
-
-    //for (int i = 0; i < directions.length; i++) {
-    //  if (directions[i]) {
-    //    if (distance[i] < tempDistance) {
-    //      tempDistance = distance[i];
-    //      index = i;
-    //    }
-    //  }
-    //}
 
     for (int i = 0; i < directions.length; i++) {
       if (i != index) {
@@ -557,31 +526,27 @@ println("inside");
   }
 
   void forceTurn() {
-    nextTile = currentTile.copy();
+    nextTile = lastTile;
 
     switch (spriteDirection) {
     case 0:
       spriteDirection = 2;
       theta = HALF_PI;
-      nextTile.add(1, 0);
       break;
 
     case 1:
       spriteDirection = 3;
       theta = 0;
-      nextTile.add(0, 1);
       break;
 
     case 2:
       spriteDirection = 0;
       theta = PI + HALF_PI;
-      nextTile.add(-1, 0);
       break;
 
     case 3:
       spriteDirection = 1;
       theta = PI;
-      nextTile.add(0, -1);
       break;
     }
 
