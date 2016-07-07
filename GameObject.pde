@@ -33,42 +33,47 @@ abstract class GameObject {
     forward = new PVector(0, 0);    
     
     switchSprite = false;
+    
+    theta = HALF_PI;
   }
 
-  GameObject(float x, float y, float objectWidth, float objectHeight, color colour, float theta) {
-    this(x, y, objectWidth, objectHeight, colour);
-    this.theta = theta;
-    //println(degrees(theta));
-  }
+  //GameObject(float x, float y, float objectWidth, float objectHeight, color colour/*, float theta*/) {
+  //  this(x, y, objectWidth, objectHeight, colour);
+  //  theta = HALF_PI;
+  //  //println(degrees(theta));
+  //}
 
   abstract void render();
 
   void update() {
-    forward.x =  cos(theta);
-    forward.y = sin(theta);
+    if(this instanceof Ghost) {
+    println("actual theta " + degrees(theta * spriteDirection) + " spriteDirection " + spriteDirection);
+    }
+    forward.x =  cos(theta * spriteDirection);
+    forward.y = sin(theta * spriteDirection);
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
     float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
 
     //println("GameObject class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
 
-    switch ((int) degrees(theta)) {
-    case 0:
-
-      rightDirection(); 
+    switch (spriteDirection) {
+    case 3:
+ 
+      upDirection();
       break;
 
-    case 90:
-      downDirection();
-      break;
-
-    case 180:
-      //println("left - " + pos);
+    case 2:
       leftDirection();
       break;
 
-    case 270:
-      upDirection();
+    case 1:
+      //println("left - " + pos);
+      downDirection();
+      break;
+
+    case 0:
+      rightDirection();
       break;
 
       //default:

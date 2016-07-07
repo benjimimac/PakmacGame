@@ -21,8 +21,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   int frightenedTimer;
 
-  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, float theta, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
-    super(x, y, objectWidth, objectWidth, colour, theta);
+  Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, int spriteDirection, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
+    super(x, y, objectWidth, objectWidth, colour/*, theta*/);
     currentTile = new PVector(15, 15);
 
     startTheta = theta;
@@ -33,7 +33,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     this.speed = speed;
     this.ready = ready;
 
-    spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
+    //spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
+    this.spriteDirection = spriteDirection;
 
     eaten = false;
     frightened = false;
@@ -58,7 +59,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     directions = new boolean[4];
 
-    for (int i = 0; i < movingSprite1.length; i++) {
+    for (int i = movingSprite1.length - 1; i >= 0 ; i--) {
       fill(colour);
       stroke(colour);
       movingSprite1[i] = createShape(GROUP);
@@ -101,39 +102,39 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     PShape pupil1Up = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) - 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape pupil2Up = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) - 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
-    movingSprite1[0].addChild(pupil1Up);
-    movingSprite2[0].addChild(pupil1Up);
-    movingSprite1[0].addChild(pupil2Up);
-    movingSprite2[0].addChild(pupil2Up);
-    eatenSprite[0].addChild(pupil1Up);
-    eatenSprite[0].addChild(pupil2Up);
+    movingSprite1[3].addChild(pupil1Up);
+    movingSprite2[3].addChild(pupil1Up);
+    movingSprite1[3].addChild(pupil2Up);
+    movingSprite2[3].addChild(pupil2Up);
+    eatenSprite[3].addChild(pupil1Up);
+    eatenSprite[3].addChild(pupil2Up);
 
     PShape  pupil1Left = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape  pupil2Left = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) - 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
-    movingSprite1[1].addChild(pupil1Left);
-    movingSprite2[1].addChild(pupil1Left);
-    movingSprite1[1].addChild(pupil2Left);
-    movingSprite2[1].addChild(pupil2Left);
-    eatenSprite[1].addChild(pupil1Left);
-    eatenSprite[1].addChild(pupil2Left);
+    movingSprite1[2].addChild(pupil1Left);
+    movingSprite2[2].addChild(pupil1Left);
+    movingSprite1[2].addChild(pupil2Left);
+    movingSprite2[2].addChild(pupil2Left);
+    eatenSprite[2].addChild(pupil1Left);
+    eatenSprite[2].addChild(pupil2Left);
 
     PShape pupil1Down = createShape(ELLIPSE, 0 - (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape pupil2Down = createShape(ELLIPSE, 0 + (objectHeight * 0.5f), 0 - (objectHeight * 0.25f) + 5, objectHeight * 0.153846f, objectHeight * 0.153846f);
-    movingSprite1[2].addChild(pupil1Down);
-    movingSprite2[2].addChild(pupil1Down);
-    movingSprite1[2].addChild(pupil2Down);
-    movingSprite2[2].addChild(pupil2Down);
-    eatenSprite[2].addChild(pupil1Down);
-    eatenSprite[2].addChild(pupil2Down);
+    movingSprite1[1].addChild(pupil1Down);
+    movingSprite2[1].addChild(pupil1Down);
+    movingSprite1[1].addChild(pupil2Down);
+    movingSprite2[1].addChild(pupil2Down);
+    eatenSprite[1].addChild(pupil1Down);
+    eatenSprite[1].addChild(pupil2Down);
 
     PShape pupil1Right = createShape(ELLIPSE, 0 - (objectHeight * 0.5f) + 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
     PShape pupil2Right = createShape(ELLIPSE, 0 + (objectHeight * 0.5f) + 5, 0 - (objectHeight * 0.25f), objectHeight * 0.153846f, objectHeight * 0.153846f);
-    movingSprite1[3].addChild(pupil1Right);
-    movingSprite2[3].addChild(pupil1Right);
-    movingSprite1[3].addChild(pupil2Right);
-    movingSprite2[3].addChild(pupil2Right);
-    eatenSprite[3].addChild(pupil1Right);
-    eatenSprite[3].addChild(pupil2Right);
+    movingSprite1[0].addChild(pupil1Right);
+    movingSprite2[0].addChild(pupil1Right);
+    movingSprite1[0].addChild(pupil2Right);
+    movingSprite2[0].addChild(pupil2Right);
+    eatenSprite[0].addChild(pupil1Right);
+    eatenSprite[0].addChild(pupil2Right);
 
     frightenedSprite = new PShape[2];
     for (int i = 0; i < frightenedSprite.length; i++) {
@@ -215,93 +216,152 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   }
 
   void update() {
+
     if (!ghostArea) {
       super.update();
-      setDirections();
-
-      if (directions[0] && pos.x % tileWidth == 12) {
-        spriteDirection = 0;
-        theta = PI + HALF_PI;
-      } else if (directions[1] && pos.y % tileWidth == 12) {
-        spriteDirection = 1;
-        theta = PI;
-      } else if (directions[2] && pos.x % tileWidth == 12) {
-        spriteDirection = 2;
-        theta = HALF_PI;
-      } else if (directions[3] && pos.y % tileWidth == 12) {
-        spriteDirection = 3;
-        theta = 0;
+println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
+      if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
+        setDirections();
       }
     }
   }
 
   void setDirections() {
+    if (forceTurn) {
+      forceTurn();
+    } else {
+      //By default all directions should be false
+      for (int i = 0; i < directions.length; i++) {
+        directions[i] = false;
+      }
 
-    currentTile = getLocation();
+      PVector tempLocation = getLocation();
 
-    if (currentTile.dist(nextTile) == 0) {
-println("inside");
-      if (forceTurn) {
-        forceTurn();
-      } else {
-        lastTile = currentTile.copy();
+      // Check the 2d path array in the Map object - each tile above, below, left, and right
+      //above
+      if (map.checkPath((int) tempLocation.x - 1, (int) tempLocation.y) == 1 && spriteDirection != 1) {
+        directions[3] = true;
+      }
 
+      //left
+      if (map.checkPath((int) tempLocation.x, (int) tempLocation.y - 1) == 1 && spriteDirection != 0) {
+        directions[2] = true;
+      }
 
-        // Set all elements of the directions array to be false
-        for (int i = 0; i < directions.length; i++) {
-          directions[i] = false;
-        }
-
-        // Check the 2d path array in the Map object - each tile above, below, left, and right
-        //above
-        if (map.checkPath((int) currentTile.x - 1, (int) currentTile.y) == 1 && theta != HALF_PI) {
-          directions[0] = true;
-        }
-
-        //left
-        if (map.checkPath((int) currentTile.x, (int) currentTile.y - 1) == 1 && theta != 0) {
+      //down
+      if (!eaten) {
+        if (map.checkPath((int) tempLocation.x + 1, (int) tempLocation.y) == 1 && spriteDirection != 3) {
           directions[1] = true;
         }
-
-        //down
-        if (!eaten) {
-          if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI) {
-            directions[2] = true;
-          }
-        } else {
-          if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
-            directions[2] = true;
-          }
-        }
-
-        //right
-        if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && theta != PI) {
-          directions[3] = true;
-        }
-
-        pickOneDirection();
-
-        if (directions[0]) {
-
-          nextTile.add(-1, 0);
-        } else if (directions[1]) {
-
-          nextTile.add(0, -1);
-        } else if (directions[2]) {
-
-          nextTile.add(1, 0);
-        } else {
-
-          nextTile.add(0, 1);
+      } else {
+        if (map.checkPath((int) tempLocation.x + 1, (int) tempLocation.y) == 1 && spriteDirection != 3 || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
+          directions[1] = true;
         }
       }
-    } else {
-     println("outside : currentTile - " + currentTile + " nextTile - " + nextTile); 
-    }
 
-    // Make sure the nextTile is still on the grid
-    checkNextTileRange();
+      //right
+      if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && spriteDirection != 2) {
+        directions[0] = true;
+      }
+    }
+    
+    pickOneDirection();
+    
+    println(directions[3], directions[2], directions[1], directions[0], spriteDirection, degrees(theta));
   }
+
+  /*
+  void update() {
+   if (!ghostArea) {
+   super.update();
+   setDirections();
+   
+   if (directions[0] && pos.x % tileWidth == 12) {
+   spriteDirection = 0;
+   theta = PI + HALF_PI;
+   } else if (directions[1] && pos.y % tileWidth == 12) {
+   spriteDirection = 1;
+   theta = PI;
+   } else if (directions[2] && pos.x % tileWidth == 12) {
+   spriteDirection = 2;
+   theta = HALF_PI;
+   } else if (directions[3] && pos.y % tileWidth == 12) {
+   spriteDirection = 3;
+   theta = 0;
+   }
+   }
+   }
+   */
+
+  /*
+  void setDirections() {
+   
+   currentTile = getLocation();
+   
+   if (currentTile.dist(nextTile) == 0) {
+   println("inside");
+   if (forceTurn) {
+   forceTurn();
+   } else {
+   lastTile = currentTile.copy();
+   
+   
+   // Set all elements of the directions array to be false
+   for (int i = 0; i < directions.length; i++) {
+   directions[i] = false;
+   }
+   
+   // Check the 2d path array in the Map object - each tile above, below, left, and right
+   //above
+   if (map.checkPath((int) currentTile.x - 1, (int) currentTile.y) == 1 && theta != HALF_PI) {
+   directions[0] = true;
+   }
+   
+   //left
+   if (map.checkPath((int) currentTile.x, (int) currentTile.y - 1) == 1 && theta != 0) {
+   directions[1] = true;
+   }
+   
+   //down
+   if (!eaten) {
+   if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI) {
+   directions[2] = true;
+   }
+   } else {
+   if (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 1 && theta != PI + HALF_PI || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
+   directions[2] = true;
+   }
+   }
+   
+   //right
+   if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && theta != PI) {
+   directions[3] = true;
+   }
+   
+   pickOneDirection();
+   
+   if (directions[0]) {
+   
+   nextTile.add(-1, 0);
+   } else if (directions[1]) {
+   
+   nextTile.add(0, -1);
+   } else if (directions[2]) {
+   
+   nextTile.add(1, 0);
+   } else {
+   
+   nextTile.add(0, 1);
+   }
+   }
+   } else {
+   println("outside : currentTile - " + currentTile + " nextTile - " + nextTile); 
+   }
+   
+   // Make sure the nextTile is still on the grid
+   checkNextTileRange();
+   }
+   */
 
   void pickOneDirection() {
 
@@ -316,35 +376,35 @@ println("inside");
     //distance[1] = getDistance(0, -1);
     //distance[2] = getDistance(1, 0);
     //distance[3] = getDistance(0, 1);
-    println("At (" + currentTile.x + ", " + currentTile.y + ") we have - " + directions[0], distance[0], directions[1], distance[1], directions[2], distance[2], directions[3], distance[3] +  "target is (" + targetTile.x + ", " + targetTile.y + ")");    
-    int index = 0;
+    //println("At (" + currentTile.x + ", " + currentTile.y + ") we have - " + directions[0], distance[0], directions[1], distance[1], directions[2], distance[2], directions[3], distance[3] +  "target is (" + targetTile.x + ", " + targetTile.y + ")");    
+    int index = directions.length - 1;
     int tempDistance = Integer.MAX_VALUE;
 
-    for (int i = 0; i < directions.length; i++) {
+    for (int i = directions.length - 1; i >= 0 ; i--) {
 
       if (directions[i]) {
 
         switch (i) {
-        case 0:
+        case 3:
           distance[i] = getDistance(-1, 0);
           break;
 
-        case 1:
+        case 2:
           distance[i] = getDistance(0, -1);
           break;
 
-        case 2:
+        case 1:
           distance[i] = getDistance(1, 0);
           break;
 
-        case 3:
+        case 0:
           distance[i] = getDistance(0, 1);
           break;
         }
-        
-        if(distance[i] < tempDistance) {
-         tempDistance = distance[i];
-         index = i;
+
+        if (distance[i] < tempDistance) {
+          tempDistance = distance[i];
+          index = i;
         }
       }
     }
@@ -357,12 +417,14 @@ println("inside");
     //    }
     //  }
     //}
-
+println("index is " + index);
     for (int i = 0; i < directions.length; i++) {
       if (i != index) {
         directions[i] = false;
       }
     }
+    
+    spriteDirection = index;
 
     /*
     int distUp = getDistance(-1, 0);
@@ -493,8 +555,10 @@ println("inside");
 
   boolean checkCurrentTile() {
 
+    PVector tempLocation = getLocation();
+    
     for (int i = 0; i < restrictedTiles.length; i++) {
-      if (restrictedTiles[i].equals(currentTile)) {
+      if (restrictedTiles[i].equals(tempLocation)) {
         return true;
       }
     }
@@ -557,36 +621,39 @@ println("inside");
   }
 
   void forceTurn() {
-    nextTile = currentTile.copy();
+    //nextTile = currentTile.copy();
+    PVector temp = nextTile.copy();
+    nextTile = lastTile.copy();
+    lastTile = temp;
 
     switch (spriteDirection) {
     case 0:
       spriteDirection = 2;
       theta = HALF_PI;
-      nextTile.add(1, 0);
+      //nextTile.add(1, 0);
       break;
 
     case 1:
       spriteDirection = 3;
       theta = 0;
-      nextTile.add(0, 1);
+      //nextTile.add(0, 1);
       break;
 
     case 2:
       spriteDirection = 0;
       theta = PI + HALF_PI;
-      nextTile.add(-1, 0);
+      //nextTile.add(-1, 0);
       break;
 
     case 3:
       spriteDirection = 1;
       theta = PI;
-      nextTile.add(0, -1);
+      //nextTile.add(0, -1);
       break;
     }
 
     forceTurn = false;
-    lastTile = currentTile.copy();
+    //lastTile = currentTile.copy();
 
     for (int i = 0; i < directions.length; i++) {
       directions[i] = false;

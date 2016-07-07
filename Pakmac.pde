@@ -5,7 +5,7 @@ class Pakmac extends GameObject {
   int score, foodCount, lives;
 
   Pakmac(float x, float y, float objectWidth, color colour, char up, char left, char down, char right, float theta) {
-    super(x, y, objectWidth, objectWidth, colour, theta);
+    super(x, y, objectWidth, objectWidth, colour/*, theta*/);
     //this.theta = theta;
     //println(degrees(theta));
     startTheta = theta;

@@ -304,13 +304,13 @@ void gamePlay() {
 }
 
 void createSprites() {
-  pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', PI);
+  pakmac = new Pakmac(width * 0.5f, (tileWidth * 25) + (tileWidth * 0.5f), tileWidth * 1.6, color(255, 255, 0), 'W', 'A', 'S', 'D', 2);
   gameObjects.add(pakmac);
 
 
   life = createShape(ARC, 0, 0, tileWidth, tileWidth, -PI + radians(20), PI - radians(20));
 
-  blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), PI, false, 2f, true, 11, 12);
+  blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), 2, false, 2f, true, 11, 12);
   gameObjects.add(blinky);
   ghosts.add(blinky);
   //println((tileWidth * 13) + (tileWidth * 0.5f));
