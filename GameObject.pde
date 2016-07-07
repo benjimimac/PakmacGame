@@ -46,11 +46,13 @@ abstract class GameObject {
   abstract void render();
 
   void update() {
-    if(this instanceof Ghost) {
-    println("actual theta " + degrees(theta * spriteDirection) + " spriteDirection " + spriteDirection);
-    }
+    
     forward.x =  cos(theta * spriteDirection);
     forward.y = sin(theta * spriteDirection);
+    
+    if(this instanceof Pakmac) {
+     println(degrees(theta), spriteDirection); 
+    }
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
     float fauxXPos = tileWidth * (xReference); // Fancy word, I know...

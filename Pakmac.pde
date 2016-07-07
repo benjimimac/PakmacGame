@@ -4,13 +4,14 @@ class Pakmac extends GameObject {
   char up, left, down, right;
   int score, foodCount, lives;
 
-  Pakmac(float x, float y, float objectWidth, color colour, char up, char left, char down, char right, float theta) {
+  Pakmac(float x, float y, float objectWidth, color colour, char up, char left, char down, char right, int spriteDirection) {
     super(x, y, objectWidth, objectWidth, colour/*, theta*/);
     //this.theta = theta;
     //println(degrees(theta));
     startTheta = theta;
     angle = HALF_PI * 0.9f;
     speed = 3.0f;
+    this.spriteDirection = spriteDirection;
     
     score = 0;
     foodCount = 0;
@@ -21,10 +22,10 @@ class Pakmac extends GameObject {
     sprite = createShape(ELLIPSE, 0, 0, objectWidth, objectHeight);
 
     movingSprite1 = new PShape[4];
-    movingSprite1[0] = createShape(ARC, 0, 0, objectWidth, objectHeight, -HALF_PI + angle, PI + HALF_PI - angle, PIE);
-    movingSprite1[1] = createShape(ARC, 0, 0, objectWidth, objectHeight, -PI + angle, PI - angle, PIE);
-    movingSprite1[2] = createShape(ARC, 0, 0, objectWidth, objectHeight, HALF_PI + angle, HALF_PI + TWO_PI - angle, PIE);
-    movingSprite1[3] = createShape(ARC, 0, 0, objectWidth, objectHeight, angle, TWO_PI - angle, PIE);
+    movingSprite1[3] = createShape(ARC, 0, 0, objectWidth, objectHeight, -HALF_PI + angle, PI + HALF_PI - angle, PIE);
+    movingSprite1[2] = createShape(ARC, 0, 0, objectWidth, objectHeight, -PI + angle, PI - angle, PIE);
+    movingSprite1[1] = createShape(ARC, 0, 0, objectWidth, objectHeight, HALF_PI + angle, HALF_PI + TWO_PI - angle, PIE);
+    movingSprite1[0] = createShape(ARC, 0, 0, objectWidth, objectHeight, angle, TWO_PI - angle, PIE);
     spriteDirection = 1;
 
     this.up = up;
@@ -63,8 +64,8 @@ class Pakmac extends GameObject {
        xReference = -1; 
       }
       if (map.path[yReference][xReference + 1] == 1 && pos.y % tileWidth == tileWidth * 0.5f) {
-        spriteDirection = 3;
-        theta = 0;
+        spriteDirection = 0;
+        //theta = 0;
       }
       //super.turnRight();
     }
@@ -76,8 +77,8 @@ class Pakmac extends GameObject {
       //println(theta);
       if (map.path[yReference][xReference - 1] == 1 && pos.y % tileWidth == tileWidth * 0.5f) {
         //println(true);
-        spriteDirection = 1;
-        theta = PI;
+        spriteDirection = 2;
+        //theta = PI;
       } else {
         //println(false);
       }
@@ -90,8 +91,8 @@ class Pakmac extends GameObject {
       }
       
       if (map.path[yReference + 1][xReference] == 1 && pos.x % tileWidth == tileWidth * 0.5f) {
-        spriteDirection = 2;
-        theta = HALF_PI;
+        spriteDirection = 1;
+        //theta = HALF_PI;
       }
     }
     if (keys[up]) {
@@ -101,8 +102,8 @@ class Pakmac extends GameObject {
       }
       
       if (map.path[yReference - 1][xReference] == 1 && pos.x % tileWidth == tileWidth * 0.5f) {
-        spriteDirection = 0;
-        theta = PI + HALF_PI;
+        spriteDirection = 3;
+        //theta = PI + HALF_PI;
       }
       //super.turnUp();
     }

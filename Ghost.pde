@@ -219,7 +219,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     if (!ghostArea) {
       super.update();
-println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
+//println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
+//println("target is " + targetTile);
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
       }
@@ -254,20 +255,20 @@ println(directions[0], directions[1], directions[2], directions[3], spriteDirect
           directions[1] = true;
         }
       } else {
-        if (map.checkPath((int) tempLocation.x + 1, (int) tempLocation.y) == 1 && spriteDirection != 3 || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && theta != PI + HALF_PI) {
+        if (map.checkPath((int) tempLocation.x + 1, (int) tempLocation.y) == 1 && spriteDirection != 3 || map.checkPath((int) currentTile.x + 1, (int) currentTile.y) == 5 && spriteDirection != 3 ) {
           directions[1] = true;
         }
       }
 
       //right
-      if (map.checkPath((int) currentTile.x, (int) currentTile.y + 1) == 1 && spriteDirection != 2) {
+      if (map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 1 && spriteDirection != 2) {
         directions[0] = true;
       }
     }
     
     pickOneDirection();
     
-    println(directions[3], directions[2], directions[1], directions[0], spriteDirection, degrees(theta));
+    //println(directions[3], directions[2], directions[1], directions[0], spriteDirection, degrees(theta));
   }
 
   /*
@@ -355,7 +356,7 @@ println(directions[0], directions[1], directions[2], directions[3], spriteDirect
    }
    }
    } else {
-   println("outside : currentTile - " + currentTile + " nextTile - " + nextTile); 
+   //println("outside : currentTile - " + currentTile + " nextTile - " + nextTile); 
    }
    
    // Make sure the nextTile is still on the grid
@@ -408,6 +409,7 @@ println(directions[0], directions[1], directions[2], directions[3], spriteDirect
         }
       }
     }
+    //println("up " + distance[3] + ", left " + distance[2] + ", down " + distance[1] + ", right " + distance[0]);
 
     //for (int i = 0; i < directions.length; i++) {
     //  if (directions[i]) {
@@ -417,7 +419,7 @@ println(directions[0], directions[1], directions[2], directions[3], spriteDirect
     //    }
     //  }
     //}
-println("index is " + index);
+//println("index is " + index);
     for (int i = 0; i < directions.length; i++) {
       if (i != index) {
         directions[i] = false;
@@ -629,25 +631,25 @@ println("index is " + index);
     switch (spriteDirection) {
     case 0:
       spriteDirection = 2;
-      theta = HALF_PI;
+      //theta = HALF_PI;
       //nextTile.add(1, 0);
       break;
 
     case 1:
       spriteDirection = 3;
-      theta = 0;
+      //theta = 0;
       //nextTile.add(0, 1);
       break;
 
     case 2:
       spriteDirection = 0;
-      theta = PI + HALF_PI;
+      //theta = PI + HALF_PI;
       //nextTile.add(-1, 0);
       break;
 
     case 3:
       spriteDirection = 1;
-      theta = PI;
+      //theta = PI;
       //nextTile.add(0, -1);
       break;
     }
