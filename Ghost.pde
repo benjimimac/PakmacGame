@@ -59,7 +59,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     directions = new boolean[4];
 
-    for (int i = movingSprite1.length - 1; i >= 0 ; i--) {
+    for (int i = movingSprite1.length - 1; i >= 0; i--) {
       fill(colour);
       stroke(colour);
       movingSprite1[i] = createShape(GROUP);
@@ -219,10 +219,11 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     if (!ghostArea) {
       super.update();
-//println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
-//println("target is " + targetTile);
+      //println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
+      //println("target is " + targetTile);
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
+        pickOneDirection();
       }
     }
   }
@@ -265,9 +266,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
         directions[0] = true;
       }
     }
-    
-    pickOneDirection();
-    
+
+
     //println(directions[3], directions[2], directions[1], directions[0], spriteDirection, degrees(theta));
   }
 
@@ -366,13 +366,11 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   void pickOneDirection() {
 
-    if (!eaten) {
-      if (checkCurrentTile()) {
-        directions[0] = false;
-      }
+    if (!eaten && checkCurrentTile()) {
+        directions[3] = false;      
     }
 
-    int[] distance = new int[4];
+    int distance = 0;
     //distance[0] = getDistance(-1, 0);
     //distance[1] = getDistance(0, -1);
     //distance[2] = getDistance(1, 0);
@@ -381,34 +379,39 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     int index = directions.length - 1;
     int tempDistance = Integer.MAX_VALUE;
 
-    for (int i = directions.length - 1; i >= 0 ; i--) {
+    for (int i = directions.length - 1; i >= 0; i--) {
 
       if (directions[i]) {
 
         switch (i) {
         case 3:
-          distance[i] = getDistance(-1, 0);
+          distance = getDistance(-1, 0);
           break;
 
         case 2:
-          distance[i] = getDistance(0, -1);
+          distance = getDistance(0, -1);
+          //println("left is true" + distance[2]);
           break;
 
         case 1:
-          distance[i] = getDistance(1, 0);
+          distance = getDistance(1, 0);
           break;
 
         case 0:
-          distance[i] = getDistance(0, 1);
+          distance = getDistance(0, 1);
+          //println("right is true" + distance[0]);
           break;
         }
 
-        if (distance[i] < tempDistance) {
-          tempDistance = distance[i];
+        if (distance < tempDistance) {
+          tempDistance = distance;
           index = i;
+          println("index is " + index);
         }
       }
     }
+    //println(getLocation() + " - " + directions[3] + "(" + distance[3] + ") " + directions[2] + "(" + distance[2] + ") " + directions[1] + "(" + distance[1] + ") " + directions[0] + "(" + distance[0] + ") " + targetTile);
+    //println(directions[0] + " (" + distance[0] + ")");
     //println("up " + distance[3] + ", left " + distance[2] + ", down " + distance[1] + ", right " + distance[0]);
 
     //for (int i = 0; i < directions.length; i++) {
@@ -419,13 +422,12 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     //    }
     //  }
     //}
-//println("index is " + index);
     for (int i = 0; i < directions.length; i++) {
       if (i != index) {
         directions[i] = false;
       }
     }
-    
+
     spriteDirection = index;
 
     /*
@@ -558,7 +560,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   boolean checkCurrentTile() {
 
     PVector tempLocation = getLocation();
-    
+
     for (int i = 0; i < restrictedTiles.length; i++) {
       if (restrictedTiles[i].equals(tempLocation)) {
         return true;

@@ -51,7 +51,7 @@ abstract class GameObject {
     forward.y = sin(theta * spriteDirection);
     
     if(this instanceof Pakmac) {
-     println(degrees(theta), spriteDirection); 
+     //println(degrees(theta), spriteDirection); 
     }
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
