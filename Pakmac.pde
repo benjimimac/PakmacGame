@@ -63,7 +63,7 @@ class Pakmac extends GameObject {
       if(xReference > 26) {
        xReference = -1; 
       }
-      if (map.path[yReference][xReference + 1] == 1 && pos.y % tileWidth == tileWidth * 0.5f) {
+      if ((map.path[yReference][xReference + 1] == 1 || map.path[yReference][xReference + 1] == 2) && pos.y % tileWidth == tileWidth * 0.5f) {
         spriteDirection = 0;
         //theta = 0;
       }
@@ -75,7 +75,7 @@ class Pakmac extends GameObject {
       }
       //if (get((int) pos.x - (tileWidth + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileWidth + 5), (int) pos.y - (tileWidth - 3)) != maze.getWallColour() && get((int) pos.x - (tileWidth + 5), (int) pos.y + (tileWidth - 3)) != maze.getWallColour()) {
       //println(theta);
-      if (map.path[yReference][xReference - 1] == 1 && pos.y % tileWidth == tileWidth * 0.5f) {
+      if ((map.path[yReference][xReference - 1] == 1 || map.path[yReference][xReference - 1] == 2) && pos.y % tileWidth == tileWidth * 0.5f) {
         //println(true);
         spriteDirection = 2;
         //theta = PI;

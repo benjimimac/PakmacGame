@@ -21,6 +21,9 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   int frightenedTimer;
 
+  float otherSpeed;
+  float normalSpeed;
+
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, int spriteDirection, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectWidth, colour/*, theta*/);
     currentTile = new PVector(15, 15);
@@ -30,7 +33,13 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     movingSprite2 = new PShape[4];
     eatenSprite = new PShape[4];
     this.ghostArea = ghostArea;
-    this.speed = speed;
+    normalSpeed = 3.0f;
+    otherSpeed = 2.0f;
+    if (ready) {
+      this.speed = normalSpeed;
+    } else {
+      this.speed = otherSpeed;
+    }
     this.ready = ready;
 
     //spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
@@ -218,6 +227,14 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   void update() {
 
     if (!ghostArea) {
+      //PVector tempLocation = getLocation();
+      //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) || frightened) {
+      //  speed = otherSpeed;
+      //} 
+      //if(map.path[(int) tempLocation.x][(int) tempLocation.y] == 1 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
+      //  speed = normalSpeed;
+      //}
+      println(pos + " - " + tempLocation);
       super.update();
       //println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
       //println("target is " + targetTile);
@@ -246,7 +263,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       }
 
       //left
-      if (map.checkPath((int) tempLocation.x, (int) tempLocation.y - 1) == 1 && spriteDirection != 0) {
+      if ((map.checkPath((int) tempLocation.x, (int) tempLocation.y - 1) == 1 || map.checkPath((int) tempLocation.x, (int) tempLocation.y - 1) == 2) && spriteDirection != 0) {
         directions[2] = true;
       }
 
@@ -262,7 +279,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       }
 
       //right
-      if (map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 1 && spriteDirection != 2) {
+      if ((map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 1 || map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 2) && spriteDirection != 2) {
         directions[0] = true;
       }
     }
@@ -367,7 +384,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   void pickOneDirection() {
 
     if (!eaten && checkCurrentTile()) {
-        directions[3] = false;      
+      directions[3] = false;
     }
 
     int distance = 0;
@@ -406,7 +423,6 @@ class Ghost extends GameObject { //<>// //<>// //<>//
         if (distance < tempDistance) {
           tempDistance = distance;
           index = i;
-          println("index is " + index);
         }
       }
     }
@@ -662,5 +678,43 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     for (int i = 0; i < directions.length; i++) {
       directions[i] = false;
     }
+  }
+  
+  boolean inTunnel() {
+    
+    int row = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
+    int col = (int) map(pos.x, 0, width, 0, 28);
+    int colLeft = (int) map(pos.x - 1, 0, width, 0, 28);
+    if(col > 27) {
+     col = 0; 
+    }
+    
+    if(col < 0) {
+     col = 27; 
+    }
+    
+    if(colLeft > 27) {
+     colLeft = 0; 
+    }
+    
+    if(colLeft < 0) {
+      colLeft = 27;
+    }
+    
+    if(row > 30) {
+      row = 0;
+    }
+    
+    if(row < 0) {
+      row = 30;
+    }
+    
+    //if((spriteDirection == 0 && map.path[row][col] == 2) || (spriteDirection == 2 && map.path[row][colLeft] == 2)) {
+      if(map.path[row][col] == 2) {
+      return true;
+    }
+    
+    
+   return false; 
   }
 }

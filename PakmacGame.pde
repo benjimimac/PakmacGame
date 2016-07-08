@@ -135,6 +135,10 @@ void loadData() {
         gameObjects.add(powerup);
         path[i - 1][j] = 1;
         break;
+        
+        case 8:
+        path[i - 1][j] = 2;
+        break;
 
       default:
         break;
@@ -310,7 +314,7 @@ void createSprites() {
 
   life = createShape(ARC, 0, 0, tileWidth, tileWidth, -PI + radians(20), PI - radians(20));
 
-  blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), 2, false, 2f, true, 11, 12);
+  blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), 2, false, 3.0f, true, 11, 12);
   gameObjects.add(blinky);
   ghosts.add(blinky);
   //println((tileWidth * 13) + (tileWidth * 0.5f));

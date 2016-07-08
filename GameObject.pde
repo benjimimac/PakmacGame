@@ -16,7 +16,7 @@ abstract class GameObject {
 
   int xReference;
   int yReference;
-  
+
   boolean switchSprite;
   int spriteDirection;
 
@@ -31,9 +31,9 @@ abstract class GameObject {
     this.objectHeight = objectHeight;
     this.colour = colour;
     forward = new PVector(0, 0);    
-    
+
     switchSprite = false;
-    
+
     theta = HALF_PI;
   }
 
@@ -46,12 +46,12 @@ abstract class GameObject {
   abstract void render();
 
   void update() {
-    
+
     forward.x =  cos(theta * spriteDirection);
     forward.y = sin(theta * spriteDirection);
-    
-    if(this instanceof Pakmac) {
-     //println(degrees(theta), spriteDirection); 
+
+    if (this instanceof Pakmac) {
+      //println(degrees(theta), spriteDirection);
     }
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
@@ -61,7 +61,7 @@ abstract class GameObject {
 
     switch (spriteDirection) {
     case 3:
- 
+
       upDirection();
       break;
 
@@ -120,7 +120,7 @@ abstract class GameObject {
     }//end if()
     //println(pos.x % tileWidth + " - " + pos.y % tileWidth);
     //if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {
-    if (map.path[yReference][reference] == 1) {// && map(pos.x - (tileWidth * 0.5f), 0, width, 0, 28) != xReference - 1) {
+    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2) {// && map(pos.x - (tileWidth * 0.5f), 0, width, 0, 28) != xReference - 1) {
 
       forward.mult(speed);
       pos.add(forward);
@@ -159,18 +159,34 @@ abstract class GameObject {
       pos.x = 0;
     }//end if()
 
-    if (map.path[yReference][reference] == 1) {
+    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2) {
       forward.mult(speed);
       pos.add(forward);
     }  
     //}//end if()
   }
-  
- PVector getLocation() {
-  
-   int x = (int) map(pos.x, 0, width, 0, 28);
-   int y = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
-   
-   return new PVector(y, x);
- }
+
+  PVector getLocation() {
+
+    int x = (int) map(pos.x, 0, width, 0, 28);
+    int y = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
+
+    if (x > 27) {
+      x = 0;
+    }
+
+    if (x < 0) {
+      x = 27;
+    }
+
+    if (y > 30) {
+      y = 0;
+    }
+
+    if (y < 0) {
+      y = 30;
+    }
+
+    return new PVector(y, x);
+  }
 }
