@@ -227,7 +227,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   void update() {
 
     if (!ghostArea) {
-      
+
       //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
       //  speed = otherSpeed;
       //} 
@@ -249,11 +249,13 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     if (forceTurn) {
       forceTurn();
     } else {
-      
+
       PVector tempLocation = getLocation();
-      
+
       if (!frightened && map.path[(int) tempLocation.x][(int) tempLocation.y] == 1) {
         speed = normalSpeed;
+      } else if (!frightened && map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) {
+        speed = otherSpeed;
       }
 
       //By default all directions should be false
@@ -265,28 +267,53 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
       // Check the 2d path array in the Map object - each tile above, below, left, and right
       //above
-      if (map.path[(int) tempLocation.x - 1][(int) tempLocation.y] == 1 && spriteDirection != 1) {
+      PVector aboveLocation = getLocation();
+      if (aboveLocation.x == 0) {
+        aboveLocation.add(30, 0);
+      } else {
+        aboveLocation.add(-1, 0);
+      }
+
+      if (map.path[(int) aboveLocation.x][(int) aboveLocation.y] == 1 && spriteDirection != 1) {
         directions[3] = true;
       }
 
       //left
-      if ((map.path[(int) tempLocation.x][(int) tempLocation.y - 1] == 1 || map.path[(int) tempLocation.x][(int) tempLocation.y - 1] == 2) && spriteDirection != 0) {
+      PVector leftLocation = getLocation();
+      if (leftLocation.y == 0) {
+        leftLocation.add(0, 27);
+      } else {
+        leftLocation.add(0, -1);
+      }
+      if ((map.path[(int) leftLocation.x][(int) leftLocation.y] == 1 || map.path[(int) leftLocation.x][(int) leftLocation.y] == 2) && spriteDirection != 0) {
         directions[2] = true;
       }
 
       //down
+      PVector belowLocation = getLocation();
+      if (belowLocation.x == 30) {
+        belowLocation.add(0, -30);
+      } else {
+        belowLocation.add(1, 0);
+      }
       if (!eaten) {
-        if (map.path[(int) tempLocation.x + 1][(int) tempLocation.y] == 1 && spriteDirection != 3) {
+        if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3) {
           directions[1] = true;
         }
       } else {
-        if (map.path[(int) tempLocation.x + 1][(int) tempLocation.y] == 1 && spriteDirection != 3 || map.path[(int) currentTile.x + 1][(int) currentTile.y] == 5 && spriteDirection != 3 ) {
+        if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3 || map.path[(int) belowLocation.x][(int) belowLocation.y] == 5 && spriteDirection != 3 ) {
           directions[1] = true;
         }
       }
 
       //right
-      if ((map.path[(int) tempLocation.x][(int) tempLocation.y + 1] == 1 || map.path[(int) tempLocation.x][(int) tempLocation.y + 1] == 2) && spriteDirection != 2) {
+      PVector rightLocation = getLocation();
+      if (rightLocation.y == 27) {
+        rightLocation.add(0, -27);
+      } else {
+        rightLocation.add(0, 1);
+      }
+      if ((map.path[(int) rightLocation.x][(int) rightLocation.y] == 1 || map.path[(int) rightLocation.x][(int) rightLocation.y] == 2) && spriteDirection != 2) {
         directions[0] = true;
       }
 
