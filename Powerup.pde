@@ -16,11 +16,11 @@ class Powerup extends GameObject implements Points {
     popMatrix();
   }
 
-  void applyTo(Pakmac pakmac) {
+  public void applyTo(Pakmac pakmac) {
     pakmac.score += 50;
 
     for (Ghost ghost : ghosts) {
-      ghost.forceTurn();
+      ghost.forceTurn = true;
       ghost.frightened = true; 
       ghost.frightenedTimer = 0;
     }

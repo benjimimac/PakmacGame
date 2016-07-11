@@ -227,20 +227,20 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   void update() {
 
     if (!ghostArea) {
-      //PVector tempLocation = getLocation();
-      //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) || frightened) {
+      PVector tempLocation = getLocation();
+      //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
       //  speed = otherSpeed;
       //} 
       //if(map.path[(int) tempLocation.x][(int) tempLocation.y] == 1 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
       //  speed = normalSpeed;
       //}
-      println(pos + " - " + tempLocation);
+      //println(pos + " - " + tempLocation);
       super.update();
       //println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
       //println("target is " + targetTile);
+      println(pos + " - " + frightened + " - " + forceTurn + " - " + spriteDirection);
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
-        pickOneDirection();
       }
     }
   }
@@ -249,6 +249,10 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     if (forceTurn) {
       forceTurn();
     } else {
+      if (!frightened) {
+        speed = normalSpeed;
+      }
+
       //By default all directions should be false
       for (int i = 0; i < directions.length; i++) {
         directions[i] = false;
@@ -282,6 +286,9 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       if ((map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 1 || map.checkPath((int) tempLocation.x, (int) tempLocation.y + 1) == 2) && spriteDirection != 2) {
         directions[0] = true;
       }
+
+
+      pickOneDirection();
     }
 
 
@@ -641,36 +648,40 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   }
 
   void forceTurn() {
+    println("Inside forceTurn");
     //nextTile = currentTile.copy();
-    PVector temp = nextTile.copy();
-    nextTile = lastTile.copy();
-    lastTile = temp;
+    speed = otherSpeed;
+    //PVector temp = nextTile.copy();
+    //nextTile = lastTile.copy();
+    //lastTile = temp;
 
-    switch (spriteDirection) {
-    case 0:
-      spriteDirection = 2;
-      //theta = HALF_PI;
-      //nextTile.add(1, 0);
-      break;
+    //switch (spriteDirection) {
+    //case 0:
+    //  spriteDirection = 2;
+    //  //theta = HALF_PI;
+    //  //nextTile.add(1, 0);
+    //  break;
 
-    case 1:
-      spriteDirection = 3;
-      //theta = 0;
-      //nextTile.add(0, 1);
-      break;
+    //case 1:
+    //  spriteDirection = 3;
+    //  //theta = 0;
+    //  //nextTile.add(0, 1);
+    //  break;
 
-    case 2:
-      spriteDirection = 0;
-      //theta = PI + HALF_PI;
-      //nextTile.add(-1, 0);
-      break;
+    //case 2:
+    //  spriteDirection = 0;
+    //  //theta = PI + HALF_PI;
+    //  //nextTile.add(-1, 0);
+    //  break;
 
-    case 3:
-      spriteDirection = 1;
-      //theta = PI;
-      //nextTile.add(0, -1);
-      break;
-    }
+    //case 3:
+    //  spriteDirection = 1;
+    //  //theta = PI;
+    //  //nextTile.add(0, -1);
+    //  break;
+    //}
+
+    spriteDirection = (spriteDirection + 2) % 4;
 
     forceTurn = false;
     //lastTile = currentTile.copy();
@@ -679,42 +690,42 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       directions[i] = false;
     }
   }
-  
+
   boolean inTunnel() {
-    
+
     int row = (int) map(pos.y, tileWidth * 2, (tileWidth * 2) + (tileWidth * 31), 0, 31);
     int col = (int) map(pos.x, 0, width, 0, 28);
     int colLeft = (int) map(pos.x - 1, 0, width, 0, 28);
-    if(col > 27) {
-     col = 0; 
+    if (col > 27) {
+      col = 0;
     }
-    
-    if(col < 0) {
-     col = 27; 
+
+    if (col < 0) {
+      col = 27;
     }
-    
-    if(colLeft > 27) {
-     colLeft = 0; 
+
+    if (colLeft > 27) {
+      colLeft = 0;
     }
-    
-    if(colLeft < 0) {
+
+    if (colLeft < 0) {
       colLeft = 27;
     }
-    
-    if(row > 30) {
+
+    if (row > 30) {
       row = 0;
     }
-    
-    if(row < 0) {
+
+    if (row < 0) {
       row = 30;
     }
-    
+
     //if((spriteDirection == 0 && map.path[row][col] == 2) || (spriteDirection == 2 && map.path[row][colLeft] == 2)) {
-      if(map.path[row][col] == 2) {
+    if (map.path[row][col] == 2) {
       return true;
     }
-    
-    
-   return false; 
+
+
+    return false;
   }
 }
