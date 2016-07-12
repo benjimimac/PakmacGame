@@ -343,7 +343,11 @@ void checkCollisions() {
           }
         } else if(object instanceof Ghost) {
           if(player.getLocation().equals(object.getLocation())) {
-            println("In the same tile");
+            if(((Ghost) object).frightened) {
+              println("In the same tile and frightened");
+            } else {
+              println("In the same tile but not frightened");
+            }
           }
         }
       }

@@ -238,7 +238,6 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       super.update();
       //println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
       //println("target is " + targetTile);
-      println(pos + " - " + frightened + " - " + forceTurn + " - " + spriteDirection);
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
       }
