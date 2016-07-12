@@ -757,4 +757,11 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     return false;
   }
+  
+  void eaten() {
+    println("I've just been eaten");
+    frightened = false;
+    ready = false;
+    eaten = true;
+  }
 }

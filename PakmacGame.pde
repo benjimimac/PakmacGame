@@ -344,7 +344,8 @@ void checkCollisions() {
         } else if(object instanceof Ghost) {
           if(player.getLocation().equals(object.getLocation())) {
             if(((Ghost) object).frightened) {
-              println("In the same tile and frightened");
+              ((Ghost) object).eaten();
+              
             } else {
               println("In the same tile but not frightened");
             }
@@ -369,6 +370,8 @@ void setTargetTiles() {
         ghosts.get(i).targetTile = pakmac.getLocation();
         break;
       }
+    } else if(ghosts.get(i).eaten) {
+     ghosts.get(i).targetTile = new PVector((int) (map.path.length * 0.5f), (int) (map.path[0].length * 0.5f)); 
     }
   }
 }
