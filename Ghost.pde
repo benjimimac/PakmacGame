@@ -236,11 +236,13 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       //}
       //println(pos + " - " + tempLocation);
       super.update();
-      //println(directions[0], directions[1], directions[2], directions[3], spriteDirection, degrees(theta));
-      //println("target is " + targetTile);
+
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
+      } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f))) {
+        println("Fuck me");
       }
+      
     }
   }
 
@@ -295,15 +297,19 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       } else {
         belowLocation.add(1, 0);
       }
-      if (!eaten) {
-        if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3) {
-          directions[1] = true;
-        }
-      } else {
-        if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3 || map.path[(int) belowLocation.x][(int) belowLocation.y] == 5 && spriteDirection != 3 ) {
-          directions[1] = true;
-        }
+
+      if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3) {
+        directions[1] = true;
       }
+      //if (!eaten) {
+      //  if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3) {
+      //    directions[1] = true;
+      //  }
+      //} else {
+      //  if (map.path[(int) belowLocation.x][(int) belowLocation.y] == 1 && spriteDirection != 3 || map.path[(int) belowLocation.x][(int) belowLocation.y] == 3 && spriteDirection != 3 ) {
+      //    directions[1] = true;
+      //  }
+      //}
 
       //right
       PVector rightLocation = getLocation();
@@ -757,7 +763,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
     return false;
   }
-  
+
   void eaten() {
     println("I've just been eaten");
     frightened = false;

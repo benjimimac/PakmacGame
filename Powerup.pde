@@ -20,9 +20,11 @@ class Powerup extends GameObject implements Points {
     pakmac.score += 50;
 
     for (Ghost ghost : ghosts) {
-      ghost.forceTurn = true;
-      ghost.frightened = true; 
-      ghost.frightenedTimer = 0;
+      if (ghost.ready) {
+        ghost.forceTurn = true;
+        ghost.frightened = true; 
+        ghost.frightenedTimer = 0;
+      }
     }
   }
 }

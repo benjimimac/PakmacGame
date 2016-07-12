@@ -139,6 +139,11 @@ void loadData() {
         case 8:
         path[i - 1][j] = 2;
         break;
+        
+        case 9:
+        case 4:
+        path[i - 1][j] = 3;
+        break;
 
       default:
         break;
