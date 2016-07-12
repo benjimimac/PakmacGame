@@ -328,18 +328,22 @@ void checkCollisions() {
     if (player instanceof Pakmac) {
       for (int j = gameObjects.size() - 1; j >= 0; j--) {
 
-        GameObject dot = gameObjects.get(j);
+        GameObject object = gameObjects.get(j);
 
-        if (dot instanceof Dot ) {
-          if (player.pos.dist(dot.pos) < (player.objectHeight * 0.5f) - dot.objectHeight) {
-            gameObjects.remove(dot);
-            ((Dot) dot).applyTo((Pakmac) player);
+        if (object instanceof Dot ) {
+          if (player.pos.dist(object.pos) < (player.objectHeight * 0.5f) - object.objectHeight) {
+            gameObjects.remove(object);
+            ((Dot) object).applyTo((Pakmac) player);
           }
-        } else if (dot instanceof Powerup) {
-          if (player.pos.dist(dot.pos) < (player.objectWidth * 0.5f) - dot.objectWidth * 0.5f) {
+        } else if (object instanceof Powerup) {
+          if (player.pos.dist(object.pos) < (player.objectWidth * 0.5f) - object.objectWidth * 0.5f) {
             println("POWERUP");
-            gameObjects.remove(dot);
-            ((Powerup) dot).applyTo((Pakmac) player);
+            gameObjects.remove(object);
+            ((Powerup) object).applyTo((Pakmac) player);
+          }
+        } else if(object instanceof Ghost) {
+          if(player.getLocation().equals(object.getLocation())) {
+            println("In the same tile");
           }
         }
       }
