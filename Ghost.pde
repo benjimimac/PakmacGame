@@ -235,7 +235,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
-      } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f))) {
+      } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f)) && eaten) {
         enterGhostArea();
       }
     } else if (!ready && eaten) {
@@ -251,7 +251,11 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       //if(pos.x == ) {
 
       //}
-    } 
+    } else if(ready && !eaten && getLocation().equals(new PVector(11, 14)) && pos.y % tileWidth == tileWidth * 0.5f) {
+      println("Ready to go again");
+      ghostArea = false;
+      setDirections();
+    }
     //else if(ready) {
       
     //}
