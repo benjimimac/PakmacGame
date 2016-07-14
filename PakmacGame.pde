@@ -378,7 +378,7 @@ void setTargetTiles() {
         break;
       }
     } else if (ghosts.get(i).eaten) {
-      ghosts.get(i).targetTile = new PVector((int) (map.path.length * 0.5f), (int) (map.path[0].length * 0.5f));
+      ghosts.get(i).targetTile = new PVector(11, 14);
     }
   }
 }
