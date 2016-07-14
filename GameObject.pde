@@ -19,6 +19,8 @@ abstract class GameObject {
 
   boolean switchSprite;
   int spriteDirection;
+  
+  boolean eaten;
 
   int test = 0;
 
@@ -50,9 +52,6 @@ abstract class GameObject {
     forward.x =  cos(theta * spriteDirection);
     forward.y = sin(theta * spriteDirection);
 
-    if (this instanceof Pakmac) {
-      //println(degrees(theta), spriteDirection);
-    }
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
     float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
@@ -140,10 +139,14 @@ abstract class GameObject {
       pos.y = 0;
     }//end if()
 
-    if (map.path[reference][xReference] == 1) {
+    if (map.path[reference][xReference] == 1 || (eaten && (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4))) {
       forward.mult(speed);
       pos.add(forward);
-    } 
+    }
+    
+    //if(eaten) {
+      
+    //}
     //}//end if()
   }
 

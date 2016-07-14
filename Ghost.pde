@@ -16,7 +16,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   boolean forceTurn;
 
-  boolean eaten;
+  
   boolean frightened;
 
   int frightenedTimer;
@@ -226,6 +226,8 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   void update() {
 
+    super.update();
+
     if (!ghostArea) {
 
       //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
@@ -235,14 +237,12 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       //  speed = normalSpeed;
       //}
       //println(pos + " - " + tempLocation);
-      super.update();
 
       if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
         setDirections();
       } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f))) {
-        println("Fuck me");
+        enterGhostArea();
       }
-      
     }
   }
 
@@ -769,5 +769,15 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     frightened = false;
     ready = false;
     eaten = true;
+  }
+
+  void enterGhostArea() {
+    println("At the door");
+    for (int i = 0; i < directions.length; i++) {
+      directions[i] = false;
+    }
+
+    directions[1] = true;
+    spriteDirection = 1;
   }
 }

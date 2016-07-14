@@ -34,7 +34,7 @@ void setup() {
 
   loaded = false;
   menuOption = 1;
-  
+
   modeChangeTimer = new int[8];
 }
 
@@ -135,14 +135,17 @@ void loadData() {
         gameObjects.add(powerup);
         path[i - 1][j] = 1;
         break;
-        
-        case 8:
+
+      case 8:
         path[i - 1][j] = 2;
         break;
-        
-        case 9:
-        case 4:
+
+      case 9:
         path[i - 1][j] = 3;
+        break;
+
+      case 4:
+        path[i - 1][j] = 4;
         break;
 
       default:
@@ -346,11 +349,10 @@ void checkCollisions() {
             gameObjects.remove(object);
             ((Powerup) object).applyTo((Pakmac) player);
           }
-        } else if(object instanceof Ghost) {
-          if(player.getLocation().equals(object.getLocation())) {
-            if(((Ghost) object).frightened) {
+        } else if (object instanceof Ghost) {
+          if (player.getLocation().equals(object.getLocation())) {
+            if (((Ghost) object).frightened) {
               ((Ghost) object).eaten();
-              
             } else {
               println("In the same tile but not frightened");
             }
@@ -375,8 +377,8 @@ void setTargetTiles() {
         ghosts.get(i).targetTile = pakmac.getLocation();
         break;
       }
-    } else if(ghosts.get(i).eaten) {
-     ghosts.get(i).targetTile = new PVector((int) (map.path.length * 0.5f), (int) (map.path[0].length * 0.5f)); 
+    } else if (ghosts.get(i).eaten) {
+      ghosts.get(i).targetTile = new PVector((int) (map.path.length * 0.5f), (int) (map.path[0].length * 0.5f));
     }
   }
 }
