@@ -3,7 +3,6 @@ class Ghost extends GameObject { //<>// //<>// //<>//
   PShape[] eatenSprite;
   PShape[] frightenedSprite;
   PVector homeTile;
-  boolean ghostArea;
   boolean ready;
   boolean[] directions;
 
@@ -16,7 +15,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
 
   boolean forceTurn;
 
-  
+
   boolean frightened;
 
   int frightenedTimer;
@@ -218,10 +217,6 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       }
     }
     popMatrix();
-
-    //println(directions[0], directions[1], directions[2], directions[3]);
-    //println(map.path[(int) currentTile.x - 1][(int) currentTile.y], map.path[(int) currentTile.x][(int) currentTile.y - 1], map.path[(int) currentTile.x + 1][(int) currentTile.y], map.path[(int) currentTile.x][(int) currentTile.y + 1]);
-    //println(currentTile, nextTile, lastTile);
   }
 
   void update() {
@@ -243,7 +238,23 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f))) {
         enterGhostArea();
       }
-    }
+    } else if (!ready && eaten) {
+
+
+      PVector tempLocation = getLocation();
+      if (tempLocation.equals(new PVector(14, 14)) && pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f) {
+        println("Not ready and eaten");
+        spriteDirection = 3;
+        ready = true;
+        eaten = false;
+      }
+      //if(pos.x == ) {
+
+      //}
+    } 
+    //else if(ready) {
+      
+    //}
   }
 
   void setDirections() {

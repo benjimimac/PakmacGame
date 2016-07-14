@@ -21,6 +21,7 @@ abstract class GameObject {
   int spriteDirection;
   
   boolean eaten;
+  boolean ghostArea;
 
   int test = 0;
 
@@ -108,6 +109,11 @@ abstract class GameObject {
       forward.mult(speed);
       pos.add(forward);
     }
+    
+    if (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4) {
+      forward.mult(speed);
+      pos.add(forward);
+    }
   }
 
   void leftDirection() {
@@ -139,9 +145,15 @@ abstract class GameObject {
       pos.y = 0;
     }//end if()
 
-    if (map.path[reference][xReference] == 1 || (eaten && (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4))) {
+    if (map.path[reference][xReference] == 1) {
       forward.mult(speed);
       pos.add(forward);
+    }
+    
+    if ((eaten && (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4))) {
+      forward.mult(speed);
+      pos.add(forward);
+      ghostArea = true;
     }
     
     //if(eaten) {
