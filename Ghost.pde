@@ -1,4 +1,4 @@
-class Ghost extends GameObject { //<>// //<>// //<>//
+class Ghost extends GameObject { //<>// //<>// //<>// //<>//
   float startTheta;
   PShape[] eatenSprite;
   PShape[] frightenedSprite;
@@ -190,13 +190,13 @@ class Ghost extends GameObject { //<>// //<>// //<>//
     pushMatrix();
     translate(pos.x, pos.y);
     if (frightened) {
-      if (frightenedTimer < FRIGHTENED_LIMIT - (120)) {
+      if (frightenedTimer < Timer.FRIGHTENED_LIMIT - (120)) {
         if (frameCount % 20 < 10) {
           shape(frightenedSprite[0]);
         } else {
           shape(frightenedSprite[1]);
         }
-      } else if (frightenedTimer < FRIGHTENED_LIMIT) {
+      } else if (frightenedTimer < Timer.FRIGHTENED_LIMIT) {
         if (frameCount % 20 < 10) {
           shape(frightenedSprite[0]);
         } else {
@@ -333,7 +333,7 @@ class Ghost extends GameObject { //<>// //<>// //<>//
       if ((map.path[(int) rightLocation.x][(int) rightLocation.y] == 1 || map.path[(int) rightLocation.x][(int) rightLocation.y] == 2) && spriteDirection != 2) {
         directions[0] = true;
       }
-println(directions[3] + "(" + getDistance(-1, 0) + ") - " + directions[2] + "(" + getDistance(0, -1) + ") - " + directions[1] + "(" + getDistance(1, 0) + ") - " + directions[0] + "(" + getDistance(0, 1) + ") - " + targetTile);
+//println(directions[3] + "(" + getDistance(-1, 0) + ") - " + directions[2] + "(" + getDistance(0, -1) + ") - " + directions[1] + "(" + getDistance(1, 0) + ") - " + directions[0] + "(" + getDistance(0, 1) + ") - " + targetTile);
       pickOneDirection();
     }
 

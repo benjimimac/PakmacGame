@@ -6,8 +6,6 @@ Ghost blinky;
 Timer timer;
 float tileWidth;
 
-int modeChangeTimer[];
-
 boolean[] keys = new boolean[512];
 
 
@@ -18,8 +16,11 @@ PVector[] restrictedTiles;
 
 PShape life;
 
+int[][] modeChangeTimes;
 
-static final int FRIGHTENED_LIMIT = 420;
+
+//static final int FRIGHTENED_LIMIT = 420;
+
 
 void setup() {
   size(672, 900);
@@ -34,8 +35,35 @@ void setup() {
 
   loaded = false;
   menuOption = 1;
+  
+  modeChangeTimes = new int[3][7];
+  //Set the mode times for level 1
+  modeChangeTimes[0][0] = 420;
+  modeChangeTimes[0][1] = 1200;
+  modeChangeTimes[0][2] = 420;
+  modeChangeTimes[0][3] = 1200;
+  modeChangeTimes[0][4] = 300;
+  modeChangeTimes[0][5] = 1200;
+  modeChangeTimes[0][6] = 300;
+  
+  //Set the mode times for level 2
+  modeChangeTimes[1][0] = 420;
+  modeChangeTimes[1][1] = 1200;
+  modeChangeTimes[1][2] = 420;
+  modeChangeTimes[1][3] = 1200;
+  modeChangeTimes[1][4] = 300;
+  modeChangeTimes[1][5] = 61980;
+  modeChangeTimes[1][6] = 1;
+  
+  //Set the mode times for level 2
+  modeChangeTimes[2][0] = 300;
+  modeChangeTimes[2][1] = 1200;
+  modeChangeTimes[2][2] = 300;
+  modeChangeTimes[2][3] = 1200;
+  modeChangeTimes[2][4] = 300;
+  modeChangeTimes[2][5] = 62220;
+  modeChangeTimes[2][6] = 1;
 
-  modeChangeTimer = new int[8];
 }
 
 void draw() {

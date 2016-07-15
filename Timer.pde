@@ -16,6 +16,8 @@ class Timer extends GameObject {
     hundreds = 0;
     thousands = 0;
     count = 0;
+    
+    
   }
 
   void render() {
@@ -31,9 +33,9 @@ class Timer extends GameObject {
     count++;
     if (count % 6 == 0) {
       tenths++;
-      if(tenths == 10) {
-       tenths = 0; 
-       zeros++;
+      if (tenths == 10) {
+        tenths = 0; 
+        zeros++;
       }
     }
     //if (count % 60 == 0) {
