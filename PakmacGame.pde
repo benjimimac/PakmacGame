@@ -17,7 +17,8 @@ PVector[] restrictedTiles;
 PShape life;
 
 int[][] modeChangeTimes;
-
+int modeChangeIndex;
+int modeChangePart;
 
 //static final int FRIGHTENED_LIMIT = 420;
 
