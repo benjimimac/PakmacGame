@@ -18,7 +18,8 @@ class Powerup extends GameObject implements Points {
 
   public void applyTo(Pakmac pakmac) {
     pakmac.score += 50;
-
+    timer.frightened = true;
+    
     for (Ghost ghost : ghosts) {
       if (ghost.ready) {
         ghost.forceTurn = true;

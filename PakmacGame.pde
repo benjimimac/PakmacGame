@@ -19,6 +19,7 @@ PShape life;
 int[][] modeChangeTimes;
 int modeChangeIndex;
 int modeChangePart;
+int level;
 
 //static final int FRIGHTENED_LIMIT = 420;
 
@@ -36,7 +37,7 @@ void setup() {
 
   loaded = false;
   menuOption = 1;
-  
+
   modeChangeTimes = new int[3][7];
   //Set the mode times for level 1
   modeChangeTimes[0][0] = 420;
@@ -46,7 +47,7 @@ void setup() {
   modeChangeTimes[0][4] = 300;
   modeChangeTimes[0][5] = 1200;
   modeChangeTimes[0][6] = 300;
-  
+
   //Set the mode times for level 2
   modeChangeTimes[1][0] = 420;
   modeChangeTimes[1][1] = 1200;
@@ -55,7 +56,7 @@ void setup() {
   modeChangeTimes[1][4] = 300;
   modeChangeTimes[1][5] = 61980;
   modeChangeTimes[1][6] = 1;
-  
+
   //Set the mode times for level 2
   modeChangeTimes[2][0] = 300;
   modeChangeTimes[2][1] = 1200;
@@ -65,6 +66,9 @@ void setup() {
   modeChangeTimes[2][5] = 62220;
   modeChangeTimes[2][6] = 1;
 
+  modeChangeIndex = 0;
+  modeChangePart = 0;
+  level = 0;
 }
 
 void draw() {

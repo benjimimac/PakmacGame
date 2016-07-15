@@ -1,12 +1,14 @@
 class Timer extends GameObject {
 
   int tenths; 
-  int zeros;
+  long zeros;
   int tens;
   int hundreds;
   int thousands;
   long count;
   static final int FRIGHTENED_LIMIT = 420;
+  boolean frightened;
+  long pauseTimer;
 
   Timer() {
     super(0, 0, 0, 0, 0);
@@ -17,7 +19,8 @@ class Timer extends GameObject {
     thousands = 0;
     count = 0;
     
-    
+    frightened = false;
+    pauseTimer = 0;
   }
 
   void render() {
@@ -66,5 +69,14 @@ class Timer extends GameObject {
     //if (hundreds == 10) {
     //  hundreds = 0;
     //}
+    
+    if(frightened) {
+     pauseTimer++;
+     if(pauseTimer == 420) {
+       frightened = false;
+       pauseTimer = 0;
+       println("Pause timer has stopped");
+     }
+    }
   }
 }
