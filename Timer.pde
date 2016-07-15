@@ -18,7 +18,7 @@ class Timer extends GameObject {
     hundreds = 0;
     thousands = 0;
     count = 0;
-    
+
     frightened = false;
     pauseTimer = 0;
   }
@@ -33,14 +33,7 @@ class Timer extends GameObject {
 
   void update() {
 
-    count++;
-    if (count % 6 == 0) {
-      tenths++;
-      if (tenths == 10) {
-        tenths = 0; 
-        zeros++;
-      }
-    }
+
     //if (count % 60 == 0) {
     //  zeros += 1;
     //}
@@ -69,14 +62,23 @@ class Timer extends GameObject {
     //if (hundreds == 10) {
     //  hundreds = 0;
     //}
-    
-    if(frightened) {
-     pauseTimer++;
-     if(pauseTimer == 420) {
-       frightened = false;
-       pauseTimer = 0;
-       println("Pause timer has stopped");
-     }
+
+    if (frightened) {
+      pauseTimer++;
+      if (pauseTimer == 420) {
+        frightened = false;
+        pauseTimer = 0;
+        println("Pause timer has stopped");
+      }
+    } else {
+      count++;
+      if (count % 6 == 0) {
+        tenths++;
+        if (tenths == 10) {
+          tenths = 0; 
+          zeros++;
+        }
+      }
     }
   }
 }

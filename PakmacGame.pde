@@ -16,6 +16,7 @@ PVector[] restrictedTiles;
 
 PShape life;
 
+int mode;
 int[][] modeChangeTimes;
 int modeChangeIndex;
 int modeChangePart;
@@ -68,6 +69,8 @@ void setup() {
 
   modeChangeIndex = 0;
   modeChangePart = 0;
+  
+  mode = 0;
   level = 0;
 }
 
@@ -404,10 +407,20 @@ void setTargetTiles() {
       int col = (int) random(map.path[0].length);
       ghosts.get(i).targetTile = new PVector(row, col);
     } else if (ghosts.get(i).ready) {
+      switch (mode) {
 
-      switch (i) {
       case 0:
-        ghosts.get(i).targetTile = pakmac.getLocation();
+        
+          ghosts.get(i).targetTile = ghosts.get(i).homeTile;
+        
+        break;
+        
+      case 1:
+        switch (i) {
+        case 0:
+          ghosts.get(i).targetTile = pakmac.getLocation();
+          break;
+        }
         break;
       }
     } else if (ghosts.get(i).eaten) {
