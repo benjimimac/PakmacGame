@@ -389,8 +389,8 @@ void checkCollisions() {
           if (player.getLocation().equals(object.getLocation())) {
             if (((Ghost) object).frightened) {
               ((Ghost) object).eaten();
-            } else {
-              println("In the same tile but not frightened");
+            } else if(!((Ghost) object).eaten) {
+              ((Pakmac) player).resetPositions();
             }
           }
         }

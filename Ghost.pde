@@ -1,4 +1,4 @@
-class Ghost extends GameObject { //<>// //<>// //<>// //<>//
+class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
   float startTheta;
   PShape[] eatenSprite;
   PShape[] frightenedSprite;
@@ -43,6 +43,7 @@ class Ghost extends GameObject { //<>// //<>// //<>// //<>//
 
     //spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
     this.spriteDirection = spriteDirection;
+    startSpriteDirection = spriteDirection;
 
     eaten = false;
     frightened = false;
@@ -790,5 +791,10 @@ class Ghost extends GameObject { //<>// //<>// //<>// //<>//
 
     directions[1] = true;
     spriteDirection = 1;
+  }
+  
+  public void resetPositions() {
+    pos = new PVector(x, y);
+    spriteDirection = startSpriteDirection;
   }
 }

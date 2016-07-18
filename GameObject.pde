@@ -19,6 +19,7 @@ abstract class GameObject {
 
   boolean switchSprite;
   int spriteDirection;
+  int startSpriteDirection;
   
   boolean eaten;
   boolean ghostArea;

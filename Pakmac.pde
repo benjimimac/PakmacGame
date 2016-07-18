@@ -12,6 +12,7 @@ class Pakmac extends GameObject implements Reset{
     angle = HALF_PI * 0.9f;
     speed = 3.0f;
     this.spriteDirection = spriteDirection;
+    startSpriteDirection = spriteDirection;
     
     score = 0;
     foodCount = 0;
@@ -110,6 +111,12 @@ class Pakmac extends GameObject implements Reset{
   }
   
   public void resetPositions() {
+    println("Got you, ye little shit ye....");
+    pos = new PVector(x, y);
+    spriteDirection = startSpriteDirection;
     
+    for(Ghost ghost : ghosts) {
+      ghost.resetPositions();
+    }
   }
 }
