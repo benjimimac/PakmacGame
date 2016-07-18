@@ -1,0 +1,4 @@
+interface Reset {
+ 
+  void resetPositions();
+}
