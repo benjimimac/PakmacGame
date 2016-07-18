@@ -22,6 +22,8 @@ int modeChangeLevelIndex;
 int modeChangePart;
 int level;
 
+boolean pausePlay;
+
 //static final int FRIGHTENED_LIMIT = 420;
 
 
@@ -72,6 +74,8 @@ void setup() {
 
   mode = 0;
   level = 0;
+
+  pausePlay = false;
 }
 
 void draw() {
@@ -339,13 +343,26 @@ void option() {
 }
 
 void gamePlay() {
-  checkCollisions();
 
-  setTargetTiles();
+  if (!pausePlay) {
+    checkCollisions();
+
+    setTargetTiles();
+  } else {
+    timer.pauseTimer++;
+    if (timer.pauseTimer == 120) {
+      pakmac.resetPositions();
+    }
+
+    if (timer.pauseTimer == 180) {
+      timer.pauseTimer = 0;
+      pausePlay = false;
+    }
+  }
 
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
-    if (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost || gameObjects.get(i) instanceof Timer) {
+    if (!pausePlay && (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost || gameObjects.get(i) instanceof Timer)) {
       gameObjects.get(i).update();
     }
   }
@@ -389,8 +406,9 @@ void checkCollisions() {
           if (player.getLocation().equals(object.getLocation())) {
             if (((Ghost) object).frightened) {
               ((Ghost) object).eaten();
-            } else if(!((Ghost) object).eaten) {
-              ((Pakmac) player).resetPositions();
+            } else if (!((Ghost) object).eaten) {
+              //((Pakmac) player).resetPositions();
+              pausePlay = true;
             }
           }
         }
