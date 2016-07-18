@@ -17,8 +17,8 @@ PVector[] restrictedTiles;
 PShape life;
 
 int mode;
-int[][] modeChangeTimes;
-int modeChangeIndex;
+long[][] modeChangeTimes;
+int modeChangeLevelIndex;
 int modeChangePart;
 int level;
 
@@ -39,15 +39,15 @@ void setup() {
   loaded = false;
   menuOption = 1;
 
-  modeChangeTimes = new int[3][7];
+  modeChangeTimes = new long[3][7];
   //Set the mode times for level 1
   modeChangeTimes[0][0] = 420;
-  modeChangeTimes[0][1] = 1200;
-  modeChangeTimes[0][2] = 420;
-  modeChangeTimes[0][3] = 1200;
-  modeChangeTimes[0][4] = 300;
-  modeChangeTimes[0][5] = 1200;
-  modeChangeTimes[0][6] = 300;
+  modeChangeTimes[0][1] = 1620;
+  modeChangeTimes[0][2] = 2040;
+  modeChangeTimes[0][3] = 3240;
+  modeChangeTimes[0][4] = 3540;
+  modeChangeTimes[0][5] = 4740;
+  modeChangeTimes[0][6] = 5040;
 
   //Set the mode times for level 2
   modeChangeTimes[1][0] = 420;
@@ -67,9 +67,9 @@ void setup() {
   modeChangeTimes[2][5] = 62220;
   modeChangeTimes[2][6] = 1;
 
-  modeChangeIndex = 0;
+  modeChangeLevelIndex = 0;
   modeChangePart = 0;
-  
+
   mode = 0;
   level = 0;
 }
@@ -401,6 +401,19 @@ void checkCollisions() {
 
 void setTargetTiles() {
 
+  if (modeChangePart != 7) {
+
+    while (timer.count > modeChangeTimes[modeChangeLevelIndex][modeChangePart]) {
+      modeChangePart++;
+
+      if (modeChangePart == 7) {
+        break;
+      }
+    }
+  }
+
+  mode = modeChangePart % 2;
+
   for (int i = 0; i < ghosts.size(); i++) {
     if (ghosts.get(i).frightened) {
       int row = (int) random(map.path.length);
@@ -410,11 +423,11 @@ void setTargetTiles() {
       switch (mode) {
 
       case 0:
-        
-          ghosts.get(i).targetTile = ghosts.get(i).homeTile;
-        
+
+        ghosts.get(i).targetTile = ghosts.get(i).homeTile;
+
         break;
-        
+
       case 1:
         switch (i) {
         case 0:
