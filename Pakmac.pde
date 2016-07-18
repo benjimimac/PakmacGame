@@ -1,4 +1,4 @@
-class Pakmac extends GameObject {
+class Pakmac extends GameObject implements Reset{
 
   float angle;
   char up, left, down, right;
@@ -107,5 +107,9 @@ class Pakmac extends GameObject {
       }
       //super.turnUp();
     }
+  }
+  
+  public void resetPositions() {
+    
   }
 }
