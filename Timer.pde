@@ -68,6 +68,7 @@ class Timer extends GameObject {
       if (pauseTimer == 420) {
         frightened = false;
         pauseTimer = 0;
+        amount = 0;
         println("Pause timer has stopped");
       }
     } else {

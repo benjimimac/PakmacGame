@@ -24,6 +24,8 @@ int level;
 
 boolean pausePlay;
 
+int amount;
+
 //static final int FRIGHTENED_LIMIT = 420;
 
 
@@ -76,6 +78,8 @@ void setup() {
   level = 0;
 
   pausePlay = false;
+  
+  amount = 0;
 }
 
 void draw() {
@@ -343,7 +347,6 @@ void option() {
 }
 
 void gamePlay() {
-  println(pakmac.lives);
   if (pakmac.lives >= 0) {
     if (!pausePlay) {
       checkCollisions();
@@ -415,6 +418,7 @@ void checkCollisions() {
           if (player.getLocation().equals(object.getLocation())) {
             if (((Ghost) object).frightened) {
               ((Ghost) object).eaten();
+              ((Ghost) object).applyTo(((Pakmac) player));
             } else if (!((Ghost) object).eaten) {
               //((Pakmac) player).resetPositions();
               pausePlay = true;

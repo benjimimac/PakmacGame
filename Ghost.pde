@@ -1,4 +1,4 @@
-class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
+class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// //<>//
   float startTheta;
   PShape[] eatenSprite;
   PShape[] frightenedSprite;
@@ -23,6 +23,8 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
   float otherSpeed;
   float normalSpeed;
 
+  final static int GHOST_POINTS = 200;
+
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, int spriteDirection, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectWidth, colour/*, theta*/);
     currentTile = new PVector(15, 15);
@@ -41,6 +43,8 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
     }
     this.ready = ready;
 
+    amount = 0;
+    
     //spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
     this.spriteDirection = spriteDirection;
     startSpriteDirection = spriteDirection;
@@ -240,7 +244,7 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
         enterGhostArea();
       }
     } else if (!ready && eaten) {
-      
+
       if (getLocation().equals(new PVector(14, 14)) && pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f) {
         println("Not ready and eaten");
         spriteDirection = 3;
@@ -254,7 +258,7 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
       println("Ready to go again");
       ghostArea = false;
       setDirections();
-    } else if(!ready) {
+    } else if (!ready) {
       println("I'm not ready yet");
     }
   }
@@ -334,7 +338,7 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
       if ((map.path[(int) rightLocation.x][(int) rightLocation.y] == 1 || map.path[(int) rightLocation.x][(int) rightLocation.y] == 2) && spriteDirection != 2) {
         directions[0] = true;
       }
-//println(directions[3] + "(" + getDistance(-1, 0) + ") - " + directions[2] + "(" + getDistance(0, -1) + ") - " + directions[1] + "(" + getDistance(1, 0) + ") - " + directions[0] + "(" + getDistance(0, 1) + ") - " + targetTile);
+      //println(directions[3] + "(" + getDistance(-1, 0) + ") - " + directions[2] + "(" + getDistance(0, -1) + ") - " + directions[1] + "(" + getDistance(1, 0) + ") - " + directions[0] + "(" + getDistance(0, 1) + ") - " + targetTile);
       pickOneDirection();
     }
 
@@ -792,9 +796,21 @@ class Ghost extends GameObject implements Reset{ //<>// //<>// //<>// //<>//
     directions[1] = true;
     spriteDirection = 1;
   }
-  
+
   public void resetPositions() {
     pos = new PVector(x, y);
     spriteDirection = startSpriteDirection;
+  }
+
+  public void applyTo(Pakmac pakmac) {
+    int tempAmount = GHOST_POINTS;
+    
+    for(int i = 0; i < amount; i++) {
+     tempAmount *= 2; 
+    }
+    
+    pakmac.score += tempAmount;
+    amount++;
+    println(tempAmount + " - " + amount);
   }
 }
