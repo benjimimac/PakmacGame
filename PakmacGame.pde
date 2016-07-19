@@ -343,20 +343,22 @@ void option() {
 }
 
 void gamePlay() {
+  println(pakmac.lives);
+  if (pakmac.lives >= 0) {
+    if (!pausePlay) {
+      checkCollisions();
 
-  if (!pausePlay) {
-    checkCollisions();
+      setTargetTiles();
+    } else {
+      timer.pauseTimer++;
+      if (timer.pauseTimer == 120 && pakmac.lives >= 0) {
+        pakmac.resetPositions();
+      }
 
-    setTargetTiles();
-  } else {
-    timer.pauseTimer++;
-    if (timer.pauseTimer == 120) {
-      pakmac.resetPositions();
-    }
-
-    if (timer.pauseTimer == 180) {
-      timer.pauseTimer = 0;
-      pausePlay = false;
+      if (timer.pauseTimer == 180) {
+        timer.pauseTimer = 0;
+        pausePlay = false;
+      }
     }
   }
 
@@ -409,6 +411,7 @@ void checkCollisions() {
             } else if (!((Ghost) object).eaten) {
               //((Pakmac) player).resetPositions();
               pausePlay = true;
+              pakmac.lives -= 1;
             }
           }
         }

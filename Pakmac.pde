@@ -114,7 +114,6 @@ class Pakmac extends GameObject implements Reset{
     println("Got you, ye little shit ye....");
     pos = new PVector(x, y);
     spriteDirection = startSpriteDirection;
-    lives -= 1;
     
     for(Ghost ghost : ghosts) {
       ghost.resetPositions();
