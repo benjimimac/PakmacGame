@@ -809,6 +809,10 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
      tempAmount *= 2; 
     }
     
+    GhostScore ghostScore = new GhostScore(pos.x, pos.y, tempAmount);
+    
+    gameObjects.add(ghostScore);
+    
     pakmac.score += tempAmount;
     amount++;
     println(tempAmount + " - " + amount);

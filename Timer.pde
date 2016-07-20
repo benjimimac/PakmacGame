@@ -8,7 +8,8 @@ class Timer extends GameObject {
   long count;
   static final int FRIGHTENED_LIMIT = 420;
   boolean frightened;
-  long pauseTimer;
+  long frightenedTimer;
+  int pauseTimer;
 
   Timer() {
     super(0, 0, 0, 0, 0);
@@ -20,6 +21,7 @@ class Timer extends GameObject {
     count = 0;
 
     frightened = false;
+    frightenedTimer = 0;
     pauseTimer = 0;
   }
 
@@ -64,10 +66,10 @@ class Timer extends GameObject {
     //}
 
     if (frightened) {
-      pauseTimer++;
-      if (pauseTimer == 420) {
+      frightenedTimer++;
+      if (frightenedTimer == 420) {
         frightened = false;
-        pauseTimer = 0;
+        frightenedTimer = 0;
         amount = 0;
         println("Pause timer has stopped");
       }

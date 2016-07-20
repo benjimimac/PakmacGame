@@ -23,6 +23,7 @@ int modeChangePart;
 int level;
 
 boolean pausePlay;
+boolean reset;
 
 int amount;
 
@@ -78,7 +79,8 @@ void setup() {
   level = 0;
 
   pausePlay = false;
-  
+  reset = true;
+
   amount = 0;
 }
 
@@ -347,6 +349,7 @@ void option() {
 }
 
 void gamePlay() {
+  println("pausePlay is " + pausePlay);
   if (pakmac.lives >= 0) {
     if (!pausePlay) {
       checkCollisions();
@@ -354,23 +357,24 @@ void gamePlay() {
       setTargetTiles();
     } else {
       timer.pauseTimer++;
-      if (timer.pauseTimer == 120 && pakmac.lives >= 0) {
+      
+      if (timer.pauseTimer > 120 && pakmac.lives >= 0 && !reset) {
         pakmac.resetPositions();
       }
-
-      if (timer.pauseTimer == 180) {
+      println(timer.pauseTimer);
+      if (timer.pauseTimer > 180) {
         timer.pauseTimer = 0;
         pausePlay = false;
       }
     }
   }
   /*Code will go here to end the game....
-  Use a timer to go back to the menu
-  ....
-  ....
-  ....
-  ....
-  */
+   Use a timer to go back to the menu
+   ....
+   ....
+   ....
+   ....
+   */
 
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
@@ -423,6 +427,7 @@ void checkCollisions() {
               //((Pakmac) player).resetPositions();
               pausePlay = true;
               pakmac.lives -= 1;
+              reset = false;
             }
           }
         }

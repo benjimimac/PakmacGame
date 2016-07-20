@@ -40,6 +40,14 @@ abstract class GameObject {
 
     theta = HALF_PI;
   }
+  
+  GameObject(float x, float y) {
+    
+    this.x = x;
+    this.y = y;
+    pos = new PVector(x, y);
+    forward = new PVector(0, -1);
+  }
 
   //GameObject(float x, float y, float objectWidth, float objectHeight, color colour/*, float theta*/) {
   //  this(x, y, objectWidth, objectHeight, colour);

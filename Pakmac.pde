@@ -118,5 +118,7 @@ class Pakmac extends GameObject implements Reset{
     for(Ghost ghost : ghosts) {
       ghost.resetPositions();
     }
+    
+    reset = true;
   }
 }
