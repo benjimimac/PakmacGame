@@ -12,6 +12,10 @@ class GhostScore extends GameObject {
   }
   
   void update() {
-    
+    println("Inside GhostScore update()");
+    pos.add(forward);
+    if(pos.y < -50) {
+      gameObjects.remove(this);
+    }
   }
 }

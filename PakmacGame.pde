@@ -349,7 +349,7 @@ void option() {
 }
 
 void gamePlay() {
-  println("pausePlay is " + pausePlay);
+  
   if (pakmac.lives >= 0) {
     if (!pausePlay) {
       checkCollisions();
@@ -378,7 +378,7 @@ void gamePlay() {
 
   for (int i = gameObjects.size() - 1; i >= 0; i--) {
     gameObjects.get(i).render();
-    if (!pausePlay && (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost || gameObjects.get(i) instanceof Timer)) {
+    if ((!pausePlay && (gameObjects.get(i) instanceof Pakmac || gameObjects.get(i) instanceof Ghost || gameObjects.get(i) instanceof Timer)) || gameObjects.get(i) instanceof GhostScore) {
       gameObjects.get(i).update();
     }
   }

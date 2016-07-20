@@ -46,7 +46,7 @@ abstract class GameObject {
     this.x = x;
     this.y = y;
     pos = new PVector(x, y);
-    forward = new PVector(0, -1);
+    forward = new PVector(0, -6);
   }
 
   //GameObject(float x, float y, float objectWidth, float objectHeight, color colour/*, float theta*/) {
