@@ -4,6 +4,7 @@ Map map;
 Pakmac pakmac;
 Ghost blinky;
 Ghost pinky;
+Ghost inky;
 Timer timer;
 float tileWidth;
 
@@ -399,6 +400,10 @@ void createSprites() {
   pinky = new Ghost(width * 0.5f, (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 184, 222), new PVector(-1, 6), 3, true, 0.5f, true, 11, 13);
   gameObjects.add(pinky);
   ghosts.add(pinky);
+  
+  inky = new Ghost((tileWidth * 12), (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(0, 255, 223), new PVector(32, 18), 1, true, 0.5f, false, 11, 13);
+  gameObjects.add(inky);
+  ghosts.add(inky);
   //println((tileWidth * 13) + (tileWidth * 0.5f));
 }
 
