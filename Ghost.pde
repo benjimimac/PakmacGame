@@ -34,6 +34,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     movingSprite2 = new PShape[4];
     eatenSprite = new PShape[4];
     this.ghostArea = ghostArea;
+    startGhostArea = ghostArea;
     normalSpeed = 3.0f;
     otherSpeed = 2.0f;
     if (ready) {
@@ -800,6 +801,8 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
   public void resetPositions() {
     pos = new PVector(x, y);
     spriteDirection = startSpriteDirection;
+    ghostArea = startGhostArea;
+    eaten = false;
   }
 
   public void applyTo(Pakmac pakmac) {

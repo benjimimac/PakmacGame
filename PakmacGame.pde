@@ -350,7 +350,7 @@ void option() {
 }
 
 void gamePlay() {
-  
+
   if (pakmac.lives >= 0) {
     if (!pausePlay) {
       checkCollisions();
@@ -358,7 +358,7 @@ void gamePlay() {
       setTargetTiles();
     } else {
       timer.pauseTimer++;
-      
+
       if (timer.pauseTimer > 120 && pakmac.lives >= 0 && !reset) {
         pakmac.resetPositions();
       }
@@ -395,8 +395,8 @@ void createSprites() {
   blinky = new Ghost(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 0, 0), new PVector(-1, 24), 2, false, 3.0f, true, 11, 12);
   gameObjects.add(blinky);
   ghosts.add(blinky);
-  
-  pinky = new Ghost(width * 0.5f, (tileWidth * 15) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 184, 222), new PVector(-1, 6), 3, true, 0.5f, true, 11, 13);
+
+  pinky = new Ghost(width * 0.5f, (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 184, 222), new PVector(-1, 6), 3, true, 0.5f, true, 11, 13);
   gameObjects.add(pinky);
   ghosts.add(pinky);
   //println((tileWidth * 13) + (tileWidth * 0.5f));
@@ -475,6 +475,29 @@ void setTargetTiles() {
         case 0:
           ghosts.get(i).targetTile = pakmac.getLocation();
           break;
+
+        case 1:
+          println("Pinky case");
+          PVector tempTarget = pakmac.getLocation();
+          switch (pakmac.spriteDirection) {
+          case 0:
+            tempTarget.add(0, 4);
+            break;
+
+          case 1:
+            tempTarget.add(4, 0);
+            break;
+
+          case 2:
+            tempTarget.add(0, -4);
+            break;
+
+          case 3:
+            tempTarget.add(-4, 0);
+            break;
+          }
+          ghosts.get(i).targetTile = tempTarget;
+          break;
         }
         break;
       }
@@ -482,6 +505,8 @@ void setTargetTiles() {
       ghosts.get(i).targetTile = new PVector(11, 14);
     }
   }
+  
+  println(blinky.targetTile);
 }
 
 void displayDetails() {

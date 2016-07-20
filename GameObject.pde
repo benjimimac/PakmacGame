@@ -23,6 +23,7 @@ abstract class GameObject {
   
   boolean eaten;
   boolean ghostArea;
+  boolean startGhostArea;
 
   int test = 0;
 
