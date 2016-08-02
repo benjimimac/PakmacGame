@@ -45,7 +45,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     this.ready = ready;
 
     amount = 0;
-    
+
     //spriteDirection = (int) map(theta, PI + HALF_PI, 0, 3, 0);
     this.spriteDirection = spriteDirection;
     startSpriteDirection = spriteDirection;
@@ -230,7 +230,6 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     super.update();
 
     if (!ghostArea) {
-
       //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
       //  speed = otherSpeed;
       //} 
@@ -259,8 +258,16 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
       println("Ready to go again");
       ghostArea = false;
       setDirections();
-    } else if (!ready) {
-      println("I'm not ready yet");
+    } else if (!ready && ghostArea) {
+
+      currentTile = getLocation();
+      if ((map.checkPath((int) currentTile.x - 1, (int) currentTile.y) != 4 && spriteDirection == 3) || (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) != 4 && spriteDirection == 1)) {
+
+        forceTurn = true;
+        setDirections();
+      } else {
+       println("Oh yes it is " + currentTile); 
+      }
     }
   }
 
@@ -807,15 +814,15 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
 
   public void applyTo(Pakmac pakmac) {
     int tempAmount = GHOST_POINTS;
-    
-    for(int i = 0; i < amount; i++) {
-     tempAmount *= 2; 
+
+    for (int i = 0; i < amount; i++) {
+      tempAmount *= 2;
     }
-    
+
     GhostScore ghostScore = new GhostScore(pos.x, pos.y, tempAmount);
-    
+
     gameObjects.add(ghostScore);
-    
+
     pakmac.score += tempAmount;
     amount++;
     println(tempAmount + " - " + amount);

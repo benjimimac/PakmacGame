@@ -65,7 +65,7 @@ abstract class GameObject {
 
     xReference = (int) map(pos.x, 0, width, 0, 28);
     yReference = (int) map(pos.y, (tileWidth * 2), (tileWidth * 2) + (tileWidth * 31), 0, 31);
-    float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
+    //float fauxXPos = tileWidth * (xReference); // Fancy word, I know...
 
     //println("GameObject class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
 
@@ -160,10 +160,13 @@ abstract class GameObject {
       pos.add(forward);
     }
     
-    if ((eaten && (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4))) {
+    if (((eaten || ghostArea) && (map.path[reference][xReference] == 3 || map.path[reference][xReference] == 4))) {
       forward.mult(speed);
       pos.add(forward);
-      ghostArea = true;
+      //ghostArea = true;
+      println("Going down");
+    } else {
+     println("Not going down - " + reference + ", " + xReference + " - " + map.path[reference][xReference]); 
     }
     
     //if(eaten) {
