@@ -246,9 +246,9 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     } else if (!ready && eaten) {
 
       if (getLocation().equals(new PVector(14, 14)) && pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f) {
-        println("Not ready and eaten");
+        println("Not ready and eaten - in ghost house");
         spriteDirection = 3;
-        ready = false;
+        ready = true;
         eaten = false;
         ghostArea = true;
       }
@@ -260,14 +260,14 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
       ghostArea = false;
       setDirections();
     } else if (!ready && ghostArea) {
-println("I'm not fucking ready so I'll just float about here");
+//println("I'm not fucking ready so I'll just float about here");
       currentTile = getLocation();
       if ((map.checkPath((int) currentTile.x - 1, (int) currentTile.y) != 4 && spriteDirection == 3) || (map.checkPath((int) currentTile.x + 1, (int) currentTile.y) != 4 && spriteDirection == 1)) {
 
         forceTurn = true;
         setDirections();
       } else {
-       println("Oh yes it is " + currentTile); 
+       //println("Oh yes it is " + currentTile); 
       }
     } else if(ready && ghostArea) {
       println("I'm fucking ready" + getLocation() + ", " + (pos.y % tileWidth) + " - " + pos);
@@ -715,7 +715,7 @@ println("I'm not fucking ready so I'll just float about here");
   }
 
   void forceTurn() {
-    println("Inside forceTurn");
+    //println("Inside forceTurn");
     //nextTile = currentTile.copy();
     if(frightened) {
     speed = otherSpeed;
@@ -815,6 +815,7 @@ println("I'm not fucking ready so I'll just float about here");
 
     directions[1] = true;
     spriteDirection = 1;
+    ghostArea = true;
   }
 
   public void resetPositions() {

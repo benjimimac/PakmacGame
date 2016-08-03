@@ -164,9 +164,7 @@ abstract class GameObject {
       forward.mult(speed);
       pos.add(forward);
       //ghostArea = true;
-      println("Going down");
-    } else {
-     println("Not going down - " + reference + ", " + xReference + " - " + map.path[reference][xReference]);
+      //println("Going down");
     }
     
     //if(eaten) {
