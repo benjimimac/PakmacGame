@@ -166,7 +166,7 @@ abstract class GameObject {
       //ghostArea = true;
       println("Going down");
     } else {
-     println("Not going down - " + reference + ", " + xReference + " - " + map.path[reference][xReference]); 
+     println("Not going down - " + reference + ", " + xReference + " - " + map.path[reference][xReference]);
     }
     
     //if(eaten) {
