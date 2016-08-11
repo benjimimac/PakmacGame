@@ -17,7 +17,7 @@ class Dot extends GameObject implements Points {
     popMatrix();
   }
   
-  void applyTo(Pakmac pakmac) {
+  public void applyTo(Pakmac pakmac) {
    pakmac.score += 10;
    pakmac.foodCount += 1;
   }
