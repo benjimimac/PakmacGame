@@ -1,6 +1,7 @@
 class LeavingGhostAreaMovement implements Movement {
 
   Ghost ghost;
+  PVector changeCoordinate = new PVector(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f));
 
   LeavingGhostAreaMovement(Ghost ghost) {
 
@@ -8,6 +9,7 @@ class LeavingGhostAreaMovement implements Movement {
   }
 
   public void update() {
+    println("Position: " + changeCoordinate + " - " + ghost.pos);
 
     if (ghost.pos.y == ghost.y) {
       //println("I'm about ready to go");
@@ -25,10 +27,12 @@ class LeavingGhostAreaMovement implements Movement {
         println("In the middle");
         ghost.spriteDirection = 3;
         ghost.ghostArea = false;
-        ghost.getMovementBehaviour();
-      }
-    } else if (ghost.pos.y % tileWidth == 0) {
+      } 
+    } else if (ghost.pos.y % tileWidth == 0 && ghost.ghostArea) {
       ghost.forceTurn();
+    } else if(ghost.pos.equals(new PVector(blinky.x, blinky.y))) {
+      ghost.spriteDirection = 2;
+      ghost.getMovementBehaviour();
     }
   }
 }
