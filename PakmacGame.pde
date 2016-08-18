@@ -385,10 +385,12 @@ void gamePlay() {
     }
   }
 
-  if (pakmac.foodCount == 30) {
+  if (pakmac.foodCount == 30 && !inky.ready) {
     inky.ready = true;
-    inky.movement = inky.getMovementBehaviour();
+    inky.getMovementBehaviour();// = inky.getMovementBehaviour();
+    println("line 391 ");
   }
+  println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth);
 }
 
 void createSprites() {

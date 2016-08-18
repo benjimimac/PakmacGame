@@ -30,7 +30,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
 
   Ghost(float x, float y, float objectWidth, float objectHeight, color colour, PVector homeTile, int spriteDirection, boolean ghostArea, float speed, boolean ready, int nextTileRow, int nextTileCol) {
     super(x, y, objectWidth, objectWidth, colour/*, theta*/);
-    
+
     currentTile = new PVector(15, 15);
 
     startTheta = theta;
@@ -47,8 +47,8 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     //  this.speed = otherSpeed;
     //}
     this.ready = ready;
-    
-    movement = getMovementBehaviour();//new GeneralMovement(this);
+
+    getMovementBehaviour();//new GeneralMovement(this);
 
     amount = 0;
 
@@ -235,21 +235,21 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
 
     super.update();
     movement.update();
-   /* if (!ghostArea) {
-      //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
-      //  speed = otherSpeed;
-      //} 
-      //if(map.path[(int) tempLocation.x][(int) tempLocation.y] == 1 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
-      //  speed = normalSpeed;
-      //}
-      //println(pos + " - " + tempLocation);
-
-      if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
-        setDirections();
-      } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f)) && eaten) {
-        enterGhostArea();
-      }
-    }*/
+    /* if (!ghostArea) {
+     //if((map.path[(int) tempLocation.x][(int) tempLocation.y] == 2) && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
+     //  speed = otherSpeed;
+     //} 
+     //if(map.path[(int) tempLocation.x][(int) tempLocation.y] == 1 && pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
+     //  speed = normalSpeed;
+     //}
+     //println(pos + " - " + tempLocation);
+     
+     if (pos.x % tileWidth == tileWidth * 0.5f && pos.y % tileWidth == tileWidth * 0.5f) {
+     setDirections();
+     } else if (pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f && getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f)) && eaten) {
+     enterGhostArea();
+     }
+     }*/
     //} else if (!ready && eaten) {
 
     //  if (getLocation().equals(new PVector(14, 14)) && pos.x % tileWidth == 0 && pos.y % tileWidth == tileWidth * 0.5f) {
@@ -535,7 +535,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
   //   int distLeft = getDistance(0, -1);
   //   int distDown = getDistance(1, 0);
   //   int distRight = getDistance(0, 1);
-     
+
   //   if (directions[0]) {
   //   if (directions[1]) {
   //   if (distUp <= distLeft) {
@@ -850,16 +850,17 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     amount++;
     println(tempAmount + " - " + amount);
   }
-  
-  Movement getMovementBehaviour() {
-    if(!ghostArea) {
+
+  void getMovementBehaviour() {
+    if (!ghostArea) {
       println("New GeneralMovement()");
-      return new GeneralMovement(this);
-    } else if(ghostArea && !ready) {
+      movement = new GeneralMovement(this);
+    } else if (ghostArea && !ready) {
       println("New GhostAreaMovement");
-      return new GhostAreaMovement(this);
+      movement = new GhostAreaMovement(this);
+    } else {
+      println("New LeavingGhostAreaMovement");
+      movement = new LeavingGhostAreaMovement(this);
     }
-    println("New LeavingGhostAreaMovement");
-    return new LeavingGhostAreaMovement(this);
   }
 }

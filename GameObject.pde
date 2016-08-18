@@ -135,7 +135,7 @@ abstract class GameObject {
     }//end if()
     //println(pos.x % tileWidth + " - " + pos.y % tileWidth);
     //if (get((int) pos.x - (tileSize), (int) pos.y) != maze.getWallColour()) {
-    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2) {// && map(pos.x - (tileWidth * 0.5f), 0, width, 0, 28) != xReference - 1) {
+    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2 || map.path[yReference][reference] == 4) {// && map(pos.x - (tileWidth * 0.5f), 0, width, 0, 28) != xReference - 1) {
 
       forward.mult(speed);
       pos.add(forward);
@@ -185,7 +185,7 @@ abstract class GameObject {
       pos.x = 0;
     }//end if()
 
-    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2) {
+    if (map.path[yReference][reference] == 1 || map.path[yReference][reference] == 2 || map.path[yReference][reference] == 4) {
       forward.mult(speed);
       pos.add(forward);
     }  
