@@ -6,8 +6,6 @@ class Pakmac extends GameObject implements Reset{
 
   Pakmac(float x, float y, float objectWidth, color colour, char up, char left, char down, char right, int spriteDirection) {
     super(x, y, objectWidth, objectWidth, colour/*, theta*/);
-    //this.theta = theta;
-    //println(degrees(theta));
     startTheta = theta;
     angle = HALF_PI * 0.9f;
     speed = 3.0f;
@@ -34,11 +32,9 @@ class Pakmac extends GameObject implements Reset{
     this.down = down;
     this.right = right;
 
-    //println(pos);
   }
 
   void render() {
-    //println("theta is " + theta);
     pushMatrix();
     translate(pos.x, pos.y);
     if (!switchSprite) {
@@ -51,11 +47,8 @@ class Pakmac extends GameObject implements Reset{
 
   void update() {
     super.update();
-    //println("Pakmac class - " + degrees(theta) + " - " + pos.x + " (" + xReference + ") " + " - " + pos.y + "(" + yReference + ") - ");// + test++);
 
     
-    //println(xReference, yReference);
-    //println(map.path[yReference][xReference - 1]);
     checkKeys();
   }
 
@@ -74,10 +67,9 @@ class Pakmac extends GameObject implements Reset{
       if(xReference < 1) {
         xReference = 28;
       }
-      //if (get((int) pos.x - (tileWidth + 5), (int) pos.y) != maze.getWallColour() && get((int) pos.x - (tileWidth + 5), (int) pos.y - (tileWidth - 3)) != maze.getWallColour() && get((int) pos.x - (tileWidth + 5), (int) pos.y + (tileWidth - 3)) != maze.getWallColour()) {
-      //println(theta);
+      
       if ((map.path[yReference][xReference - 1] == 1 || map.path[yReference][xReference - 1] == 2) && pos.y % tileWidth == tileWidth * 0.5f) {
-        //println(true);
+        
         spriteDirection = 2;
         //theta = PI;
       } else {

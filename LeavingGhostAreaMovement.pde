@@ -9,7 +9,7 @@ class LeavingGhostAreaMovement implements Movement {
   }
 
   public void update() {
-    println("Position: " + changeCoordinate + " - " + ghost.pos);
+    //println("Position: " + changeCoordinate + " - " + ghost.pos);
 
     if (ghost.pos.y == ghost.y) {
       //println("I'm about ready to go");

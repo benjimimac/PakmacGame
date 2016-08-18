@@ -390,7 +390,7 @@ void gamePlay() {
     inky.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 391 ");
   }
-  println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth);
+  //println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth + " - PakmacGame 393");
 }
 
 void createSprites() {
@@ -512,7 +512,29 @@ void setTargetTiles() {
           break;
 
         case 2:
+          PVector tempInkyTarget = pakmac.getLocation();
+          switch (ghosts.get(i).spriteDirection) {
+          case 0:
+            tempInkyTarget.add(0, 2);
+            break;
 
+          case 1:
+            tempInkyTarget.add(2, 0);
+            break;
+
+          case 2:
+            tempInkyTarget.add(0, -2);
+            break;
+
+          case 3:
+            tempInkyTarget.add(-2, 0);
+            break;
+          }
+          
+          PVector blinkyLoc = blinky.getLocation();
+          PVector targetAdd = tempInkyTarget.sub(blinkyLoc);
+          tempInkyTarget.add(targetAdd);
+          ghosts.get(i).targetTile = tempInkyTarget;
           break;
 
         case 3:

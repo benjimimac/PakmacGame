@@ -1,21 +1,27 @@
 class GeneralMovement implements Movement {
- 
+
   Ghost ghost;
-  
+
   GeneralMovement(Ghost ghost) {
-   this.ghost = ghost; 
+    this.ghost = ghost;
   }
-  
+
   public void update() {
-    
+
     if (ghost.pos.x % tileWidth == tileWidth * 0.5f && ghost.pos.y % tileWidth == tileWidth * 0.5f) {
-        //ghost.setDirections();
-        setDirections();
-      } else if (ghost.pos.x % tileWidth == 0 && ghost.pos.y % tileWidth == tileWidth * 0.5f && ghost.getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f)) && ghost.eaten) {
-        ghost.enterGhostArea();
-      }
+      //ghost.setDirections();
+      setDirections();
+    } else if (ghost.pos.x % tileWidth == 0 && ghost.pos.y % tileWidth == tileWidth * 0.5f && ghost.getLocation().equals(new PVector(11, (int) map.path[0].length * 0.5f)) && ghost.eaten) {
+      ghost.enterGhostArea();
+    } else if (ghost.pos.equals(new PVector(pinky.x, pinky.y))) {
+      ghost.ghostArea = true;
+      ghost.ready = true;
+      ghost.getMovementBehaviour();
+      ghost.eaten = false;
+      println("Tests out ok");
+    }
   }
-  
+
   void setDirections() {
     if (ghost.forceTurn) {
       ghost.forceTurn();
@@ -98,7 +104,7 @@ class GeneralMovement implements Movement {
 
     //println(directions[3], directions[2], directions[1], directions[0], spriteDirection, degrees(theta));
   }
-  
+
   void pickOneDirection() {
 
     if (!ghost.eaten && ghost.checkCurrentTile()) {
@@ -290,5 +296,4 @@ class GeneralMovement implements Movement {
      }//if none of up, down, or left are valid then right is an automatic choice
      */
   }
-  
 }
