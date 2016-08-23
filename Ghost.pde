@@ -835,6 +835,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
     spriteDirection = startSpriteDirection;
     ghostArea = startGhostArea;
     eaten = false;
+    getMovementBehaviour();
   }
 
   public void applyTo(Pakmac pakmac) {

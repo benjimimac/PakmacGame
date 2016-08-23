@@ -485,6 +485,7 @@ void setTargetTiles() {
       case 1:
         switch (i) {
         case 0:
+        //blinky case
           ghosts.get(i).targetTile = pakmac.getLocation();
           break;
 
@@ -512,29 +513,30 @@ void setTargetTiles() {
           break;
 
         case 2:
-          PVector tempInkyTarget = pakmac.getLocation();
+        //inky case
+          PVector tempPakLoc = pakmac.getLocation();
           switch (ghosts.get(i).spriteDirection) {
           case 0:
-            tempInkyTarget.add(0, 2);
+            tempPakLoc.add(0, 2);
             break;
 
           case 1:
-            tempInkyTarget.add(2, 0);
+            tempPakLoc.add(2, 0);
             break;
 
           case 2:
-            tempInkyTarget.add(0, -2);
+            tempPakLoc.add(0, -2);
             break;
 
           case 3:
-            tempInkyTarget.add(-2, 0);
+            tempPakLoc.add(-2, 0);
             break;
           }
           
           PVector blinkyLoc = blinky.getLocation();
-          PVector targetAdd = tempInkyTarget.sub(blinkyLoc);
-          tempInkyTarget.add(targetAdd);
-          ghosts.get(i).targetTile = tempInkyTarget;
+          PVector targetAdd = new PVector(tempPakLoc.x - blinkyLoc.x, tempPakLoc.y - blinkyLoc.y);
+          tempPakLoc.add(targetAdd);
+          ghosts.get(i).targetTile = tempPakLoc;
           break;
 
         case 3:
@@ -548,7 +550,7 @@ void setTargetTiles() {
     }
   }
 
-  //println(blinky.targetTile);
+  println(blinky.getLocation() + " - " + pakmac.getLocation() + " - " + inky.targetTile);
 }
 
 void displayDetails() {
