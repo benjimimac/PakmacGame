@@ -5,6 +5,7 @@ Pakmac pakmac;
 Ghost blinky;
 Ghost pinky;
 Ghost inky;
+Ghost clyde;
 Timer timer;
 float tileWidth;
 
@@ -411,6 +412,9 @@ void createSprites() {
   inky = new Ghost((tileWidth * 12), (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(0, 255, 223), new PVector(32, 18), 3, true, 0.5f, false, 11, 13);
   gameObjects.add(inky);
   ghosts.add(inky);
+  
+  clyde = new Ghost((tileWidth * 16), (tileWidth * 15) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 160, 0), new PVector(32, 1), 3, true, 0.5f, false, 11, 13);
+  gameObjects.add(clyde);
   //println((tileWidth * 13) + (tileWidth * 0.5f));
 }
 
