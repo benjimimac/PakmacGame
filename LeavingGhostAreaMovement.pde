@@ -1,7 +1,7 @@
 class LeavingGhostAreaMovement implements Movement {
 
   Ghost ghost;
-  PVector changeCoordinate = new PVector(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f));
+  //PVector changeCoordinate = new PVector(width * 0.5f, (tileWidth * 13) + (tileWidth * 0.5f));
 
   LeavingGhostAreaMovement(Ghost ghost) {
 
