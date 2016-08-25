@@ -553,9 +553,9 @@ void setTargetTiles() {
         case 3:
         //clyde case
           ghosts.get(i).targetTile = pakmac.getLocation();
-          //if(ghosts.get(i).getDistance(0, 0) < 8) {
-          //  println("Less than 8");
-          //}
+          if(ghosts.get(i).getDistance(0, 0) < 8) {
+            ghosts.get(i).targetTile = ghosts.get(i).homeTile;
+          }
           break;
         }
         break;
