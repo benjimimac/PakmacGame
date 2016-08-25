@@ -391,6 +391,12 @@ void gamePlay() {
     inky.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 391 ");
   }
+  
+  if (pakmac.foodCount == 80 && !clyde.ready) {
+    clyde.ready = true;
+    clyde.getMovementBehaviour();// = inky.getMovementBehaviour();
+    println("line 398 ");
+  }
   //println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth + " - PakmacGame 393");
 }
 
@@ -413,8 +419,9 @@ void createSprites() {
   gameObjects.add(inky);
   ghosts.add(inky);
   
-  clyde = new Ghost((tileWidth * 16), (tileWidth * 15) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 160, 0), new PVector(32, 1), 3, true, 0.5f, false, 11, 13);
+  clyde = new Ghost((tileWidth * 16), (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 160, 0), new PVector(32, 1), 3, true, 0.5f, false, 11, 13);
   gameObjects.add(clyde);
+  ghosts.add(clyde);
   //println((tileWidth * 13) + (tileWidth * 0.5f));
 }
 
@@ -494,7 +501,7 @@ void setTargetTiles() {
           break;
 
         case 1:
-          //println("Pinky case");
+          //pinky case
           PVector tempTarget = pakmac.getLocation();
           switch (pakmac.spriteDirection) {
           case 0:
@@ -544,7 +551,11 @@ void setTargetTiles() {
           break;
 
         case 3:
-
+        //clyde case
+          ghosts.get(i).targetTile = pakmac.getLocation();
+          //if(ghosts.get(i).getDistance(0, 0) < 8) {
+          //  println("Less than 8");
+          //}
           break;
         }
         break;
@@ -554,7 +565,6 @@ void setTargetTiles() {
     }
   }
 
-  println(blinky.getLocation() + " - " + pakmac.getLocation() + " - " + inky.targetTile);
 }
 
 void displayDetails() {
