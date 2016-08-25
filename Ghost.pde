@@ -811,7 +811,6 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
   }
 
   void eaten() {
-    println("I've just been eaten");
     frightened = false;
     ready = false;
     eaten = true;
@@ -851,7 +850,7 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
 
     pakmac.score += tempAmount;
     amount++;
-    println(tempAmount + " - " + amount);
+    //println(tempAmount + " - " + amount);
   }
 
   void getMovementBehaviour() {

@@ -18,7 +18,6 @@ class GeneralMovement implements Movement {
       ghost.ready = true;
       ghost.getMovementBehaviour();
       ghost.eaten = false;
-      println("Tests out ok");
     }
   }
 

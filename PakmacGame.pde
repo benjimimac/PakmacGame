@@ -364,7 +364,6 @@ void gamePlay() {
       if (timer.pauseTimer > 120 && pakmac.lives >= 0 && !reset) {
         pakmac.resetPositions();
       }
-      println(timer.pauseTimer);
       if (timer.pauseTimer > 180) {
         timer.pauseTimer = 0;
         pausePlay = false;
@@ -397,6 +396,8 @@ void gamePlay() {
     clyde.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 398 ");
   }
+  println("Blinky ready " + blinky.ready + " - Blinky ghostArea " + blinky.ghostArea);
+  println("pinky ready " + pinky.ready + " - pinky ghostArea " + pinky.ghostArea);
   //println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth + " - PakmacGame 393");
 }
 

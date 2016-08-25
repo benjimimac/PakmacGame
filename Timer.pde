@@ -71,7 +71,6 @@ class Timer extends GameObject {
         frightened = false;
         frightenedTimer = 0;
         amount = 0;
-        println("Pause timer has stopped");
       }
     } else {
       count++;

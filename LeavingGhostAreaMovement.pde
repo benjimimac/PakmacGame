@@ -11,7 +11,7 @@ class LeavingGhostAreaMovement implements Movement {
   public void update() {
     //println("Position: " + changeCoordinate + " - " + ghost.pos);
 
-    if (ghost.pos.y == ghost.y) {
+    if (ghost.pos.y == pinky.y) {
       //println("I'm about ready to go");
       PVector leftLocation = ghost.getLocation();
       PVector rightLocation = ghost.getLocation();
@@ -20,11 +20,9 @@ class LeavingGhostAreaMovement implements Movement {
 
       if (map.path[(int) leftLocation.x][(int) leftLocation.y] != 4) {
         ghost.spriteDirection = 0;
-        println("Not equal to 4");
       } else if (map.path[(int) rightLocation.x][(int) rightLocation.y] != 4) {
         ghost.spriteDirection = 2;
       } else if (ghost.pos.x == width * 0.5f) {
-        println("In the middle");
         ghost.spriteDirection = 3;
         ghost.ghostArea = false;
       } 
