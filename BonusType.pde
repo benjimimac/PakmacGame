@@ -1,0 +1,4 @@
+interface BonusType {
+  
+  void render();
+}

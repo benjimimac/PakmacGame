@@ -396,6 +396,11 @@ void gamePlay() {
     clyde.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 398 ");
   }
+  
+  if(pakmac.foodCount == 20) {
+    Bonus bonus = new Bonus(width * 0.5f, tileWidth * 19.5f);
+    gameObjects.add(bonus);
+  }
   println("Blinky ready " + blinky.ready + " - Blinky ghostArea " + blinky.ghostArea);
   println("pinky ready " + pinky.ready + " - pinky ghostArea " + pinky.ghostArea);
   //println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth + " - PakmacGame 393");
