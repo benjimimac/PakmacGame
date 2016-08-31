@@ -397,7 +397,7 @@ void gamePlay() {
     println("line 398 ");
   }
   
-  if(pakmac.foodCount == 20) {
+  if(pakmac.foodCount == 1) {
     Bonus bonus = new Bonus(width * 0.5f, tileWidth * 19.5f);
     gameObjects.add(bonus);
   }
