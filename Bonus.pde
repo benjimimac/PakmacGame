@@ -6,6 +6,7 @@ class Bonus extends GameObject{
    Bonus(float x, float y) {
     super(x, y);
     
+    //Simple Factory method to be implemented to select more bonusTypes
     bonusType = new Cherry(this);
   }
   

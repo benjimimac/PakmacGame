@@ -24,7 +24,7 @@ class Cherry implements BonusType {
     cherry.addChild(rightCherry);
     
     stroke(255);
-    
+    fill(255);
     PShape glare = createShape(ELLIPSE, -(0.45f * tileWidth), 0.3f * tileWidth, 2, 2);
     cherry.addChild(glare);
     glare = createShape(ELLIPSE, -(0.35f * tileWidth), 0.4f * tileWidth, 2, 2);
