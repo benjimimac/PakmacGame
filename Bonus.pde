@@ -12,7 +12,7 @@ class Bonus extends GameObject{
   public void render() {
     pushMatrix();
     translate(pos.x, pos.y);
-    bonusType.render();
+    bonusType.getShape();
     popMatrix();
   }
 }

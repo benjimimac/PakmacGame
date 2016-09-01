@@ -7,6 +7,12 @@ class Cherry implements BonusType {
     this.bonus = bonus;
     bonus.points = 100;
     
+    setShape();
+    
+    
+  }
+  
+  public void setShape() {
     //cherry = createShape(RECT, -12, -12, 25, 25); 
     fill(255, 0, 0);
     stroke(0);
@@ -23,12 +29,19 @@ class Cherry implements BonusType {
     cherry.addChild(glare);
     glare = createShape(ELLIPSE, -(0.35f * tileWidth), 0.4f * tileWidth, 2, 2);
     cherry.addChild(glare);
+    glare = createShape(ELLIPSE, (0.05f * tileWidth), 0.55f * tileWidth, 2, 2);
+    cherry.addChild(glare);
+    glare = createShape(ELLIPSE, (0.15f * tileWidth), 0.65f * tileWidth, 2, 2);
+    cherry.addChild(glare);
     
-    PShape stem = createShape(LINE, -3, 0, 6, -12);
+    stroke(236, 180, 116);
+    PShape stem = createShape(LINE, -3, 0, 12, -12);
+    cherry.addChild(stem);
+    stem = createShape(LINE, 8, 5, 12, -12);
     cherry.addChild(stem);
   }
   
-  public void render() {
+  public void getShape() {
     shape(cherry);
   }
 }

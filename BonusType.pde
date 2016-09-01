@@ -1,4 +1,5 @@
 interface BonusType {
   
-  void render();
+  void setShape();
+  void getShape();
 }
