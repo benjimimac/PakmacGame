@@ -1,6 +1,7 @@
 class Dot extends GameObject implements Points {
   
   PShape dot;
+  int points = 10;
   
   Dot(float x, float y, float objectWidth, color colour) {
    super(x, y, objectWidth, objectWidth, colour);
@@ -18,7 +19,7 @@ class Dot extends GameObject implements Points {
   }
   
   public void applyTo(Pakmac pakmac) {
-   pakmac.score += 10;
+   pakmac.score += points;
    pakmac.foodCount += 1;
   }
 }

@@ -390,14 +390,14 @@ void gamePlay() {
     inky.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 391 ");
   }
-  
+
   if (pakmac.foodCount == 80 && !clyde.ready) {
     clyde.ready = true;
     clyde.getMovementBehaviour();// = inky.getMovementBehaviour();
     println("line 398 ");
   }
-  
-  if(pakmac.foodCount == 1) {
+
+  if (pakmac.foodCount == 70 || pakmac.foodCount == 170) {
     Bonus bonus = new Bonus(width * 0.5f, tileWidth * 19.5f);
     gameObjects.add(bonus);
   }
@@ -424,7 +424,7 @@ void createSprites() {
   inky = new Ghost((tileWidth * 12), (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(0, 255, 223), new PVector(32, 18), 3, true, 0.5f, false, 11, 13);
   gameObjects.add(inky);
   ghosts.add(inky);
-  
+
   clyde = new Ghost((tileWidth * 16), (tileWidth * 16) + (tileWidth * 0.5f), (tileWidth * 2) * 0.85, tileWidth * 0.85, color(255, 160, 0), new PVector(32, 1), 3, true, 0.5f, false, 11, 13);
   gameObjects.add(clyde);
   ghosts.add(clyde);
@@ -464,6 +464,12 @@ void checkCollisions() {
               reset = false;
             }
           }
+        } else if (object instanceof Bonus) {
+          if (player.pos.dist(object.pos) < (player.objectWidth * 0.5f) - object.objectWidth * 0.5f) {
+            println("I'm a Bonus mother fucker!!");
+            gameObjects.remove(object);
+            ((Bonus) object).applyTo((Pakmac) player);
+          }
         }
       }
     }
@@ -502,7 +508,7 @@ void setTargetTiles() {
       case 1:
         switch (i) {
         case 0:
-        //blinky case
+          //blinky case
           ghosts.get(i).targetTile = pakmac.getLocation();
           break;
 
@@ -530,7 +536,7 @@ void setTargetTiles() {
           break;
 
         case 2:
-        //inky case
+          //inky case
           PVector tempPakLoc = pakmac.getLocation();
           switch (ghosts.get(i).spriteDirection) {
           case 0:
@@ -549,7 +555,7 @@ void setTargetTiles() {
             tempPakLoc.add(-2, 0);
             break;
           }
-          
+
           PVector blinkyLoc = blinky.getLocation();
           PVector targetAdd = new PVector(tempPakLoc.x - blinkyLoc.x, tempPakLoc.y - blinkyLoc.y);
           tempPakLoc.add(targetAdd);
@@ -557,9 +563,9 @@ void setTargetTiles() {
           break;
 
         case 3:
-        //clyde case
+          //clyde case
           ghosts.get(i).targetTile = pakmac.getLocation();
-          if(ghosts.get(i).getDistance(0, 0) < 8) {
+          if (ghosts.get(i).getDistance(0, 0) < 8) {
             ghosts.get(i).targetTile = ghosts.get(i).homeTile;
           }
           break;
@@ -570,7 +576,6 @@ void setTargetTiles() {
       ghosts.get(i).targetTile = new PVector(11, 14);
     }
   }
-
 }
 
 void displayDetails() {

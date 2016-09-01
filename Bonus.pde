@@ -1,4 +1,4 @@
-class Bonus extends GameObject{
+class Bonus extends GameObject implements Points{
   
   BonusType bonusType;
   int points;
@@ -15,5 +15,9 @@ class Bonus extends GameObject{
     translate(pos.x, pos.y);
     bonusType.getShape();
     popMatrix();
+  }
+  
+  public void applyTo(Pakmac pakmac) {
+    pakmac.score += points;
   }
 }
