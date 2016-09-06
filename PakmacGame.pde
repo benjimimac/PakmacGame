@@ -401,9 +401,18 @@ void gamePlay() {
     Bonus bonus = new Bonus(width * 0.5f, tileWidth * 19.5f);
     gameObjects.add(bonus);
   }
-  println("Blinky ready " + blinky.ready + " - Blinky ghostArea " + blinky.ghostArea);
-  println("pinky ready " + pinky.ready + " - pinky ghostArea " + pinky.ghostArea);
+  //println("Blinky ready " + blinky.ready + " - Blinky ghostArea " + blinky.ghostArea);
+  //println("pinky ready " + pinky.ready + " - pinky ghostArea " + pinky.ghostArea);
   //println(pinky.pos + " - " + pinky.pos.y % tileWidth + ", " + pinky.pos.x % tileWidth + " - PakmacGame 393");
+  if(pinky.pos.x == pinky.x && pinky.pos.y == pinky.y) {
+    println("Pinky: GhostArea " + pinky.ghostArea + " - Ready " + pinky.ready + " - Frightened " + pinky.frightened);
+  }
+  if(inky.pos.x == inky.x && inky.pos.y == inky.y) {
+    println("Inky: GhostArea " + inky.ghostArea + " - Ready " + inky.ready + " - Frightened " + inky.frightened);
+  }
+  if(clyde.pos.x == clyde.x && clyde.pos.y == clyde.y) {
+    println("Clyde: GhostArea " + clyde.ghostArea + " - Ready " + clyde.ready + " - Frightened " + clyde.frightened);
+  }
 }
 
 void createSprites() {

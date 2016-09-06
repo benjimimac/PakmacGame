@@ -832,6 +832,10 @@ class Ghost extends GameObject implements Reset, Points { //<>// //<>// //<>// /
   public void resetPositions() {
     pos = new PVector(x, y);
     spriteDirection = startSpriteDirection;
+    
+    if(!ghostArea) {
+     ready = true; 
+    }
     ghostArea = startGhostArea;
     eaten = false;
     getMovementBehaviour();
